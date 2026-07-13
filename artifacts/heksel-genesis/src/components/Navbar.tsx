@@ -33,9 +33,19 @@ export function Navbar({ onNotifyMe }: NavbarProps) {
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
         
         {/* Logo */}
-        <a href="#home" className="flex items-center gap-2 group">
-          <span className="font-display font-extrabold text-2xl tracking-tighter text-white group-hover:text-cyan transition-colors">HEKSEL</span>
-          <span className="w-2 h-2 rounded-full bg-cyan animate-pulse shadow-[0_0_10px_#00f0ff]" />
+        <a href="#home" className="flex items-center gap-2 group" style={{ textDecoration: 'none' }}>
+          <img
+            src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-logo.png`}
+            alt="Heksel Genesis"
+            style={{
+              height: 42,
+              width: 'auto',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.5)) drop-shadow(0 0 16px rgba(180,94,255,0.4))',
+              transition: 'filter 0.3s ease',
+            }}
+            className="nav-logo"
+          />
         </a>
 
         {/* Desktop Links */}

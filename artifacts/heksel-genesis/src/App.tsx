@@ -8,6 +8,7 @@ import { CustomizationPanel } from '@/components/CustomizationPanel';
 import { Manifesto } from '@/components/Manifesto';
 import { SafeSpace } from '@/components/SafeSpace';
 import { BrandSection } from '@/components/BrandSection';
+import { HoodieSimulator } from '@/components/HoodieSimulator';
 import { Collection } from '@/components/Collection';
 import { Footer } from '@/components/Footer';
 import { PixModal } from '@/components/PixModal';
@@ -44,6 +45,8 @@ function HekselApp() {
         
         <Manifesto />
         <SafeSpace />
+
+        <HoodieSimulator />
         
         <BrandSection 
           onCreateAdvance={() => setShowAdvanceModal(true)}
