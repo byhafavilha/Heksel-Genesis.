@@ -1,71 +1,76 @@
 import { Bell } from 'lucide-react';
+import { useState } from 'react';
 
 const products = [
-  { id: 1, name: "NEO-KAI 01 FOR HIKING", type: "shoes" },
-  { id: 2, name: "NEO-KAI 01 FOR RACING", type: "shoes" },
-  { id: 3, name: "NEO-KAI 01 FOR ACADEMIC", type: "shoes" },
-  { id: 4, name: "NEO-KAI 01 FOR FOOTBALL", type: "shoes" },
-  { id: 5, name: "NEO-WAI 01 SLIPPER FOR LEISURE", type: "shoes" },
-  { id: 6, name: "NEO-WAI 02 SPORTS FLIP-FLOPS", type: "shoes" },
-  { id: 7, name: "NEO-LAI 01 SLIPPER WITH A SHORT BRIM", type: "shoes" },
-  { id: 8, name: "NEO-LAI 02 SLIPPER WITH LONG BRIM", type: "shoes" },
-  { id: 9, name: "NEO-MAI 01 HIGH HEELS", type: "shoes" },
-  { id: 10, name: "NEO-MAI 02 LOW HEELS", type: "shoes" },
-  { id: 11, name: "NEO-VAI 01 LEATHER BOOT", type: "shoes" }
+  { id: 1,  name: 'NEO-KAI 01 FOR HIKING',                img: '1000027632-removebg-preview.png' },
+  { id: 2,  name: 'NEO-KAI 01 FOR RACING',               img: '1000027635-removebg-preview.png' },
+  { id: 3,  name: 'NEO-KAI 01 FOR ACADEMIC',             img: '1000027638-removebg-preview.png' },
+  { id: 4,  name: 'NEO-KAI 01 FOR FOOTBALL',             img: '1000027639-removebg-preview.png' },
+  { id: 5,  name: 'NEO-WAI 01 SLIPPER FOR LEISURE',      img: '1000027648-removebg-preview.png' },
+  { id: 6,  name: 'NEO-WAI 02 SPORTS FLIP-FLOPS',        img: '1000027649-removebg-preview.png' },
+  { id: 7,  name: 'NEO-LAI 01 SLIPPER WITH A SHORT BRIM',img: '1000027651-removebg-preview.png' },
+  { id: 8,  name: 'NEO-LAI 02 SLIPPER WITH LONG BRIM',   img: '1000027652-removebg-preview.png' },
+  { id: 9,  name: 'NEO-MAI 01 HIGH HEELS',               img: '1000030702-removebg-preview.png' },
+  { id: 10, name: 'NEO-MAI 02 LOW HEELS',                img: '1000030703-removebg-preview.png' },
+  { id: 11, name: 'NEO-VAI 01 LEATHER BOOT',             img: '123 Sem Título_20260625133036.png' },
 ];
 
 interface CollectionProps {
   onNotifyMe: () => void;
 }
 
+function ProductCard({ product, onNotifyMe }: { product: typeof products[0]; onNotifyMe: () => void }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+  return (
+    <div className="prod-card group">
+      <div className="prod-img-wrap">
+        {!imgError ? (
+          <img
+            src={`${base}/${product.img}`}
+            alt={product.name}
+            onLoad={() => setImgLoaded(true)}
+            onError={() => setImgError(true)}
+            style={{ opacity: imgLoaded ? 1 : 0, transition: 'opacity 0.4s' }}
+          />
+        ) : (
+          <div className="prod-img-placeholder">
+            <span className="shortly-badge">SHORTLY</span>
+          </div>
+        )}
+        {!imgLoaded && !imgError && (
+          <span className="shortly-badge">SHORTLY</span>
+        )}
+      </div>
+      <div className="prod-info">
+        <div className="prod-name">{product.name}</div>
+        <div className="prod-price shortly">SHORTLY</div>
+        <button className="notify-btn-card" onClick={onNotifyMe}>Notify Me</button>
+      </div>
+    </div>
+  );
+}
+
 export function Collection({ onNotifyMe }: CollectionProps) {
   return (
-    <section id="collection" className="py-32 relative bg-black">
-      <div className="container mx-auto px-4">
-        
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div>
-            <h2 className="font-display font-extrabold text-4xl md:text-5xl text-white mb-4">The Archive</h2>
-            <p className="font-mono text-sm text-white/50 max-w-md">Upcoming hardware drops. Manufactured in the physical realm. Authenticated on the network.</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan animate-pulse" />
-            <span className="font-mono text-xs text-cyan uppercase">System Updating</span>
-          </div>
-        </div>
+    <section className="collection" id="collection">
+      <div className="section-inner">
+        <span className="section-tag">⚡ NEO Collection — Drop 01</span>
+        <h2 className="section-title">
+          Every Line.<br />
+          <span className="glow-text">One Empire.</span>
+        </h2>
+        <p className="section-sub">
+          Laser-engineered performance meets street culture. Six silhouettes. One declaration.
+        </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <div 
-              key={product.id}
-              className="bg-card/30 backdrop-blur-md border border-white/10 rounded-2xl p-6 flex flex-col group hover:-translate-y-2 hover:border-cyan/50 hover:shadow-[0_10px_30px_rgba(0,240,255,0.1)] transition-all duration-300"
-            >
-              {/* Product Placeholder Image Area */}
-              <div className="aspect-[4/3] bg-black/50 rounded-xl mb-6 relative overflow-hidden flex items-center justify-center border border-white/5">
-                <div className="absolute inset-0 bg-gradient-to-tr from-cyan/5 to-purple/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <span className="font-mono text-xs text-white/20">NO IMAGE DATA</span>
-                
-                {/* Shortly Badge */}
-                <div className="absolute top-3 right-3 px-2 py-1 bg-cyan/10 border border-cyan rounded text-[10px] font-mono text-cyan animate-pulse">
-                  SHORTLY
-                </div>
-              </div>
-
-              <h3 className="font-display font-bold text-lg text-white mb-6 flex-grow leading-tight">
-                {product.name}
-              </h3>
-
-              <button 
-                onClick={onNotifyMe}
-                className="w-full py-3 rounded-lg border border-white/20 text-white/70 font-mono text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white/10 hover:text-white transition-colors group-hover:border-cyan/50"
-              >
-                <Bell className="w-4 h-4" />
-                Notify Me
-              </button>
-            </div>
+        <div className="card-grid">
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} onNotifyMe={onNotifyMe} />
           ))}
         </div>
-
       </div>
     </section>
   );

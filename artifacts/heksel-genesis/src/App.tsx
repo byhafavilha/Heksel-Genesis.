@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { CosmosCanvas } from '@/components/CosmosCanvas';
 import { CustomCursor } from '@/components/CustomCursor';
@@ -8,7 +8,6 @@ import { CustomizationPanel } from '@/components/CustomizationPanel';
 import { Manifesto } from '@/components/Manifesto';
 import { SafeSpace } from '@/components/SafeSpace';
 import { BrandSection } from '@/components/BrandSection';
-import { FabricaTroskIA } from '@/components/FabricaTroskIA';
 import { Collection } from '@/components/Collection';
 import { Footer } from '@/components/Footer';
 import { PixModal } from '@/components/PixModal';
@@ -16,7 +15,6 @@ import { NotifyModal, CreateBrandModal, CreateAdvanceModal } from '@/components/
 import { ThemeToggleFAB } from '@/components/ThemeToggleFAB';
 
 function HekselApp() {
-  const [isPremium, setIsPremium] = useState(false);
   const [customizationOpen, setCustomizationOpen] = useState(false);
   
   // Modals state
@@ -52,8 +50,6 @@ function HekselApp() {
           onHirePremium={() => setShowPixModal(true)}
         />
         
-        <FabricaTroskIA isPremium={isPremium} />
-        
         <Collection onNotifyMe={() => setShowNotifyModal(true)} />
       </main>
 
@@ -64,7 +60,6 @@ function HekselApp() {
         isOpen={showPixModal} 
         onClose={() => setShowPixModal(false)}
         onSimulateSuccess={() => {
-          setIsPremium(true);
           setTimeout(() => {
             document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth' });
           }, 100);

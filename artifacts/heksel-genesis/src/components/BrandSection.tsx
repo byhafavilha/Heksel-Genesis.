@@ -107,7 +107,7 @@ export function BrandSection({ onCreateAdvance, onHirePremium }: BrandSectionPro
                 'Full React/Vite web application',
                 'Bespoke visual identity & logo design',
                 'Advanced animations & interactions',
-                'FÁBRICA DO TROSK·IA Access',
+                'Advanced animations & interactions',
                 'Priority VIP support line',
                 'Custom hardware welcome package'
               ].map((feature, i) => (
