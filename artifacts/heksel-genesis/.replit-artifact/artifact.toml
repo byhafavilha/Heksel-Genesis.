@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Heksel Genesis"
+version = "1.0.0"
+id = "artifacts/heksel-genesis"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24303
+
+[services.development]
+run = "pnpm --filter @workspace/heksel-genesis run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/heksel-genesis", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/heksel-genesis/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24303"
+BASE_PATH = "/"
