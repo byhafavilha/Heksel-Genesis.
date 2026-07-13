@@ -2,12 +2,8 @@ import { useState } from 'react';
 
 /* ─────────────────────────────────────────────────────
    CREATING MY BRAND — Hoodie Color Simulator
-   
-   • 5 base hoodie models (thumbnails + big preview)
-   • 6 neon color swatches
-   • CSS mix-blend-mode overlay simulates how the brand
-     identity looks on each fabric/style
-   • Fully responsive, dark Heksel design system
+   Layout: modelo-cards grandes em cima (scroll horizontal
+   no mobile) + preview central com sobreposição de cor
 ───────────────────────────────────────────────────── */
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -16,47 +12,47 @@ const MODELS = [
   {
     id: 'winter',
     label: 'Winter Core',
-    tag: 'MEO-NAI · Inverno',
+    sub: 'Inverno',
     img: `${base}/moletom-winter.png`,
     desc: 'Tecido pesado oversized — identidade forte no frio.',
   },
   {
     id: 'casual',
     label: 'Casual Drop',
-    tag: 'MEO-NAI · Casual',
+    sub: 'Casual',
     img: `${base}/moletom-casual.png`,
     desc: 'Corte limpo para uso diário — versátil e marcante.',
   },
   {
     id: 'sports',
     label: 'Esportivo Core',
-    tag: 'MEO-NAI · Sports',
+    sub: 'Sports',
     img: `${base}/moletom-sports.png`,
     desc: 'Listras neon nas mangas — movimento com identidade.',
   },
   {
     id: 'fashion',
     label: 'Fashion Cyber',
-    tag: 'MEO-NAI · Fashion',
+    sub: 'Fashion',
     img: `${base}/moletom-fashion.png`,
     desc: 'Silhueta moda cyber — sua marca no streetwear premium.',
   },
   {
     id: 'special',
     label: 'Special Drop',
-    tag: 'MEO-NAI · Special',
+    sub: 'Limited',
     img: `${base}/moletom-special.png`,
     desc: 'Edição limitada — máxima expressão da identidade Heksel.',
   },
 ];
 
 const COLORS = [
-  { id: 'purple',  label: 'Ultravioleta',  hex: '#b45eff', glow: 'rgba(180,94,255,0.55)',  border: 'rgba(180,94,255,0.8)',  blend: 'rgba(140,50,255,0.45)' },
-  { id: 'cyan',    label: 'Cyber Cyan',    hex: '#00f0ff', glow: 'rgba(0,240,255,0.55)',   border: 'rgba(0,240,255,0.9)',   blend: 'rgba(0,200,255,0.40)' },
-  { id: 'gold',    label: 'Imperial Gold', hex: '#c9a84c', glow: 'rgba(201,168,76,0.55)',  border: 'rgba(201,168,76,0.9)',  blend: 'rgba(201,168,76,0.40)' },
-  { id: 'black',   label: 'Void Black',    hex: '#0a0a12', glow: 'rgba(80,80,120,0.4)',    border: 'rgba(255,255,255,0.3)', blend: 'rgba(10,10,20,0.55)'  },
-  { id: 'red',     label: 'Crimson',       hex: '#ff2d55', glow: 'rgba(255,45,85,0.55)',   border: 'rgba(255,45,85,0.9)',   blend: 'rgba(220,30,60,0.42)' },
-  { id: 'pink',    label: 'Neo Rose',      hex: '#ff6ec7', glow: 'rgba(255,110,199,0.55)', border: 'rgba(255,110,199,0.9)', blend: 'rgba(255,100,180,0.42)'},
+  { id: 'purple', label: 'Ultravioleta', hex: '#b45eff', glow: 'rgba(180,94,255,0.55)', border: 'rgba(180,94,255,0.9)', blend: 'rgba(140,50,255,0.45)' },
+  { id: 'cyan',   label: 'Cyber Cyan',   hex: '#00f0ff', glow: 'rgba(0,240,255,0.55)',   border: 'rgba(0,240,255,0.9)',   blend: 'rgba(0,200,255,0.40)' },
+  { id: 'gold',   label: 'Imperial Gold',hex: '#c9a84c', glow: 'rgba(201,168,76,0.55)',  border: 'rgba(201,168,76,0.9)',  blend: 'rgba(201,168,76,0.42)' },
+  { id: 'black',  label: 'Void Black',   hex: '#6b7280', glow: 'rgba(80,80,120,0.4)',    border: 'rgba(255,255,255,0.3)', blend: 'rgba(10,10,20,0.58)'  },
+  { id: 'red',    label: 'Crimson',      hex: '#ff2d55', glow: 'rgba(255,45,85,0.55)',   border: 'rgba(255,45,85,0.9)',   blend: 'rgba(220,30,60,0.42)' },
+  { id: 'pink',   label: 'Neo Rose',     hex: '#ff6ec7', glow: 'rgba(255,110,199,0.55)', border: 'rgba(255,110,199,0.9)', blend: 'rgba(255,100,180,0.42)'},
 ];
 
 export function HoodieSimulator() {
@@ -72,149 +68,178 @@ export function HoodieSimulator() {
   return (
     <section id="create" style={{
       padding: '120px 0 100px',
-      background: 'linear-gradient(180deg, rgba(10,10,18,0.98) 0%, rgba(26,11,46,0.95) 100%)',
-      position: 'relative',
-      overflow: 'hidden',
+      background: 'linear-gradient(180deg,rgba(10,10,18,0.98) 0%,rgba(26,11,46,0.95) 100%)',
+      position: 'relative', overflow: 'hidden',
       borderTop: '1px solid rgba(255,255,255,0.05)',
     }}>
-      {/* Background grid noise */}
+      {/* grid bg */}
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0,
-        backgroundImage: 'linear-gradient(rgba(180,94,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(180,94,255,0.03) 1px, transparent 1px)',
+        backgroundImage: 'linear-gradient(rgba(180,94,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(180,94,255,0.03) 1px,transparent 1px)',
         backgroundSize: '60px 60px',
       }} />
 
       <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
 
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 64 }}>
+        <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <span className="section-tag">⚡ Simulador de Identidade</span>
-          <h2 className="section-title">
-            Creating My<br />
-            <span className="glow-text">Brand.</span>
-          </h2>
-          <p className="section-sub" style={{ maxWidth: 560, margin: '0 auto' }}>
-            Escolha o modelo base, selecione a sua cor de identidade e veja como a Heksel vai materializar a sua marca no tecido.
+          <h2 className="section-title">Creating My<br /><span className="glow-text">Brand.</span></h2>
+          <p className="section-sub" style={{ maxWidth: 540, margin: '0 auto' }}>
+            Escolha o modelo base, selecione a cor da sua identidade e veja como vai ficar.
           </p>
         </div>
 
-        {/* Main layout */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0,1fr) minmax(0,1.1fr)',
-          gap: 48,
-          alignItems: 'start',
-        }}
-          className="sim-grid"
-        >
+        {/* ── STEP 1: Model cards ── */}
+        <div style={{ marginBottom: 52 }}>
+          <p style={{
+            fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
+            letterSpacing: '0.22em', color: 'rgba(255,255,255,0.35)',
+            textTransform: 'uppercase', marginBottom: 20, textAlign: 'center',
+          }}>
+            01 — Escolha o Modelo Base
+          </p>
 
-          {/* Left: Controls */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
-
-            {/* Model picker */}
-            <div>
-              <p style={{
-                fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
-                letterSpacing: '0.22em', color: 'rgba(255,255,255,0.35)',
-                textTransform: 'uppercase', marginBottom: 16,
-              }}>
-                01 — Selecione o Modelo Base
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {MODELS.map(model => {
-                  const isActive = model.id === activeModel.id;
-                  return (
-                    <button
-                      key={model.id}
-                      onClick={() => handleModelChange(model)}
+          {/* Horizontal scroll strip */}
+          <div style={{
+            display: 'flex', gap: 16,
+            overflowX: 'auto', paddingBottom: 8,
+            scrollSnapType: 'x mandatory',
+            /* hide scrollbar */
+            msOverflowStyle: 'none', scrollbarWidth: 'none',
+          }}>
+            {MODELS.map(model => {
+              const active = model.id === activeModel.id;
+              return (
+                <button
+                  key={model.id}
+                  onClick={() => handleModelChange(model)}
+                  style={{
+                    flexShrink: 0, scrollSnapAlign: 'start',
+                    width: 200, cursor: 'pointer',
+                    background: active ? 'rgba(180,94,255,0.1)' : 'rgba(14,14,22,0.8)',
+                    border: active
+                      ? '2px solid rgba(180,94,255,0.7)'
+                      : '1.5px solid rgba(255,255,255,0.07)',
+                    borderRadius: 20, overflow: 'hidden',
+                    padding: 0,
+                    boxShadow: active
+                      ? '0 0 28px rgba(180,94,255,0.25), 0 0 60px rgba(180,94,255,0.08)'
+                      : '0 4px 20px rgba(0,0,0,0.3)',
+                    transition: 'all 0.35s ease',
+                    transform: active ? 'translateY(-6px)' : 'translateY(0)',
+                  }}
+                >
+                  {/* Image area */}
+                  <div style={{
+                    width: '100%', height: 190,
+                    background: 'rgba(0,0,0,0.25)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    overflow: 'hidden', position: 'relative',
+                    borderBottom: active
+                      ? '1px solid rgba(180,94,255,0.3)'
+                      : '1px solid rgba(255,255,255,0.04)',
+                  }}>
+                    <img
+                      src={model.img}
+                      alt={model.label}
                       style={{
-                        display: 'flex', alignItems: 'center', gap: 16,
-                        padding: '12px 16px', borderRadius: 14,
-                        background: isActive ? 'rgba(180,94,255,0.12)' : 'rgba(255,255,255,0.03)',
-                        border: isActive
-                          ? '1.5px solid rgba(180,94,255,0.6)'
-                          : '1px solid rgba(255,255,255,0.07)',
-                        cursor: 'pointer',
-                        transition: 'all 0.3s ease',
-                        textAlign: 'left',
-                        boxShadow: isActive ? '0 0 20px rgba(180,94,255,0.15)' : 'none',
+                        width: '90%', height: '90%', objectFit: 'contain',
+                        filter: active
+                          ? 'drop-shadow(0 0 12px rgba(180,94,255,0.5))'
+                          : 'none',
+                        transition: 'filter 0.3s, transform 0.3s',
+                        transform: active ? 'scale(1.05)' : 'scale(1)',
                       }}
-                    >
-                      {/* Thumb */}
+                    />
+                    {active && (
                       <div style={{
-                        width: 52, height: 52, borderRadius: 10, overflow: 'hidden',
-                        background: 'rgba(0,0,0,0.3)', flexShrink: 0,
-                        border: isActive ? '1px solid rgba(180,94,255,0.4)' : '1px solid rgba(255,255,255,0.05)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      }}>
-                        <img
-                          src={model.img} alt={model.label}
-                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                        />
-                      </div>
-                      <div>
-                        <div style={{
-                          fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '0.82rem',
-                          color: isActive ? '#fff' : 'rgba(255,255,255,0.6)',
-                          marginBottom: 2,
-                        }}>
-                          {model.label}
-                        </div>
-                        <div style={{
-                          fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
-                          color: isActive ? 'rgba(180,94,255,0.9)' : 'rgba(255,255,255,0.25)',
-                          letterSpacing: '0.12em', textTransform: 'uppercase',
-                        }}>
-                          {model.tag}
-                        </div>
-                      </div>
-                      {isActive && (
-                        <div style={{ marginLeft: 'auto', color: 'rgba(180,94,255,0.9)', fontSize: '0.8rem' }}>✦</div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+                        position: 'absolute', top: 10, right: 10,
+                        background: 'rgba(180,94,255,0.9)', borderRadius: '50%',
+                        width: 22, height: 22, display: 'flex',
+                        alignItems: 'center', justifyContent: 'center',
+                        fontSize: '0.75rem', color: '#fff',
+                        boxShadow: '0 0 12px rgba(180,94,255,0.8)',
+                      }}>✓</div>
+                    )}
+                  </div>
+                  {/* Label */}
+                  <div style={{ padding: '12px 14px', textAlign: 'left' }}>
+                    <div style={{
+                      fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '0.82rem',
+                      color: active ? '#fff' : 'rgba(255,255,255,0.65)',
+                      marginBottom: 3,
+                    }}>
+                      {model.label}
+                    </div>
+                    <div style={{
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                      color: active ? 'rgba(180,94,255,0.9)' : 'rgba(255,255,255,0.25)',
+                      letterSpacing: '0.12em', textTransform: 'uppercase',
+                    }}>
+                      MEO-NAI · {model.sub}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
 
-            {/* Color picker */}
+          {/* hide scrollbar webkit */}
+          <style>{`
+            #create div::-webkit-scrollbar { display: none; }
+            @media (max-width: 800px) {
+              .sim-bottom { grid-template-columns: 1fr !important; }
+            }
+          `}</style>
+        </div>
+
+        {/* ── STEP 2 + Preview ── */}
+        <div className="sim-bottom" style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1.15fr',
+          gap: 40, alignItems: 'start',
+        }}>
+
+          {/* Left: color picker + feedback */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             <div>
               <p style={{
                 fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
                 letterSpacing: '0.22em', color: 'rgba(255,255,255,0.35)',
-                textTransform: 'uppercase', marginBottom: 16,
+                textTransform: 'uppercase', marginBottom: 20,
               }}>
-                02 — Identidade Visual (Cor da Marca)
+                02 — Cor da Identidade Visual
               </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
                 {COLORS.map(color => {
-                  const isActive = activeColor?.id === color.id;
+                  const active = activeColor?.id === color.id;
                   return (
                     <button
                       key={color.id}
-                      onClick={() => setActiveColor(isActive ? null : color)}
+                      onClick={() => setActiveColor(active ? null : color)}
                       title={color.label}
                       style={{
-                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7,
                         background: 'none', border: 'none', cursor: 'pointer', padding: 4,
                       }}
                     >
                       <div style={{
-                        width: 44, height: 44, borderRadius: '50%',
+                        width: 48, height: 48, borderRadius: '50%',
                         background: color.hex,
-                        boxShadow: isActive
-                          ? `0 0 0 3px rgba(255,255,255,0.9), 0 0 18px ${color.glow}, 0 0 36px ${color.glow}`
+                        boxShadow: active
+                          ? `0 0 0 3px #fff, 0 0 20px ${color.glow}, 0 0 40px ${color.glow}`
                           : `0 0 0 2px rgba(255,255,255,0.12), 0 0 8px ${color.glow}`,
                         transition: 'all 0.3s ease',
-                        transform: isActive ? 'scale(1.18)' : 'scale(1)',
-                        border: `2px solid ${isActive ? color.border : 'rgba(255,255,255,0.1)'}`,
+                        transform: active ? 'scale(1.2)' : 'scale(1)',
+                        border: `2px solid ${active ? color.border : 'rgba(255,255,255,0.1)'}`,
                       }} />
                       <span style={{
                         fontFamily: "'Space Mono',monospace", fontSize: '0.48rem',
-                        color: isActive ? color.hex : 'rgba(255,255,255,0.3)',
-                        letterSpacing: '0.1em', textTransform: 'uppercase',
-                        transition: 'color 0.3s',
-                        textShadow: isActive ? `0 0 10px ${color.glow}` : 'none',
+                        color: active ? color.hex : 'rgba(255,255,255,0.3)',
+                        letterSpacing: '0.08em', textTransform: 'uppercase',
+                        textShadow: active ? `0 0 10px ${color.glow}` : 'none',
+                        transition: 'all 0.3s',
                       }}>
                         {color.label}
                       </span>
@@ -222,109 +247,124 @@ export function HoodieSimulator() {
                   );
                 })}
               </div>
-
-              {/* "Sem cor" reset */}
               {activeColor && (
-                <button
-                  onClick={() => setActiveColor(null)}
-                  style={{
-                    marginTop: 12, background: 'none', border: '1px solid rgba(255,255,255,0.1)',
-                    color: 'rgba(255,255,255,0.35)', fontSize: '0.62rem', fontFamily: "'Space Mono',monospace",
-                    letterSpacing: '0.1em', padding: '6px 14px', borderRadius: 50, cursor: 'pointer',
-                    transition: 'all 0.2s',
-                  }}
-                >
-                  ✕ Limpar seleção
+                <button onClick={() => setActiveColor(null)} style={{
+                  marginTop: 14, background: 'none',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'rgba(255,255,255,0.35)', fontSize: '0.6rem',
+                  fontFamily: "'Space Mono',monospace", letterSpacing: '0.1em',
+                  padding: '6px 14px', borderRadius: 50, cursor: 'pointer',
+                }}>
+                  ✕ Limpar cor
                 </button>
               )}
             </div>
 
             {/* Feedback card */}
-            {activeColor && (
-              <div style={{
-                padding: '20px 24px', borderRadius: 16,
-                background: 'rgba(14,14,24,0.8)',
-                border: `1.5px solid ${activeColor.border.replace('0.9)', '0.4)')}`,
-                boxShadow: `0 0 24px ${activeColor.glow.replace('0.55)', '0.15)')}`,
-                backdropFilter: 'blur(12px)',
-              }}>
+            <div style={{
+              padding: '22px 24px', borderRadius: 18,
+              background: 'rgba(14,14,24,0.85)',
+              border: activeColor
+                ? `1.5px solid ${activeColor.hex}55`
+                : '1px solid rgba(255,255,255,0.07)',
+              boxShadow: activeColor ? `0 0 24px ${activeColor.glow.replace('0.55)','0.12)')}` : 'none',
+              backdropFilter: 'blur(12px)',
+              transition: 'all 0.4s ease',
+              minHeight: 120,
+            }}>
+              {activeColor ? (
+                <>
+                  <div style={{
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                    color: 'rgba(255,255,255,0.3)', letterSpacing: '0.2em',
+                    textTransform: 'uppercase', marginBottom: 8,
+                  }}>
+                    Prévia da Identidade
+                  </div>
+                  <div style={{
+                    fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '1.2rem',
+                    color: activeColor.hex,
+                    textShadow: `0 0 16px ${activeColor.glow}`,
+                    marginBottom: 6,
+                  }}>
+                    {activeColor.label}
+                  </div>
+                  <div style={{
+                    fontFamily: "'DM Sans',sans-serif", fontSize: '0.8rem',
+                    color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, marginBottom: 14,
+                  }}>
+                    {activeModel.desc}
+                  </div>
+                  <div style={{
+                    padding: '8px 14px', borderRadius: 8,
+                    background: `${activeColor.hex}15`,
+                    border: `1px solid ${activeColor.hex}40`,
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.56rem',
+                    color: activeColor.hex, letterSpacing: '0.1em',
+                  }}>
+                    ⚡ {activeModel.label} × {activeColor.label}
+                  </div>
+                </>
+              ) : (
                 <div style={{
-                  fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
-                  color: 'rgba(255,255,255,0.3)', letterSpacing: '0.2em',
-                  textTransform: 'uppercase', marginBottom: 8,
-                }}>
-                  Prévia da Identidade
-                </div>
-                <div style={{
-                  fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '1.1rem',
-                  color: activeColor.hex,
-                  textShadow: `0 0 16px ${activeColor.glow}`,
-                  marginBottom: 4,
-                }}>
-                  {activeColor.label}
-                </div>
-                <div style={{
-                  fontFamily: "'DM Sans',sans-serif", fontSize: '0.8rem',
-                  color: 'rgba(255,255,255,0.55)', lineHeight: 1.6,
-                }}>
-                  {activeModel.desc}
-                </div>
-                <div style={{
-                  marginTop: 14, padding: '8px 14px', borderRadius: 8,
-                  background: `${activeColor.hex}18`,
-                  border: `1px solid ${activeColor.hex}44`,
+                  height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontFamily: "'Space Mono',monospace", fontSize: '0.58rem',
-                  color: activeColor.hex, letterSpacing: '0.1em',
+                  color: 'rgba(255,255,255,0.18)', letterSpacing: '0.15em',
+                  textAlign: 'center', lineHeight: 2,
                 }}>
-                  ⚡ {activeModel.label} × {activeColor.label} — sua marca no tecido
+                  SELECIONE UMA COR<br />PARA VER A PRÉVIA
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <button
+              className="btn-order"
+              style={{ fontSize: '0.68rem' }}
+              onClick={() => document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              ✦ QUERO CRIAR A MINHA MARCA ✦
+            </button>
           </div>
 
           {/* Right: Big preview */}
-          <div style={{ position: 'sticky', top: 96 }}>
+          <div style={{ position: 'sticky', top: 88 }}>
             <div style={{
-              background: 'rgba(14,14,22,0.7)', backdropFilter: 'blur(24px)',
+              background: 'rgba(14,14,22,0.75)', backdropFilter: 'blur(24px)',
               border: activeColor
-                ? `1.5px solid ${activeColor.border.replace('0.9)', '0.5)')}`
+                ? `1.5px solid ${activeColor.hex}55`
                 : '1px solid rgba(255,255,255,0.07)',
-              borderRadius: 28,
-              overflow: 'hidden',
+              borderRadius: 28, overflow: 'hidden',
               boxShadow: activeColor
-                ? `0 0 60px ${activeColor.glow.replace('0.55)', '0.2)')}, 0 0 120px ${activeColor.glow.replace('0.55)', '0.08)')}`
+                ? `0 0 60px ${activeColor.glow.replace('0.55)','0.18)')}`
                 : '0 0 40px rgba(0,0,0,0.4)',
               transition: 'all 0.5s ease',
-              minHeight: 520,
-              display: 'flex', flexDirection: 'column',
             }}>
-
-              {/* Top label */}
+              {/* Header bar */}
               <div style={{
-                padding: '18px 24px', borderBottom: '1px solid rgba(255,255,255,0.05)',
+                padding: '16px 22px', borderBottom: '1px solid rgba(255,255,255,0.05)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
                 <div>
                   <div style={{
-                    fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '0.95rem',
-                    color: activeColor ? activeColor.hex : 'white',
+                    fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '0.9rem',
+                    color: activeColor ? activeColor.hex : '#fff',
                     textShadow: activeColor ? `0 0 12px ${activeColor.glow}` : 'none',
                     transition: 'all 0.4s',
                   }}>
                     {activeModel.label}
                   </div>
                   <div style={{
-                    fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
-                    color: 'rgba(255,255,255,0.3)', letterSpacing: '0.15em',
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                    color: 'rgba(255,255,255,0.3)', letterSpacing: '0.14em',
                     textTransform: 'uppercase', marginTop: 3,
                   }}>
-                    {activeModel.tag}
+                    MEO-NAI · {activeModel.sub}
                   </div>
                 </div>
                 {activeColor && (
                   <div style={{
                     display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '6px 12px', borderRadius: 50,
+                    padding: '5px 12px', borderRadius: 50,
                     background: `${activeColor.hex}18`,
                     border: `1px solid ${activeColor.hex}44`,
                   }}>
@@ -334,7 +374,7 @@ export function HoodieSimulator() {
                       boxShadow: `0 0 8px ${activeColor.glow}`,
                     }} />
                     <span style={{
-                      fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
                       color: activeColor.hex, letterSpacing: '0.1em',
                     }}>
                       {activeColor.label}
@@ -343,73 +383,70 @@ export function HoodieSimulator() {
                 )}
               </div>
 
-              {/* Image + color overlay */}
+              {/* Image + overlay */}
               <div style={{
-                flex: 1, position: 'relative',
+                position: 'relative',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                padding: '32px', minHeight: 380,
+                padding: '36px 32px', minHeight: 420,
                 background: activeColor
-                  ? `radial-gradient(ellipse 70% 60% at 50% 50%, ${activeColor.hex}10, transparent 70%)`
+                  ? `radial-gradient(ellipse 70% 60% at 50% 55%,${activeColor.hex}12,transparent 72%)`
                   : 'transparent',
                 transition: 'background 0.5s ease',
               }}>
-                {/* Hoodie image */}
                 <img
                   key={activeModel.id}
                   src={activeModel.img}
                   alt={activeModel.label}
                   onLoad={() => setImgLoaded(true)}
                   style={{
-                    maxWidth: '88%', maxHeight: 420, objectFit: 'contain',
+                    maxWidth: '86%', maxHeight: 400, objectFit: 'contain',
                     display: 'block', margin: '0 auto',
                     filter: activeColor
-                      ? `drop-shadow(0 0 20px ${activeColor.glow}) drop-shadow(0 0 40px ${activeColor.glow.replace('0.55)', '0.3)')})`
-                      : 'drop-shadow(0 0 12px rgba(180,94,255,0.2))',
-                    transition: 'filter 0.5s ease, opacity 0.3s',
+                      ? `drop-shadow(0 0 22px ${activeColor.glow}) drop-shadow(0 0 44px ${activeColor.glow.replace('0.55)','0.28)')})`
+                      : 'drop-shadow(0 0 14px rgba(180,94,255,0.2))',
+                    transition: 'filter 0.5s ease',
                     opacity: imgLoaded ? 1 : 0,
                     position: 'relative', zIndex: 1,
                   }}
                 />
 
-                {/* Color blend overlay on top of image */}
+                {/* Colour blend overlay */}
                 {activeColor && imgLoaded && (
                   <div style={{
-                    position: 'absolute', inset: '32px',
+                    position: 'absolute',
+                    top: '36px', left: '32px', right: '32px', bottom: '0',
                     background: activeColor.blend,
                     mixBlendMode: activeColor.id === 'black' ? 'multiply' : 'color',
-                    borderRadius: 12,
-                    pointerEvents: 'none',
+                    borderRadius: 12, pointerEvents: 'none', zIndex: 2,
                     transition: 'background 0.4s ease',
-                    zIndex: 2,
                   }} />
                 )}
 
-                {/* Loading placeholder */}
                 {!imgLoaded && (
                   <div style={{
                     position: 'absolute', inset: 0,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
-                    color: 'rgba(255,255,255,0.2)', letterSpacing: '0.15em',
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.58rem',
+                    color: 'rgba(255,255,255,0.18)', letterSpacing: '0.15em',
                   }}>
-                    LOADING...
+                    CARREGANDO...
                   </div>
                 )}
               </div>
 
-              {/* Bottom strip */}
+              {/* Footer strip */}
               <div style={{
-                padding: '14px 24px', borderTop: '1px solid rgba(255,255,255,0.05)',
+                padding: '13px 22px', borderTop: '1px solid rgba(255,255,255,0.05)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               }}>
                 <span style={{
-                  fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
-                  color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em',
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                  color: 'rgba(255,255,255,0.18)', letterSpacing: '0.12em',
                 }}>
-                  {activeColor ? '✦ IDENTIDADE APLICADA' : '⬅ SELECIONE UMA COR'}
+                  {activeColor ? '✦ IDENTIDADE APLICADA' : '← SELECIONE UMA COR'}
                 </span>
                 <span style={{
-                  fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
                   color: activeColor ? activeColor.hex : 'rgba(255,255,255,0.15)',
                   letterSpacing: '0.12em', textTransform: 'uppercase',
                   textShadow: activeColor ? `0 0 10px ${activeColor.glow}` : 'none',
@@ -419,28 +456,9 @@ export function HoodieSimulator() {
                 </span>
               </div>
             </div>
-
-            {/* CTA below preview */}
-            <div style={{ textAlign: 'center', marginTop: 24 }}>
-              <button
-                className="btn-order"
-                style={{ maxWidth: 420, fontSize: '0.68rem' }}
-                onClick={() => document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                ✦ QUERO CRIAR A MINHA MARCA ✦
-              </button>
-            </div>
           </div>
-
         </div>
       </div>
-
-      {/* Responsive override */}
-      <style>{`
-        @media (max-width: 800px) {
-          .sim-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
   );
 }
