@@ -1,0 +1,77 @@
+Replit IA, aqui estão as imagens oficiais dos produtos Premium da Heksel Genesis! Precisamos embutir todas elas de forma organizada e cronológica na seção 'Creating my brand'.
+
+Por favor, crie uma vitrine interativa dividida por abas (Tabs) ou categorias usando HTML estruturado e CSS Grid de alta performance. O usuário deve poder navegar nas seguintes seções:
+
+
+
+CATEGORY: STREETWEAR CORE
+
+moletom1.png (Legenda: 'Cyber Hoodie - Custom Mockup View')
+
+moletom2.png (Legenda: 'Heksel Beast Mode Hoodie')
+
+CATEGORY: FOOTWEAR TECH
+
+tenis-ouro.png (Legenda: 'NEO-KAI 01 - Imperial Gold Edition')
+
+tenis-vermelho.png (Legenda: 'NEO-KAI 01 - Crimson Crimson Edition')
+
+tenis-azul.png (Legenda: 'NEO-KAI 01 - Cyberpunk Cyan/Green')
+
+tenis-roxo.png (Legenda: 'NEO-KAI 01 - Neon Ultraviolet Grid')
+
+slide.png (Legenda: 'NEO-WAI 01 - Tech Slide Gold')
+
+chinelo.png (Legenda: 'NEO-WAI 01 - Minimalist Flip-Flop')
+
+pantufa1.png (Legenda: 'NEO-LAI 01 - Cyber Slipper Cream')
+
+pantufa2.png (Legenda: 'NEO-LAI 01 - Premium Comfort Slipper')
+
+CATEGORY: LUXURY COUTURE
+
+salto-ouro.png (Legenda: 'NEO-VAI 02 - Transparent Gold Heel')
+
+bota-luxo.png (Legenda: 'Heksel Midnight High Boot')
+
+sapato-creme.png (Legenda: 'Cyber Executive Shoe - Cream/Gold')
+
+Adicione um efeito hover cyberpunk nas imagens: quando o celular detectar o toque, a caixa deve ganhar uma borda neon brilhante (#00ffff ou #purple) e dar um leve zoom. Aplique as mudanças direto na nossa interface da Fábrica! Replit IA, vamos usar os nomes originais das fotos que já estão no projeto para montar a nossa vitrine de produtos na seção 'Creating my brand'.
+
+Por favor, crie uma galeria interativa dividida por abas (Tabs) ou categorias usando HTML estruturado e CSS Grid de alta performance. Organize as imagens exatamente nesta ordem:
+
+
+
+CATEGORY: STREETWEAR CORE
+
+1000031588.png (Legenda: 'Cyber Hoodie - Custom Mockup View')
+
+1000031589.png (Legenda: 'Heksel Beast Mode Hoodie')
+
+CATEGORY: FOOTWEAR TECH
+
+1000031590.png (Legenda: 'NEO-KAI 01 - Imperial Gold Edition')
+
+1000031591.png (Legenda: 'NEO-KAI 01 - Crimson Crimson Edition')
+
+1000031592.png (Legenda: 'NEO-KAI 01 - Cyberpunk Cyan/Green')
+
+1000031593.png (Legenda: 'NEO-KAI 01 - Neon Ultraviolet Grid')
+
+1000031594.png (Legenda: 'NEO-WAI 01 - Tech Slide Gold')
+
+1000031595.png (Legenda: 'NEO-WAI 01 - Minimalist Flip-Flop')
+
+1000031596.png (Legenda: 'NEO-LAI 01 - Cyber Slipper Cream')
+
+1000031597.png (Legenda: 'NEO-LAI 01 - Premium Comfort Slipper')
+
+CATEGORY: LUXURY COUTURE
+
+1000031598.png (Legenda: 'NEO-VAI 02 - Transparent Gold Heel')
+
+1000031599.png (Legenda: 'Heksel Midnight High Boot')
+
+1000031600.png (Legenda: 'Cyber Executive Shoe - Cream/Gold')
+
+Adicione um efeito hover cyberpunk nas fotos: quando o usuário tocar na imagem pelo celular, ela deve ganhar um leve zoom e uma borda neon brilhante (#00ffff ou #purple). Aplique as mudanças direto na nossa interface da Fábrica!
