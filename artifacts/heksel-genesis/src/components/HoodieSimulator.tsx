@@ -92,7 +92,7 @@ export function HoodieSimulator() {
 
         {/* ── STEP 1: Model cards ── */}
         <div style={{ marginBottom: 52 }}>
-          <p style={{
+          <p className="sim-step-label" style={{
             fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
             letterSpacing: '0.22em', color: 'rgba(255,255,255,0.35)',
             textTransform: 'uppercase', marginBottom: 20, textAlign: 'center',
@@ -101,7 +101,7 @@ export function HoodieSimulator() {
           </p>
 
           {/* Horizontal scroll strip */}
-          <div style={{
+          <div className="sim-model-strip" style={{
             display: 'flex', gap: 16,
             overflowX: 'auto', paddingBottom: 8,
             scrollSnapType: 'x mandatory',
@@ -185,11 +185,56 @@ export function HoodieSimulator() {
             })}
           </div>
 
-          {/* hide scrollbar webkit */}
+          {/* hide scrollbar + mobile overrides */}
           <style>{`
             #create div::-webkit-scrollbar { display: none; }
+
             @media (max-width: 800px) {
-              .sim-bottom { grid-template-columns: 1fr !important; }
+              /* Section spacing */
+              #create { padding: 72px 0 56px !important; }
+
+              /* Model strip: padding so first/last card aren't clipped */
+              .sim-model-strip {
+                padding: 0 16px 12px !important;
+                scroll-padding-left: 16px;
+              }
+
+              /* Step labels: center on mobile */
+              .sim-step-label {
+                text-align: center !important;
+              }
+
+              /* Bottom grid: single column, preview on top */
+              .sim-bottom {
+                grid-template-columns: 1fr !important;
+                gap: 24px !important;
+              }
+
+              /* Preview (right) appears first on mobile */
+              .sim-right {
+                order: -1 !important;
+                position: static !important;
+              }
+
+              /* Color swatches: center */
+              .sim-colors {
+                justify-content: center !important;
+              }
+
+              /* Left column: center step label, clear button */
+              .sim-left { align-items: center; }
+              .sim-left > div:first-child { width: 100%; }
+
+              /* Preview image area shorter on mobile */
+              .sim-right [style*='minHeight: 420'] {
+                min-height: 260px !important;
+                padding: 20px 16px !important;
+              }
+
+              /* Feedback card full width */
+              .sim-left > div:nth-child(2) {
+                width: 100%;
+              }
             }
           `}</style>
         </div>
@@ -202,16 +247,16 @@ export function HoodieSimulator() {
         }}>
 
           {/* Left: color picker + feedback */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+          <div className="sim-left" style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             <div>
-              <p style={{
+              <p className="sim-step-label" style={{
                 fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
                 letterSpacing: '0.22em', color: 'rgba(255,255,255,0.35)',
                 textTransform: 'uppercase', marginBottom: 20,
               }}>
                 02 — Cor da Identidade Visual
               </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
+              <div className="sim-colors" style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
                 {COLORS.map(color => {
                   const active = activeColor?.id === color.id;
                   return (
@@ -327,7 +372,7 @@ export function HoodieSimulator() {
           </div>
 
           {/* Right: Big preview */}
-          <div style={{ position: 'sticky', top: 88 }}>
+          <div className="sim-right" style={{ position: 'sticky', top: 88 }}>
             <div style={{
               background: 'rgba(14,14,22,0.75)', backdropFilter: 'blur(24px)',
               border: activeColor

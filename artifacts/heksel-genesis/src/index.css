@@ -506,7 +506,17 @@
 .prod-price.shortly { font-family: 'Syne',sans-serif !important; font-size: .7rem !important; font-weight: 800 !important; letter-spacing: .2em !important; color: var(--cyan) !important; background: rgba(0,240,255,.07); border: 1.5px solid rgba(0,240,255,.35); padding: 6px 14px; border-radius: 6px; display: inline-block; text-transform: uppercase; animation: shortlyPulse 2s ease-in-out infinite; box-shadow: 0 0 12px rgba(0,240,255,.15); }
 
 /* ── Responsive ── */
+/* ── Global mobile guard: no horizontal overflow ── */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
 @media (max-width: 800px) {
+  /* Inner sections: tighter side padding on mobile */
+  .section-inner { padding: 0 20px !important; }
+
   .hero { margin-top: 0; padding-top: 60px; }
   .hero .section-inner { grid-template-columns: 1fr; gap: 16px; justify-items: center; }
   .hero-left { text-align: center; align-items: center; display: flex; flex-direction: column; width: 100%; order: 1; }
@@ -529,4 +539,10 @@
   .collection { padding: 80px 0; }
   .card-grid { grid-template-columns: repeat(2,1fr); gap: 20px; }
   .prod-card { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  /* Single-column product grid on very small screens */
+  .card-grid { grid-template-columns: 1fr; gap: 16px; }
+  .section-inner { padding: 0 16px !important; }
 }
