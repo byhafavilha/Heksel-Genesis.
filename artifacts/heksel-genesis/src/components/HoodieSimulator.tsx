@@ -322,7 +322,7 @@ export function HoodieSimulator() {
               style={{ fontSize: '0.68rem' }}
               onClick={() => document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              ✦ QUERO CRIAR A MINHA MARCA ✦
+              ✦ I WANT TO SECURE MY SWEATSHIRT ✦
             </button>
           </div>
 
