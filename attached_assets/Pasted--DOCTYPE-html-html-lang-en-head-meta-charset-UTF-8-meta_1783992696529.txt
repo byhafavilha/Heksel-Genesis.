@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>HEKSEL IMPERIUM — NEO Collection 2026</title>
+    <link rel="icon" href="1000027280.png" type="image/png">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLpnWUoNiKSiZWuWEVOwdAjeiNjvIv1T4",
+            authDomain: "heksel-imperio.firebaseapp.com",
+            projectId: "heksel-imperio",
+            storageBucket: "heksel-imperio.firebasestorage.app",
+            messagingSenderId: "598467080448",
+            appId: "1:598467080448:web:6afe26361bf75c1c21c3e5",
+            measurementId: "G-Z8K5WVT2WH"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════════
+           RESET + CYBERPUNK LUXURY VARIABLES (completo)
+        ═══════════════════════════════════════════════ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --white:         #ffffff;
+            --ice:           #f5f6f8;
+            --ink:           #08080d;
+            --muted:         #6b7280;
+            --border:        rgba(255,255,255,0.08);
+            --border-light:  #e5e7eb;
+            --cyan:          #00f0ff;
+            --cyan-dim:      rgba(0,240,255,0.15);
+            --cyan-glow:     rgba(0,240,255,0.5);
+            --purple:        #b45eff;
+            --purple-dim:    rgba(180,94,255,0.15);
+            --purple-glow:   rgba(180,94,255,0.5);
+            --gold:          #c9a84c;
+            --gold-light:    #f5d97f;
+            --neon:          #00ffc3;
+            --neon-purple:   #a855f7;
+            --card-dark:     rgba(14,14,22,0.92);
+            --glass-dark:    rgba(10,10,18,0.85);
+            --surface:       rgba(255,255,255,0.04);
+            --accent-orange: #ff8c42;
+            --gmail-red:     #EA4335;
+            --discord-purple: #5865F2;
+            --whatsapp-green:#25D366;
+            --insta-gradient: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            --tiktok-gradient: linear-gradient(135deg, #010101 0%, #010101 40%, #00f2ea 65%, #ff0050 100%);
+
+            --ease:          cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --ease-bounce:   cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            --transition:    0.45s var(--ease);
+            --transition-fast: 0.25s var(--ease);
+            --theme-transition: background 0.8s ease, color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--ink);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            transition: var(--theme-transition);
+        }
+        body.theme-light, body.theme-secret { transition: var(--theme-transition); }
+        body.theme-light { background: #f5f6f8; color: #08080d; }
+        body.theme-light .animated-bg { background: radial-gradient(ellipse 80% 60% at 20% 20%,rgba(0,200,255,.05),transparent 70%), radial-gradient(ellipse 60% 80% at 80% 80%,rgba(140,60,220,.05),transparent 70%), #f0f2f7; }
+        body.theme-light nav { background: rgba(245,246,250,.88); border-bottom-color: rgba(0,0,0,.07); }
+        body.theme-light .logo span, body.theme-light .hero-left h1, body.theme-light .section-title { color: #08080d; }
+        body.theme-light .nav-links a { color: rgba(0,0,0,.45); }
+        body.theme-light .nav-links a:hover, body.theme-light .nav-links a.active { color: #08080d; }
+        body.theme-light .collection { background: rgba(235,237,245,.98); }
+        body.theme-light .prod-card { background: rgba(255,255,255,.95); border-color: rgba(0,0,0,.07); }
+        body.theme-light .prod-name { color: #08080d; }
+        body.theme-light .brand-section { background: linear-gradient(180deg,#ececf5 0%,#e8e0f5 100%); color: #08080d; }
+        body.theme-light .brand-section h2, body.theme-light .brand-section > p { color: #08080d; }
+        body.theme-light .brand-section > p { color: rgba(0,0,0,.55); }
+        body.theme-light footer { background: #1a1a2e; }
+        body.theme-light .order-modal, body.theme-light #notifyModal, body.theme-light #createAdvanceModal { background: rgba(255,255,255,0.98); border-color: rgba(0,180,220,0.2); color: #08080d; }
+        body.theme-light .order-modal h2, body.theme-light #notifyModal h2, body.theme-light #createAdvanceModal h2, body.theme-light .order-modal .modal-subtitle, body.theme-light #notifyModal .modal-subtitle, body.theme-light #createAdvanceModal .modal-subtitle { color: #08080d; }
+        body.theme-light .order-modal .close-modal, body.theme-light #notifyModal .close-modal, body.theme-light #createAdvanceModal .close-modal { color: #08080d; }
+        body.theme-light .order-modal .contact-btn, body.theme-light #notifyModal .contact-btn, body.theme-light #createAdvanceModal .contact-btn { border-color: rgba(0,0,0,0.1); background: rgba(0,0,0,0.02); }
+        body.theme-light .order-modal .contact-btn span, body.theme-light #notifyModal .contact-btn span, body.theme-light #createAdvanceModal .contact-btn span { color: #08080d; }
+        body.theme-light .order-modal .contact-btn:hover, body.theme-light #notifyModal .contact-btn:hover, body.theme-light #createAdvanceModal .contact-btn:hover { background: rgba(0,0,0,0.04); }
+        body.theme-light .package-item { border-color: rgba(0,0,0,.1); }
+        body.theme-light .package-item strong { color: #08080d; }
+
+        body.theme-light .btn-outline-nav { color: rgba(0,0,0,0.7) !important; border-color: rgba(0,0,0,0.25) !important; }
+        body.theme-light .btn-outline-nav:hover { background: rgba(0,0,0,0.05); color: var(--cyan) !important; border-color: var(--cyan) !important; }
+        body.theme-light .btn-gold-nav { color: #1a0f00 !important; }
+        body.theme-light .mobile-menu-buttons .btn-outline-nav { background: #08080d; color: #ffffff !important; border-color: #08080d !important; }
+        body.theme-light .mobile-menu-buttons .btn-outline-nav:hover { background: #1a1a2e; color: var(--cyan) !important; border-color: var(--cyan) !important; }
+
+        body.theme-light .product-viewer h2 { color: #ffffff !important; }
+        body.theme-light .hero-left p { color: #ffffff !important; }
+
+        body.theme-secret { background: #050508; color: #ffffff; }
+        body.theme-secret nav { background: rgba(0,0,0,.5); }
+        body.theme-secret .prod-card { background: rgba(0,0,0,.35); border-color: rgba(255,255,255,.12); }
+        body.theme-secret .prod-name { color: white; }
+        body.theme-secret .btn-outline-nav { color: rgba(255,255,255,0.8) !important; border-color: rgba(255,255,255,0.2) !important; }
+        body.theme-secret .btn-gold-nav { color: #1a0f00 !important; }
+        body.theme-secret .product-viewer h2 { color: var(--cyan) !important; }
+        body.theme-secret .hero-left p { color: #ffffff !important; }
+
+        * { cursor: none; }
+        #cur { position: fixed; width: 8px; height: 8px; background: var(--cyan); border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%,-50%); transition: width .3s, height .3s, background .3s, box-shadow .3s; box-shadow: 0 0 12px var(--cyan-glow); }
+        #cur.hover { width: 44px; height: 44px; background: rgba(0,240,255,0.1); border: 1.5px solid var(--cyan); box-shadow: 0 0 30px var(--cyan-glow), 0 0 60px rgba(0,240,255,0.2); }
+        #cur-ring { position: fixed; width: 36px; height: 36px; border: 1.5px solid rgba(0,240,255,0.4); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%,-50%); transition: all .18s var(--ease); }
+        @media (pointer: coarse) { #cur, #cur-ring { display: none; } }
+
+        .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(ellipse 80% 60% at 20% 20%, rgba(0,240,255,0.04), transparent 70%), radial-gradient(ellipse 60% 80% at 80% 80%, rgba(180,94,255,0.05), transparent 70%), var(--ink); overflow: hidden; transition: var(--theme-transition); }
+        .animated-bg::before { content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: linear-gradient(rgba(0,240,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.025) 1px, transparent 1px); background-size: 80px 80px; animation: bgMove 60s linear infinite; pointer-events: none; }
+        .animated-bg::after { content: ''; position: absolute; width: 100%; height: 100%; background: radial-gradient(ellipse at 50% 100%, rgba(180,94,255,0.08), transparent 65%); animation: pulseBg 12s ease-in-out infinite; }
+        @keyframes bgMove { 0% { transform: translate(0, 0); } 100% { transform: translate(4%, 4%); } }
+        @keyframes pulseBg { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        #cosmos-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(40px); filter: blur(6px); } 100% { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 4px rgba(0,240,255,0.4)); } 50% { filter: drop-shadow(0 0 18px rgba(0,240,255,0.9)) drop-shadow(0 0 8px rgba(180,94,255,0.7)); } }
+        @keyframes scanline { 0% { top: -5%; } 100% { top: 105%; } }
+        @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(0,240,255,0.4); } 70% { box-shadow: 0 0 0 10px rgba(0,240,255,0); } 100% { box-shadow: 0 0 0 0 rgba(0,240,255,0); } }
+
+        .glow-text { background: linear-gradient(120deg, var(--cyan) 0%, var(--purple) 60%, #ff2d78 100%); -webkit-background-clip: text; background-clip: text; color: transparent; animation: glowPulse 3s ease-in-out infinite; }
+        .glow-gold { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+        button, .btn-primary, .btn-outline-nav, .btn-gold-nav, .cta-brand, .notify-btn-card, .btn-next, .btn-send-wa, .btn-send-email, .package-item { transition: all var(--transition); cursor: pointer; position: relative; overflow: hidden; isolation: isolate; }
+        .btn-primary { background: rgba(255,255,255,0.05); color: white; border: 1.5px solid rgba(0,240,255,0.4); padding: 14px 30px; border-radius: 10px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 12px; backdrop-filter: blur(8px); }
+        .btn-primary:hover { background: rgba(0,240,255,0.12); border-color: var(--cyan); box-shadow: 0 0 30px rgba(0,240,255,0.25); transform: translateY(-4px); color: var(--cyan); }
+        .btn-outline-nav { padding: 9px 20px; border-radius: 50px; border: 1.5px solid rgba(255,255,255,0.2); background: transparent; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.65rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); text-transform: uppercase; }
+        .btn-outline-nav:hover { background: rgba(255,255,255,0.08); border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 16px rgba(0,240,255,0.2); transform: translateY(-2px); }
+        .btn-order {
+            padding: 14px 28px; border-radius: 10px; background: linear-gradient(135deg, var(--neon-purple), #6b21a8);
+            color: white; border: none; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.72rem;
+            letter-spacing: 0.12em; text-transform: uppercase; box-shadow: 0 0 20px rgba(168,85,247,0.3);
+            cursor: pointer; transition: all var(--transition); display: inline-flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .btn-order:hover { transform: translateY(-4px); box-shadow: 0 0 30px rgba(168,85,247,0.6); }
+        .btn-gold-nav { padding: 9px 20px; border-radius: 50px; border: none; background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold)); background-size: 200% 200%; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.65rem; letter-spacing: 0.1em; color: #1a0f00; text-transform: uppercase; animation: goldPulse 2.5s ease-in-out infinite, goldShift 4s ease infinite; }
+        @keyframes goldPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.6); } 60% { box-shadow: 0 0 0 10px rgba(201,168,76,0); } }
+        @keyframes goldShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .btn-gold-nav:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        .cta-brand { background: linear-gradient(135deg, var(--purple), var(--cyan), var(--purple)); background-size: 300% 300%; border: none; color: white; padding: 18px 48px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; animation: gradientShift 4s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .cta-brand:hover { transform: translateY(-5px); box-shadow: 0 0 60px rgba(180,94,255,0.5); }
+        .notify-btn-card { width: 100%; margin-top: 14px; background: rgba(0,240,255,0.08); color: var(--cyan); border: 1.5px solid rgba(0,240,255,0.3); padding: 11px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; }
+        .notify-btn-card:hover { background: var(--cyan); color: var(--ink); border-color: var(--cyan); box-shadow: 0 0 30px rgba(0,240,255,0.5); transform: translateY(-3px); }
+
+        /* NAVBAR & LANG SELECTOR */
+        nav { position: fixed; top: 0; left: 0; width: 100%; height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 5%; background: rgba(8,8,13,0.75); backdrop-filter: blur(28px) saturate(1.4); border-bottom: 1px solid rgba(0,240,255,0.08); z-index: 800; transition: background .4s, border-color .4s, box-shadow .4s; }
+        nav.scrolled { background: rgba(8,8,13,0.92); border-bottom-color: rgba(0,240,255,0.2); box-shadow: 0 4px 40px rgba(0,0,0,0.5); }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo img { height: 30px; width: auto; }
+        .logo span { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: 0.18em; color: var(--white); text-transform: uppercase; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { text-decoration: none; font-size: 0.68rem; font-weight: 600; text-transform: uppercase; color: rgba(255,255,255,0.45); letter-spacing: 0.14em; transition: color .3s; position: relative; padding-bottom: 4px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1.5px; background: linear-gradient(90deg, var(--cyan), var(--purple)); transition: width .35s var(--ease); }
+        .nav-links a:hover, .nav-links a.active { color: var(--white); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-buttons { display: flex; gap: 10px; align-items: center; position: relative; }
+        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.18); cursor: pointer; gap: 5px; transition: all 0.3s; padding: 8px; }
+        .hamburger span { display: block; width: 20px; height: 2px; background: rgba(255,255,255,0.75); border-radius: 2px; transition: all 0.3s; }
+        .hamburger:hover { border-color: var(--cyan); background: rgba(0,240,255,0.08); }
+        .hamburger:hover span { background: var(--cyan); }
+        .mobile-menu { display: none; position: absolute; top: calc(100% + 8px); right: 5%; background: rgba(14,14,22,0.98); backdrop-filter: blur(30px); border: 1px solid rgba(0,240,255,0.25); border-radius: 16px; padding: 20px 24px; flex-direction: column; gap: 14px; box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,240,255,0.15); animation: menuIn 0.3s var(--ease-bounce); z-index: 900; min-width: 180px; }
+        .mobile-menu.active { display: flex; }
+        @keyframes menuIn { 0% { opacity: 0; transform: translateY(-10px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        .mobile-menu a { text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.75); text-transform: uppercase; transition: color 0.3s; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .mobile-menu a:last-child { border-bottom: none; }
+        .mobile-menu a:hover { color: var(--cyan); }
+
+        .mobile-menu-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .mobile-menu-buttons .btn-outline-nav,
+        .mobile-menu-buttons .btn-gold-nav { width: 100%; justify-content: center; padding: 12px; font-size: 0.7rem; text-align: center; }
+        .mobile-menu-buttons .btn-gold-nav { color: #1a0f00 !important; }
+
+        /* SELETOR DE IDIOMAS */
+        .lang-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 260px; background: rgba(14,14,22,0.98); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 14px; box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 30px rgba(0,240,255,0.12); display: none; flex-direction: column; gap: 12px; z-index: 950; animation: menuIn 0.25s var(--ease-bounce); }
+        .lang-dropdown.open { display: flex; }
+        .lang-dropdown input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; outline: none; transition: border-color 0.3s; }
+        .lang-dropdown input:focus { border-color: var(--cyan); }
+        .lang-dropdown input::placeholder { color: rgba(255,255,255,0.3); }
+        .lang-list { display: flex; flex-direction: column; gap: 3px; max-height: 240px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(0,240,255,0.3) transparent; }
+        .lang-list::-webkit-scrollbar { width: 4px; }
+        .lang-list::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.3); border-radius: 4px; }
+        .lang-option { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; cursor: pointer; transition: background 0.2s, color 0.2s; color: rgba(255,255,255,0.75); font-size: 0.78rem; font-weight: 600; border: 1px solid transparent; }
+        .lang-option:hover { background: rgba(0,240,255,0.08); color: var(--cyan); border-color: rgba(0,240,255,0.15); }
+        .lang-option.active { background: rgba(0,240,255,0.1); border-color: var(--cyan); color: var(--cyan); }
+        .lang-option span { font-weight: 400; color: rgba(255,255,255,0.35); font-size: 0.68rem; margin-left: auto; }
+
+        .lang-toggle { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 50px; color: rgba(255,255,255,0.7); font-size: 0.75rem; cursor: pointer; transition: all 0.3s var(--ease); font-family: 'Syne', sans-serif; font-weight: 700; white-space: nowrap; }
+        .lang-toggle:hover { border-color: var(--cyan); color: var(--white); background: rgba(0,240,255,0.08); }
+
+        /* HERO COM MEO-NAI CENTRALIZADO */
+        .hero { min-height: calc(100vh - 68px); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-top: 68px; }
+        .hero::after { content: ''; position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(0,240,255,0.15), transparent); animation: scanline 8s linear infinite; pointer-events: none; z-index: 0; }
+        .section-inner { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 5%; }
+        .hero .section-inner { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 48px; width: 100%; }
+        .hero-left { position: relative; z-index: 1; }
+        .badge { font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.22em; color: var(--cyan); text-transform: uppercase; margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; animation: fadeUp 0.9s var(--ease) forwards; background: rgba(0,240,255,0.08); padding: 8px 16px; border-radius: 50px; border: 1px solid rgba(0,240,255,0.2); }
+        .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); animation: blink 1.8s ease-in-out infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+        .hero-left h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(3.2rem, 6.5vw, 6rem); line-height: 0.9; letter-spacing: -0.03em; margin-bottom: 28px; color: var(--white); animation: fadeUp 0.9s 0.2s var(--ease) forwards; opacity: 0; }
+        .hero-left p { font-size: 1.05rem; color: rgba(255,255,255,0.55); max-width: 400px; margin-bottom: 40px; line-height: 1.75; font-weight: 300; animation: fadeUp 0.9s 0.4s var(--ease) forwards; opacity: 0; }
+        .hero-actions { display: flex; flex-direction: column; gap: 16px; align-items: center; margin-bottom: 52px; animation: fadeUp 0.9s 0.6s var(--ease) forwards; opacity: 0; width: 100%; }
+        .hero-actions-inner { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .hero-stats { display: flex; gap: 40px; animation: fadeUp 0.9s 0.8s var(--ease) forwards; opacity: 0; }
+        .stat-item { text-align: center; }
+        .stat-num { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.6rem; background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .stat-label { font-family: 'Space Mono', monospace; font-size: 0.58rem; color: rgba(255,255,255,0.3); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 4px; }
+        .stat-divider { width: 1px; background: rgba(0,240,255,0.15); align-self: stretch; }
+        .hero-right { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; }
+
+        /* PRODUCT VIEWER */
+        .product-viewer { background: rgba(14, 14, 22, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 24px; max-width: 650px; width: 100%; text-align: center; box-shadow: 0 0 40px rgba(168, 85, 247, 0.15); display: flex !important; flex-direction: column; align-items: center; justify-content: center !important; overflow: hidden; position: relative; }
+        .viewer-slides { position: relative; width: 100%; flex: 1; display: flex; align-items: center; justify-content: center; z-index: 0; min-height: 0; overflow: hidden; }
+        .viewer-slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease-in-out; }
+        .viewer-slide.active { opacity: 1; pointer-events: auto; position: relative; }
+        .viewer-slide img { max-width: 100%; height: auto; object-fit: contain; display: block; margin: 0 auto; filter: drop-shadow(0 0 12px rgba(168,85,247,0.3)); border-radius: 16px; }
+
+        .viewer-title-overlay { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 15; display: inline-flex; align-items: center; gap: 10px; background: rgba(14, 14, 22, 0.85); padding: 6px 16px; border-radius: 8px; backdrop-filter: blur(4px); color: var(--white); font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.12em; white-space: nowrap; }
+        .info-trigger-btn { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--neon-purple); background: rgba(168, 85, 247, 0.12); color: var(--neon-purple); font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; line-height: 1; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; flex-shrink: 0; }
+        .info-trigger-btn:hover { background: rgba(168, 85, 247, 0.25); box-shadow: 0 0 16px rgba(168,85,247,0.5); transform: scale(1.1); }
+
+        .viewer-nav { display: flex; gap: 16px; justify-content: center; padding: 16px 0 12px; position: relative; z-index: 5; width: 100%; background: rgba(14,14,22,0.6); backdrop-filter: blur(8px); }
+        .viewer-nav button { background: rgba(255,255,255,0.04); border: 1px solid rgba(168,85,247,0.4); color: white; padding: 10px 24px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s ease; cursor: pointer; }
+        .viewer-nav button:hover, .viewer-nav button.active-view { background: rgba(168,85,247,0.15); border-color: var(--neon-purple); color: var(--neon-purple); box-shadow: 0 0 16px rgba(168,85,247,0.3); }
+
+        .viewer-badge-bottom { font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; color: var(--neon-purple); text-transform: uppercase; background: rgba(168, 85, 247, 0.15); padding: 6px 16px; border-radius: 50px; border: 1px solid rgba(168, 85, 247, 0.3); margin: 8px 0 12px; }
+
+        #collector-info-modal { background-color: #1a1a1a; border: 1px solid var(--neon-purple); border-radius: 12px; box-shadow: 0 0 15px rgba(168, 85, 247, 0.2); text-align: left; width: calc(100% - 32px); max-width: 600px; overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.5s ease, opacity 0.4s ease, margin 0.4s ease, padding 0.4s ease; padding: 0; margin: 0 16px; order: 10; position: relative; }
+        #collector-info-modal.show { max-height: 500px; opacity: 1; padding: 25px; margin: 16px; }
+        .collector-close { position: absolute; top: 10px; right: 14px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.5rem; cursor: pointer; transition: color 0.3s; }
+        .collector-close:hover { color: var(--cyan); }
+
+        .price-large { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, var(--purple), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 16px; }
+        .gift-text { font-size: 0.8rem; color: var(--cyan); text-align: center; margin-bottom: 16px; font-family: 'Space Mono', monospace; background: rgba(0,240,255,0.05); padding: 8px; border-radius: 8px; border: 1px solid rgba(0,240,255,0.15); }
+        .collector-list { list-style: none; padding: 0; color: rgba(255,255,255,0.8); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; line-height: 1.6; }
+        .collector-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; padding: 8px 12px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(168,85,247,0.15); }
+        .collector-list li .icon { font-size: 1.2rem; width: 28px; text-align: center; color: var(--neon-purple); }
+
+        /* CUSTOMIZATION PANEL */
+        #customization-panel { opacity: 0; max-height: 0; overflow: hidden; transition: all 0.5s ease-in-out; margin-top: 0; background: rgba(14, 14, 22, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 24px; padding: 0 24px; max-width: 550px; margin: 0 auto; }
+        #customization-panel.open { opacity: 1; max-height: 2000px; padding: 24px; margin-top: 30px; }
+
+        .upload-group { margin: 20px 0; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .upload-box { flex: 1; min-width: 180px; background: rgba(255,255,255,0.03); border: 1px solid rgba(168,85,247,0.25); border-radius: 12px; padding: 12px; text-align: center; transition: all 0.3s ease; }
+        .upload-box.highlight { border-color: var(--neon-purple); box-shadow: 0 0 12px rgba(168,85,247,0.3); }
+        .upload-box label { display: block; font-family: 'Syne', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+        .upload-box input[type="file"] { width: 100%; padding: 6px; background: transparent; border: none; color: white; font-size: 0.8rem; }
+        .upload-box input[type="file"]::file-selector-button { background: rgba(168,85,247,0.15); border: 1px solid var(--neon-purple); color: var(--neon-purple); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-family: 'Syne', sans-serif; font-weight: 700; text-transform: uppercase; }
+
+        .upload-preview { width: 100%; max-width: 200px; height: auto; margin: 8px auto 0; border-radius: 8px; border: 1px solid rgba(168,85,247,0.3); display: none; object-fit: contain; background: rgba(0,0,0,0.4); }
+
+        .shipping-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; text-align: left; }
+        .shipping-form input, .shipping-form select { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none; }
+        .shipping-form input:focus, .shipping-form select:focus { border-color: var(--neon-purple); box-shadow: 0 0 0 2px rgba(168,85,247,0.2); }
+        .shipping-form select option { background: #1a1a2e; color: white; }
+        .shipping-form label { font-family: 'Syne', sans-serif; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); text-transform: uppercase; grid-column: span 2; margin-bottom: -6px; }
+        .shipping-form .full-width { grid-column: span 2; }
+
+        /* NOVOS SELETORES */
+        .customization-options { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
+        .customization-options label { font-family: 'Syne', sans-serif; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); text-transform: uppercase; display: block; margin-bottom: 4px; }
+
+        /* COLOR PICKER */
+        .color-picker-wrapper { display: flex; align-items: center; gap: 12px; }
+        .color-picker-input { width: 50px; height: 50px; border: none; border-radius: 10px; cursor: pointer; background: transparent; padding: 0; }
+        .color-picker-input::-webkit-color-swatch-wrapper { padding: 0; }
+        .color-picker-input::-webkit-color-swatch { border: 2px solid rgba(255,255,255,0.2); border-radius: 10px; }
+        .color-hex-display { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--cyan); background: rgba(0,240,255,0.08); padding: 8px 14px; border-radius: 8px; border: 1px solid rgba(0,240,255,0.2); }
+
+        .position-selector, .style-selector { display: flex; gap: 10px; flex-wrap: wrap; }
+        .position-btn, .style-btn { flex: 1; min-width: 120px; padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.7); font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+        .position-btn:hover, .style-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--neon-purple); }
+        .position-btn.selected, .style-btn.selected { border-color: var(--cyan); background: rgba(0,240,255,0.1); color: var(--cyan); }
+        .size-selector { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .size-btn { padding: 8px 14px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.7); font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .size-btn:hover { background: rgba(168,85,247,0.1); border-color: var(--neon-purple); }
+        .size-btn.selected { border-color: var(--cyan); background: rgba(0,240,255,0.1); color: var(--cyan); }
+        .custom-size-input { display: none; margin-top: 8px; width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
+
+        /* CHECKBOXES PARA MANGAS */
+        .sleeve-options { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+        .sleeve-option { display: flex; align-items: center; gap: 8px; }
+        .sleeve-option input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--cyan); cursor: pointer; }
+        .sleeve-option label { font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.7); cursor: pointer; margin-bottom: 0 !important; }
+
+        /* VISUALIZADOR DO MOLETOM */
+        .moletom-preview { position: relative; width: 100%; max-width: 500px; margin: 0 auto 20px; border-radius: 20px; overflow: hidden; background: #111; box-shadow: 0 0 30px rgba(168,85,247,0.3); transition: background 0.3s ease; }
+        .moletom-preview img { width: 100%; height: auto; display: block; mix-blend-mode: multiply; }
+
+        .btn-checkout { margin-top: 20px; background: linear-gradient(135deg, #25D366, #1db954); color: white; border: none; padding: 14px 36px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); }
+        .btn-checkout:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(37, 211, 102, 0.6); }
+
+        /* LOADING OVERLAY */
+        .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; }
+        .loading-overlay.active { display: flex; }
+        .loading-log { margin-top: 40px; font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--cyan); text-align: center; min-height: 100px; line-height: 1.8; }
+        .loading-log span { display: block; animation: logFade 1.5s ease-in-out; }
+        @keyframes logFade { 0% { opacity: 0; transform: translateY(10px); } 20% { opacity: 1; transform: translateY(0); } 80% { opacity: 1; } 100% { opacity: 0.3; } }
+        .receipt-card { display: none; background: rgba(20,20,30,0.95); border: 1px solid var(--cyan); border-radius: 20px; padding: 40px; max-width: 400px; text-align: center; box-shadow: 0 0 60px rgba(0,240,255,0.3); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10001; }
+        .receipt-card.show { display: block; }
+        .receipt-card h3 { font-size: 1.8rem; color: var(--cyan); margin-bottom: 20px; }
+        .receipt-card p { color: rgba(255,255,255,0.7); margin: 10px 0; }
+
+        /* MANIFESTO SECTION */
+        .manifesto-section { padding: 100px 0; text-align: center; background: transparent; border-top: 1px solid rgba(0,240,255,0.1); position: relative; z-index: 1; }
+        .manifesto-text { max-width: 800px; margin: 0 auto; font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 600; line-height: 1.5; color: rgba(255,255,255,0.75); background: linear-gradient(120deg, var(--cyan), var(--purple), #ff2d78); -webkit-background-clip: text; background-clip: text; color: transparent; animation: glowPulse 4s ease-in-out infinite; }
+
+        /* SAFE SPACE SECTION */
+        .safe-space-section { padding: 80px 0; text-align: center; position: relative; z-index: 1; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04); background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(180,94,255,0.04), transparent 70%); }
+        .safe-space-card { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; padding: 48px 36px; border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; background: rgba(14,14,24,0.7); backdrop-filter: blur(20px); transition: all 0.5s var(--ease); }
+        .safe-space-icon-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+        .safe-space-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); animation: safeFloat 3s ease-in-out infinite; transition: all 0.4s var(--ease); }
+        .safe-space-icon:nth-child(1) { animation-delay: 0s; } .safe-space-icon:nth-child(2) { animation-delay: 0.2s; } .safe-space-icon:nth-child(3) { animation-delay: 0.4s; } .safe-space-icon:nth-child(4) { animation-delay: 0.6s; } .safe-space-icon:nth-child(5) { animation-delay: 0.8s; } .safe-space-icon:nth-child(6) { animation-delay: 1.0s; }
+        @keyframes safeFloat { 0%, 100% { transform: translateY(0) scale(1); } 30% { transform: translateY(-6px) scale(1.08); } 60% { transform: translateY(0) scale(1); } }
+        .safe-space-icon:hover { animation-play-state: paused; transform: scale(1.35) translateY(-8px) !important; cursor: pointer; }
+        .safe-space-icon:nth-child(1):hover { border-color: #ff2d78; box-shadow: 0 0 28px rgba(255,45,120,0.7), 0 8px 24px rgba(255,45,120,0.3); }
+        .safe-space-icon:nth-child(2):hover { border-color: #ff8c00; box-shadow: 0 0 28px rgba(255,140,0,0.7), 0 8px 24px rgba(255,140,0,0.3); }
+        .safe-space-icon:nth-child(3):hover { border-color: #ffd700; box-shadow: 0 0 28px rgba(255,215,0,0.7), 0 8px 24px rgba(255,215,0,0.3); }
+        .safe-space-icon:nth-child(4):hover { border-color: #00c864; box-shadow: 0 0 28px rgba(0,200,100,0.7), 0 8px 24px rgba(0,200,100,0.3); }
+        .safe-space-icon:nth-child(5):hover { border-color: #00b4ff; box-shadow: 0 0 28px rgba(0,180,255,0.7), 0 8px 24px rgba(0,180,255,0.3); }
+        .safe-space-icon:nth-child(6):hover { border-color: var(--purple); box-shadow: 0 0 28px rgba(180,94,255,0.7), 0 8px 24px rgba(180,94,255,0.3); }
+        .safe-space-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; margin-bottom: 16px; background: linear-gradient(135deg, var(--white) 0%, rgba(255,255,255,0.8) 50%, var(--cyan) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .safe-space-text { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; line-height: 1.8; color: rgba(255,255,255,0.55); max-width: 550px; margin: 0 auto 20px; font-weight: 300; }
+        .safe-space-accent { display: inline-block; width: 60px; height: 2px; background: linear-gradient(90deg, #ff2d78, #ff8c00, #ffd700, #00c864, #00b4ff, var(--purple)); border-radius: 2px; margin-top: 8px; opacity: 0.7; }
+
+        /* OUTRAS SEÇÕES */
+        .brand-section { padding: 120px 0; text-align: center; background: linear-gradient(180deg, rgba(8,8,18,0.98) 0%, rgba(18,10,34,0.98) 30%, rgba(22,12,42,0.97) 60%, rgba(14,6,28,0.98) 100%); color: white; position: relative; z-index: 1; overflow: hidden; transition: var(--theme-transition); }
+        .brand-section h2 { font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 5.5vw, 4rem); font-weight: 800; line-height: 1.05; margin-bottom: 22px; }
+        .brand-section > p { color: rgba(255,255,255,0.45); max-width: 580px; margin: 0 auto 40px; font-size: 1.05rem; font-weight: 300; line-height: 1.75; }
+        .brand-perks { margin-top: 32px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .brand-perk-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 9px 18px; border-radius: 50px; font-family: 'Syne', sans-serif; font-size: 0.7rem; font-weight: 600; color: rgba(255,255,255,0.6); transition: all .3s var(--ease); }
+        .brand-perk-item:hover { border-color: rgba(0,240,255,0.3); color: var(--cyan); background: rgba(0,240,255,0.06); }
+        .plan-duo { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin: 48px auto 0; max-width: 700px; }
+        .plan-card { flex: 1 1 260px; max-width: 320px; background: rgba(14,14,22,0.9); border: 1.5px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 32px 24px 28px; text-align: center; backdrop-filter: blur(12px); transition: all .45s var(--ease); }
+        .plan-card.premium { border-color: rgba(201,168,76,0.35); background: rgba(20,16,10,0.9); }
+        .plan-badge { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; display: inline-block; padding: 6px 16px; border-radius: 50px; }
+        .plan-badge.freemium-badge { background: rgba(0,240,255,0.1); color: var(--cyan); border: 1px solid rgba(0,240,255,0.25); }
+        .plan-badge.premium-badge { background: rgba(201,168,76,0.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); }
+        .plan-card h4 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--white); margin-bottom: 8px; }
+        .plan-card .plan-price { font-family: 'Space Mono', monospace; font-size: 1.6rem; font-weight: 700; color: var(--gold); margin-bottom: 20px; }
+        .plan-card ul { list-style: none; text-align: left; margin: 0 0 24px; font-size: 0.78rem; color: rgba(255,255,255,0.55); line-height: 2; flex: 1; }
+        .btn-plan-premium { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #1a0f00; border: none; padding: 14px 28px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; width: 100%; margin-top: auto; }
+        .btn-plan-freemium { background: rgba(0,240,255,0.22); color: var(--cyan); border: 2px solid rgba(0,240,255,0.65); padding: 14px 28px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; width: 100%; box-shadow: 0 0 14px rgba(0,240,255,0.25); margin-top: auto; }
+
+        .collection { padding: 120px 0; background: rgba(10,10,18,0.98); text-align: center; transition: var(--theme-transition); }
+        .section-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cyan); display: inline-block; margin-bottom: 18px; background: rgba(0,240,255,0.08); padding: 7px 16px; border-radius: 50px; border: 1px solid rgba(0,240,255,0.2); }
+        .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 12px; color: var(--white); }
+        .section-sub { font-size: 1rem; color: rgba(255,255,255,0.4); margin-bottom: 60px; font-weight: 300; line-height: 1.7; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 28px; justify-items: center; }
+        .prod-card { background: rgba(14,14,22,0.9); border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.07); transition: all .5s var(--ease), background 0.8s ease; width: 100%; max-width: 320px; backdrop-filter: blur(10px); }
+        .prod-card:hover { transform: translateY(-12px) scale(1.01); border-color: rgba(0,240,255,0.4); box-shadow: 0 0 30px rgba(0,240,255,0.12); }
+        .prod-card img { width: 100%; aspect-ratio: 1/1; object-fit: contain; padding: 28px; transition: transform .6s var(--ease); }
+        .prod-info { padding: 22px 20px 20px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .prod-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; color: var(--white); margin-bottom: 6px; }
+        .prod-price { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--gold); font-weight: 700; }
+
+        /* Estilo SHORTLY - Efeito de antecipação */
+        .prod-price.shortly {
+            font-family: 'Syne', sans-serif !important;
+            font-size: 0.7rem !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.2em !important;
+            color: var(--cyan) !important;
+            background: rgba(0, 240, 255, 0.07);
+            border: 1.5px solid rgba(0, 240, 255, 0.35);
+            padding: 6px 14px;
+            border-radius: 6px;
+            display: inline-block;
+            text-transform: uppercase;
+            animation: shortlyPulse 2s ease-in-out infinite;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
+        }
+        @keyframes shortlyPulse {
+            0%, 100% { 
+                box-shadow: 0 0 8px rgba(0, 240, 255, 0.1); 
+                border-color: rgba(0, 240, 255, 0.35); 
+                color: var(--cyan);
+                text-shadow: 0 0 0px transparent;
+            }
+            50% { 
+                box-shadow: 0 0 22px rgba(0, 240, 255, 0.4), 0 0 40px rgba(180, 94, 255, 0.2); 
+                border-color: rgba(0, 240, 255, 0.8); 
+                color: #ffffff;
+                text-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
+            }
+        }
+
+        footer { background: rgba(4,4,8,0.99); padding: 80px 0 36px; color: rgba(255,255,255,0.6); border-top: 1px solid rgba(0,240,255,0.08); transition: var(--theme-transition); }
+        .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 48px; margin-bottom: 48px; }
+        .footer-logo img { height: 26px; margin-bottom: 14px; }
+        .footer-logo p { font-size: 0.8rem; color: rgba(255,255,255,0.3); line-height: 1.7; max-width: 200px; margin: 0 auto; text-align: center; }
+        .footer-logo { text-align: center; }
+        .footer-col h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 20px; }
+        .footer-col a { display: block; color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; margin-bottom: 12px; transition: all .25s; }
+        .footer-col a:hover { color: var(--cyan); transform: translateX(4px); }
+        .social-icons { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 22px; flex-wrap: wrap; }
+        .social-icons a { width: 52px; height: 52px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: all .35s var(--ease); overflow: visible; position: relative; background: transparent; }
+        .social-icons a:hover { border-color: var(--cyan); background: rgba(0,240,255,0.08); box-shadow: 0 0 20px rgba(0,240,255,0.2); transform: translateY(-4px); }
+        .social-icons img { width: 36px; height: 36px; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.8; transition: opacity .3s; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .social-icons a:hover img { opacity: 1; }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-copy { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: rgba(255,255,255,0.2); letter-spacing: 0.08em; }
+
+        /* MODAIS */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(18px); z-index: 3000; align-items: center; justify-content: center; }
+        .order-modal { background: rgba(14,14,22,0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 40px 36px 36px; max-width: 580px; width: 94%; max-height: 90vh; overflow-y: auto; text-align: center; box-shadow: 0 0 80px rgba(0,240,255,0.08); position: relative; animation: modalIn 0.4s ease; }
+        @keyframes modalIn { 0% { opacity: 0; transform: translateY(30px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+        .order-modal h2 { font-family: 'Space Mono', monospace; font-size: 1.1rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white); margin-bottom: 4px; }
+        .modal-subtitle { font-size: 0.72rem; color: #888; margin-bottom: 24px; font-weight: 400; }
+        .step, .step-advance { display: none; }
+        .step.active-step, .step-advance.active-step { display: block; }
+        .step input, .step select { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.03); color: white; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; outline: none; margin-bottom: 14px; }
+        .radio-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+        .radio-option { flex: 1; min-width: 130px; }
+        .radio-option input[type="radio"] { display: none; }
+        .radio-option label.radio-card { display: block; padding: 13px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.02); text-align: center; font-family: 'Syne', sans-serif; font-size: 0.66rem; font-weight: 600; color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.35s; }
+        .radio-option input[type="radio"]:checked + label.radio-card { border-color: var(--cyan); background: rgba(0,240,255,0.06); color: var(--cyan); box-shadow: 0 0 16px rgba(0,240,255,0.12); animation: ping 1.4s ease-out infinite; }
+        .btn-next-step { background: linear-gradient(135deg, var(--purple), var(--cyan)); color: white; padding: 15px 24px; border: none; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.78rem; text-transform: uppercase; cursor: pointer; transition: all var(--transition); margin-top: 8px; width: 100%; }
+        .close-modal { position: absolute; top: 14px; right: 18px; font-size: 24px; background: none; border: none; color: rgba(255,255,255,0.35); cursor: pointer; }
+        .contact-method-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 4px; width: 100%; }
+        .contact-btn { flex: 1 1 80px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.02); cursor: pointer; transition: all 0.4s var(--ease); min-height: 80px; }
+        .contact-btn img { width: 32px; height: 32px; object-fit: contain; }
+        .contact-btn span { font-family: 'Syne', sans-serif; font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; }
+        .contact-btn:hover { transform: scale(1.05); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+        /* CTA AVANÇADA */
+        .cta-wrapper { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; margin-bottom: 16px; }
+        .cta-advance { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 18px 48px; border-radius: 12px; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; color: #ffffff; background: rgba(255,255,255,0.04); backdrop-filter: blur(12px); border: 1.5px solid rgba(255,255,255,0.1); transition: all 0.4s var(--ease); position: relative; overflow: hidden; min-width: 240px; box-shadow: 0 0 20px rgba(0,240,255,0.05); text-shadow: 0 0 10px rgba(0,240,255,0.1); }
+        .cta-advance::before { content: ''; position: absolute; inset: -2px; border-radius: 14px; padding: 2px; background: linear-gradient(135deg, rgba(0,240,255,0.4), rgba(201,168,76,0.3), rgba(0,240,255,0.4)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; transition: all 0.4s var(--ease); z-index: -1; }
+        .cta-advance:hover { transform: translateY(-4px); box-shadow: 0 0 40px rgba(0,240,255,0.2); border-color: transparent; }
+        .cta-advance:hover::before { background: linear-gradient(135deg, var(--cyan), var(--gold-light), var(--cyan)); filter: blur(2px); }
+
+        /* THEME FAB */
+        .theme-fab { position: fixed; bottom: 32px; right: 28px; z-index: 9000; width: 52px; height: 52px; border-radius: 50%; background: rgba(14,14,24,.85); border: 1.5px solid rgba(0,240,255,.25); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .4s var(--ease); box-shadow: 0 0 20px rgba(0,240,255,.1); }
+        .theme-fab:hover { border-color: var(--cyan); box-shadow: 0 0 30px var(--cyan-glow); transform: scale(1.1) rotate(15deg); }
+        .theme-icon { font-size: 1.3rem; }
+        .easter-toast { position: fixed; bottom: 100px; right: 28px; z-index: 9001; background: linear-gradient(135deg, var(--purple), var(--cyan)); color: white; font-family: 'Syne', sans-serif; font-weight: 800; font-size: .75rem; padding: 12px 20px; border-radius: 12px; box-shadow: 0 0 30px rgba(180,94,255,0.5); opacity: 0; transform: translateY(12px); pointer-events: none; transition: all .4s var(--ease); }
+        .easter-toast.show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 800px) {
+            * { cursor: auto !important; } #cur, #cur-ring { display: none !important; }
+            nav { padding: 0 5%; height: 60px; } .nav-links { display: none; } .hamburger { display: flex; }
+            .btn-outline-nav, .btn-gold-nav { padding: 8px 16px; font-size: 0.6rem; }
+            .lang-dropdown { right: 0; width: 230px; }
+            .hero { height: 100dvh; margin-top: 0; padding-top: 60px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+            .hero .section-inner { grid-template-columns: 1fr; justify-items: center; align-items: center; gap: 16px; padding: 16px 16px; width: 100%; max-width: 100%; margin: 0 auto; height: 100%; overflow-y: auto; }
+            .hero-left { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; order: 1; flex-shrink: 0; }
+            .hero-right { order: 0; width: 100%; display: flex; justify-content: center; flex-shrink: 0; }
+            .hero-left h1 { font-size: clamp(2rem, 8vw, 3rem); margin-bottom: 12px; }
+            .hero-left p { max-width: 100%; margin-bottom: 18px; font-size: 0.9rem; }
+            .hero-actions { width: 100%; margin-bottom: 30px; }
+            .hero-actions-inner { width: 100%; flex-direction: column; gap: 10px; }
+            .btn-primary, .btn-order { width: 100%; justify-content: center; padding: 12px 20px; font-size: 0.7rem; }
+            .hero-stats { gap: 16px; justify-content: center; width: 100%; } .stat-divider { height: 18px; }
+            .stat-num { font-size: 1.3rem; } .stat-label { font-size: 0.5rem; }
+            .product-viewer { max-width: 100%; } #customization-panel { max-width: 100%; }
+            .manifesto-section { padding: 60px 0; } .manifesto-text { font-size: 1.2rem; }
+            .safe-space-section { padding: 50px 0; } .safe-space-card { padding: 32px 20px; } .safe-space-title { font-size: 1.4rem; }
+            .brand-section { padding: 80px 0; } .brand-section h2 { font-size: clamp(1.8rem, 5vw, 2.8rem); }
+            .plan-duo { gap: 20px; } .plan-card { padding: 28px 20px 24px; }
+            .collection { padding: 80px 0; } .card-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } .prod-card { max-width: 100%; }
+            footer { padding: 60px 0 28px; } .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+            .footer-bottom { justify-content: center; flex-direction: column; align-items: center; gap: 8px; }
+            .footer-logo { text-align: center; } .social-icons { justify-content: center; } .footer-copy { text-align: center; }
+            .shipping-form { grid-template-columns: 1fr; } .shipping-form label { grid-column: span 1; } .shipping-form .full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div class="animated-bg"></div>
+<canvas id="cosmos-canvas"></canvas>
+
+<nav id="nav">
+    <a href="#" class="logo"><img src="1000027280.png" alt="Heksel"><span>HEKSEL</span></a>
+    <ul class="nav-links">
+        <li><a href="#hero" class="active" data-i18n="nav_home">Home</a></li>
+        <li><a href="#collection" data-i18n="nav_collection">Collection</a></li>
+        <li><a href="#brandSection" data-i18n="nav_create">Create</a></li>
+        <li><a href="#manifesto" data-i18n="nav_manifesto">Manifesto</a></li>
+    </ul>
+    <div class="nav-buttons">
+        <button class="lang-toggle" id="langToggle">🌐 <span id="langActiveLabel">EN</span></button>
+        <div class="lang-dropdown" id="langDropdown">
+            <input type="text" id="langSearch" placeholder="Search language..." data-i18n-placeholder="search_language">
+            <div class="lang-list" id="langList"></div>
+        </div>
+        <div class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#hero" onclick="closeMobileMenu()" data-i18n="nav_home">Home</a>
+        <a href="#collection" onclick="closeMobileMenu()" data-i18n="nav_collection">Collection</a>
+        <a href="#brandSection" onclick="closeMobileMenu()" data-i18n="nav_create">Create</a>
+        <a href="#manifesto" onclick="closeMobileMenu()" data-i18n="nav_manifesto">Manifesto</a>
+        <div class="mobile-menu-buttons">
+            <button class="btn-outline-nav" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button>
+            <button class="btn-gold-nav" onclick="document.getElementById('brandSection').scrollIntoView({behavior:'smooth'}); closeMobileMenu()" data-i18n="vip_access">VIP Access</button>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO COM MEO-NAI SWEATSHIRT -->
+<section class="hero" id="hero">
+    <div class="section-inner">
+        <div class="hero-left">
+            <div class="badge"><span class="badge-dot"></span> <span data-i18n="badge_neo_collection">The NEO Collection 2026</span></div>
+            <h1><span data-i18n="hero_title_1">From beginning</span><br><span class="glow-text" data-i18n="hero_title_2">to infinity</span></h1>
+            <p data-i18n="hero_subtitle">Three lines. One empire. Performance, home wear and digital luxury — every step is a statement of power.</p>
+            <div class="hero-actions">
+                <button class="btn-order" onclick="openCustomization()" data-i18n="order_my_sweatshirt">✦ ORDER MY CUSTOMIZED SWEATSHIRT ✦</button>
+                <div class="hero-actions-inner">
+                    <button class="btn-primary" onclick="document.getElementById('collection').scrollIntoView({behavior:'smooth'})"><span data-i18n="explore_all">Explore All</span> <span>→</span></button>
+                    <button class="btn-primary" onclick="document.getElementById('manifesto').scrollIntoView({behavior:'smooth'})"><span data-i18n="explore_genesis">Explore Our Genesis</span> <span>→</span></button>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item"><span class="stat-num">1K+</span><span class="stat-label" data-i18n="builders">Builders</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="stat-num">3</span><span class="stat-label" data-i18n="lines">Lines</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat-item"><span class="stat-num">01</span><span class="stat-label" data-i18n="drop">Drop</span></div>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="product-viewer">
+                <div class="viewer-slides">
+                    <div class="viewer-title-overlay">
+                        <span data-i18n="product_name">MEO-NAI SWEATSHIRT?</span>
+                        <button id="info-trigger" class="info-trigger-btn" title="Collector Pack Details">?</button>
+                    </div>
+                    <div class="viewer-slide active" id="slideCustomize">
+                        <img src="meo-custom-canvas.png" alt="Customize Canvas">
+                    </div>
+                    <div class="viewer-slide" id="slideExample">
+                        <img src="meo-example-showcase.png" alt="Live Example">
+                    </div>
+                </div>
+                <div id="collector-info-modal">
+                    <button class="collector-close" id="collector-close-btn">&times;</button>
+                    <div class="price-large">R$ 300,00</div>
+                    <div class="gift-text">Inclui: Carta Personalizada 🃏 + Adesivo Exclusivo Heksel + Fragrância Especial Imperium 🧪</div>
+                    <ul class="collector-list">
+                        <li><span class="icon">🟪</span><span><strong data-i18n="item1_title">Premium Custom Sweatshirt</strong> – <span data-i18n="item1_desc">Dual-print (Bone Front / Furry Back) engineered heavyweight cotton.</span></span></li>
+                        <li><span class="icon">🔑</span><span><strong data-i18n="item2_title">Heksel Genesis Keychain</strong> – <span data-i18n="item2_desc">Perfect accessory for your backpack, bag, or car mirror.</span></span></li>
+                        <li><span class="icon">💎</span><span><strong data-i18n="item3_title">Official Genesis Sticker Pack</strong> – <span data-i18n="item3_desc">High-fidelity vinyl stickers to customize your laptop or gear.</span></span></li>
+                        <li><span class="icon">✉️</span><span><strong data-i18n="item4_title">Handcrafted Serialized Letter</strong> – <span data-i18n="item4_desc">Custom thank-you card with your unique serial number (e.g., "You are customer #10"), locking your collector position.</span></span></li>
+                    </ul>
+                </div>
+                <div class="viewer-nav">
+                    <button id="btnCustomize" class="active-view" onclick="switchView('customize')" data-i18n="customize_canvas">Customize Canvas</button>
+                    <button id="btnExample" onclick="switchView('example')" data-i18n="live_example">Live Example</button>
+                </div>
+                <div class="viewer-badge-bottom" data-i18n="viewer_badge">YOUR SELECTED IMAGES WILL LOOK LIKE THIS</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CUSTOMIZATION PANEL COM IMAGENS CORRETAS -->
+<div id="customization-panel" style="margin: 20px auto 0; max-width: 550px;">
+    <div class="moletom-preview" id="moletomPreview" style="background: #000000;">
+        <img id="moletomImage" src="1000031474.png" alt="Moletom" style="mix-blend-mode: multiply;">
+    </div>
+
+    <div class="upload-group">
+        <div class="upload-box highlight" id="frontUploadBox">
+            <label data-i18n="front_design">Front Design</label>
+            <input type="file" id="frontFileInput" accept="image/*" onchange="handleFileSelect('front')">
+            <img id="frontPreview" class="upload-preview" alt="Front Preview">
+        </div>
+        <div class="upload-box" id="backUploadBox">
+            <label data-i18n="back_design">Back Design</label>
+            <input type="file" id="backFileInput" accept="image/*" onchange="handleFileSelect('back')">
+            <img id="backPreview" class="upload-preview" alt="Back Preview">
+        </div>
+    </div>
+
+    <div class="customization-options">
+        <div>
+            <label>Cor do Moletom (Escolha Qualquer Tom)</label>
+            <div class="color-picker-wrapper">
+                <input type="color" id="colorPicker" class="color-picker-input" value="#000000">
+                <span class="color-hex-display" id="colorHexDisplay">#000000</span>
+            </div>
+            <input type="hidden" id="selectedColorHex" value="#000000">
+        </div>
+
+        <div>
+            <label>Estilo do Moletom</label>
+            <div class="style-selector" id="styleSelector">
+                <div class="style-btn selected" data-style="normal" data-image="1000031474.png">Normal</div>
+                <div class="style-btn" data-style="esportivo" data-image="1000031514.png">Esportivo</div>
+                <div class="style-btn" data-style="fashion" data-image="1000031516.png">Fashion / Moda</div>
+                <div class="style-btn" data-style="inverno" data-image="1000031525.png">Inverno</div>
+            </div>
+            <input type="hidden" id="selectedStyle" value="normal">
+        </div>
+
+        <div>
+            <label>Posição do Design</label>
+            <div class="position-selector" id="positionSelector">
+                <div class="position-btn selected" data-position="centralizada">Estampa Centralizada Grande</div>
+                <div class="position-btn" data-position="peito">Logo no Peito (Esquerdo)</div>
+            </div>
+            <input type="hidden" id="selectedPosition" value="centralizada">
+        </div>
+
+        <div>
+            <label>Customização das Mangas</label>
+            <div class="sleeve-options">
+                <div class="sleeve-option">
+                    <input type="checkbox" id="leftSleeveCheck">
+                    <label for="leftSleeveCheck">Estampa Manga Esquerda</label>
+                </div>
+                <div class="sleeve-option">
+                    <input type="checkbox" id="rightSleeveCheck">
+                    <label for="rightSleeveCheck">Estampa Manga Direita</label>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label>Tamanho</label>
+            <div class="size-selector" id="sizeSelector">
+                <button class="size-btn selected" data-size="P">P</button>
+                <button class="size-btn" data-size="M">M</button>
+                <button class="size-btn" data-size="G">G</button>
+                <button class="size-btn" data-size="GG">GG</button>
+                <button class="size-btn" data-size="XG">XG</button>
+                <button class="size-btn" id="otherSizeBtn">Outro (Digitar)</button>
+            </div>
+            <input type="text" id="customSizeInput" class="custom-size-input" placeholder="Digite seu tamanho...">
+            <input type="hidden" id="selectedSize" value="P">
+        </div>
+    </div>
+
+    <div class="shipping-form">
+        <label data-i18n="full_name">Full Name</label><input type="text" id="fullName" placeholder="Your Name" data-i18n-placeholder="your_name" class="full-width">
+        <label data-i18n="email">Email</label><input type="email" id="email" placeholder="you@example.com" class="full-width">
+        <label data-i18n="address">Shipping Address</label><input type="text" id="address" placeholder="Street, number" data-i18n-placeholder="street_number" class="full-width">
+        <label data-i18n="city">City</label><input type="text" id="city" placeholder="City" data-i18n-placeholder="city_placeholder">
+        <label data-i18n="postal_code">Postal Code</label><input type="text" id="postalCode" placeholder="Postal Code" data-i18n-placeholder="postal_code_placeholder">
+        <label data-i18n="country">Country</label><input type="text" id="country" placeholder="Country" data-i18n-placeholder="country_placeholder">
+    </div>
+    <button class="btn-checkout" onclick="secureYourPiece()" data-i18n="secure_piece">✦ COMPRAR AGORA ✦</button>
+    <p style="font-size:0.7rem; color:rgba(255,255,255,0.4); margin-top:10px;">Payment via Asaas. Your order goes to Printful once confirmed.</p>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-log" id="loadingLog"></div>
+</div>
+<!-- RECEIPT CARD -->
+<div class="receipt-card" id="receiptCard">
+    <h3>🎉 ORDER CONFIRMED</h3>
+    <p>Your custom MEO-NAI Sweatshirt is now in production.</p>
+    <p id="receiptDetails"></p>
+    <button class="btn-order" onclick="document.getElementById('receiptCard').classList.remove('show')">CLOSE</button>
+</div>
+
+<!-- MANIFESTO SECTION -->
+<section class="manifesto-section" id="manifesto">
+    <div class="section-inner">
+        <p class="manifesto-text" data-i18n="manifesto_text">"Heksel Genesis is the ultimate gateway to digital sovereignty. We don't just build code; we template the future of elite branding. This is where your digital identity is conceived, conceptualized, and prepared for high-end deployment via Heksel Studio."</p>
+    </div>
+</section>
+
+<!-- SAFE SPACE SECTION -->
+<section class="safe-space-section" id="safeSpace">
+    <div class="section-inner">
+        <div class="safe-space-card">
+            <div class="safe-space-icon-row">
+                <div class="safe-space-icon">❤️</div>
+                <div class="safe-space-icon">🧡</div>
+                <div class="safe-space-icon">💛</div>
+                <div class="safe-space-icon">💚</div>
+                <div class="safe-space-icon">💙</div>
+                <div class="safe-space-icon">💜</div>
+            </div>
+            <h2 class="safe-space-title" data-i18n="safe_space_title">Safe Space</h2>
+            <p class="safe-space-text" data-i18n="safe_space_text">
+                At Heksel, we believe that great ideas are born from mutual respect. Our studio is a safe and inclusive space for all entrepreneurs, brands and creative minds. Here, diversity adds up and drives the future of technology.
+            </p>
+            <div class="safe-space-accent"></div>
+        </div>
+    </div>
+</section>
+
+<!-- BRAND SECTION -->
+<section class="brand-section" id="brandSection">
+    <div class="section-inner">
+        <span class="studio-badge" style="font-family:'Space Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;background:rgba(0,240,255,0.1);color:var(--cyan);padding:7px 14px;border-radius:50px;display:inline-block;margin-bottom:18px;border:1px solid rgba(0,240,255,0.2);" data-i18n="services_badge">✦ Heksel Services</span>
+        <h2><span data-i18n="brand_title_1">Want a website like this?</span><br><span class="glow-gold" data-i18n="brand_title_2">Build your brand.</span></h2>
+        <p data-i18n="brand_subtitle">Complete visual identity + professional website + digital ecosystem. From start to infinity.</p>
+        <div class="cta-wrapper">
+            <button onclick="openCreateAdvanceModal()" class="cta-advance"><span data-i18n="create_advance">CREATE IN ADVANCE</span> <span>⚡</span></button>
+            <button class="cta-brand" onclick="openOrderModal()" data-i18n="create_my_brand">✦ Create My Brand ✦</button>
+        </div>
+        <div class="plan-duo">
+            <div class="plan-card freemium"><span class="plan-badge freemium-badge" data-i18n="live_preview">Live Preview</span><h4 data-i18n="freemium">Freemium</h4><div class="plan-price" data-i18n="free">Free</div><ul><li data-i18n="freemium_li1">Interactive app simulation</li><li data-i18n="freemium_li2">Final design preview</li><li data-i18n="freemium_li3">Feature testing</li><li data-i18n="freemium_li4">No commitment</li></ul><button class="btn-plan-freemium" onclick="openOrderModal()" data-i18n="try_now">Try It Now</button></div>
+            <div class="plan-card premium"><span class="plan-badge premium-badge" data-i18n="full_access">Full Access</span><h4 data-i18n="premium">Premium</h4><div class="plan-price">$4,996.32</div><ul><li data-i18n="premium_li1">Complete website + store</li><li data-i18n="premium_li2">Exclusive visual identity</li><li data-i18n="premium_li3">Digital ecosystem</li><li data-i18n="premium_li4">Lifetime support</li></ul><button class="btn-plan-premium" onclick="openOrderModal()" data-i18n="hire_premium">Hire Premium</button></div>
+        </div>
+        <div class="brand-perks"><div class="brand-perk-item" data-i18n="perk1">⚡ Ultra-professional</div><div class="brand-perk-item" data-i18n="perk2">🎨 Visual identity</div><div class="brand-perk-item" data-i18n="perk3">📱 100% responsive</div><div class="brand-perk-item" data-i18n="perk4">🚀 Fast delivery</div></div>
+    </div>
+</section>
+
+<!-- COLLECTION SECTION ATUALIZADA COM SHORTLY -->
+<section class="collection" id="collection">
+    <div class="section-inner">
+        <span class="section-tag" data-i18n="collection_tag">⚡ NEO Collection — Drop 01</span>
+        <h2 class="section-title"><span data-i18n="collection_title_1">Every Line.</span><br><span class="glow-text" data-i18n="collection_title_2">One Empire.</span></h2>
+        <p class="section-sub" data-i18n="collection_sub">Laser-engineered performance meets street culture. Six silhouettes. One declaration.</p>
+        <div class="card-grid">
+            <div class="prod-card"><img src="1000027632-removebg-preview.png" alt="NEO-KAI 01 FOR HIKING"><div class="prod-info"><div class="prod-name">NEO-KAI 01 FOR HIKING</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000027635-removebg-preview.png" alt="NEO-KAI 01 FOR RACING"><div class="prod-info"><div class="prod-name">NEO-KAI 01 FOR RACING</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000027638-removebg-preview.png" alt="NEO-KAI 01 FOR ACADEMIC"><div class="prod-info"><div class="prod-name">NEO-KAI 01 FOR ACADEMIC</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000027639-removebg-preview.png" alt="NEO-KAI 01 FOR FOOTBALL"><div class="prod-info"><div class="prod-name">NEO-KAI 01 FOR FOOTBALL</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000027648-removebg-preview.png" alt="NEO-WAI 01 SLIPPER FOR LEISURE"><div class="prod-info"><div class="prod-name">NEO-WAI 01 SLIPPER FOR LEISURE</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000027649-removebg-preview.png" alt="NEO-WAI 02 SPORTS FLIP-FLOPS"><div class="prod-info"><div class="prod-name">NEO-WAI 02 SPORTS FLIP-FLOPS</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000027651-removebg-preview.png" alt="NEO-LAI 01 SLIPPER WITH A SHORT BRIM"><div class="prod-info"><div class="prod-name">NEO-LAI 01 SLIPPER WITH A SHORT BRIM</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000027652-removebg-preview.png" alt="NEO-LAI 02 SLIPPER WITH LONG BRIM"><div class="prod-info"><div class="prod-name">NEO-LAI 02 SLIPPER WITH LONG BRIM</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000030702-removebg-preview.png" alt="NEO-MAI 01 HIGH HEELS"><div class="prod-info"><div class="prod-name">NEO-MAI 01 HIGH HEELS</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="1000030703-removebg-preview.png" alt="NEO-MAI 02 LOW HEELS"><div class="prod-info"><div class="prod-name">NEO-MAI 02 LOW HEELS</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+            <div class="prod-card"><img src="123 Sem Título_20260625133036.png" alt="NEO-VAI 01 LEATHER BOOT"><div class="prod-info"><div class="prod-name">NEO-VAI 01 LEATHER BOOT</div><div class="prod-price shortly">SHORTLY</div><button class="notify-btn-card" onclick="openNotifyModal()" data-i18n="notify_me">Notify Me</button></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="section-inner">
+        <div class="footer-grid">
+            <div class="footer-logo"><img src="1000027280.png" alt="Heksel"><p data-i18n="footer_desc">Designed in Brazil.<br>Engineered Globally.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/hafavilha" target="_blank"><img src="instagram-heksel.png" alt="Instagram"></a>
+                    <a href="https://vt.tiktok.com/ZSxbdSUg9/" target="_blank"><img src="tiktok-heksel.png" alt="TikTok"></a>
+                    <a href="#" target="_blank"><img src="x-heksel.png" alt="X"></a>
+                </div>
+            </div>
+            <div class="footer-col"><h4 data-i18n="footer_col1_title">Collection</h4><a href="#">NEO-KAI 01</a><a href="#">NEO-WAI 01</a><a href="#">NEO-LAI 01</a></div>
+            <div class="footer-col"><h4 data-i18n="footer_col2_title">Studio</h4><a href="#collection" data-i18n="heksel_studio">Heksel Studio</a><a href="#" onclick="openNotifyModal()" data-i18n="custom_build">Custom Build</a><a href="#brandSection" data-i18n="inner_circle">Inner Circle</a></div>
+            <div class="footer-col"><h4 data-i18n="footer_col3_title">Support</h4><a href="https://wa.me/5553991855262" target="_blank">WhatsApp</a><a href="mailto:hafavilhahafy@gmail.com">hafavilhahafy@gmail.com</a></div>
+        </div>
+        <div class="footer-bottom"><span class="footer-copy">© 2026 HEKSEL IMPERIUM — ALL RIGHTS RESERVED.</span></div>
+    </div>
+</footer>
+
+<!-- NOTIFY ME MODAL -->
+<div class="modal-overlay" id="notifyModalOverlay">
+    <div class="order-modal" id="notifyModal">
+        <button class="close-modal" onclick="closeNotifyModal()">&times;</button>
+        <h2 data-i18n="stay_updated">Stay Updated</h2>
+        <p class="modal-subtitle" data-i18n="choose_channel">Choose your preferred notification channel</p>
+        <div class="contact-method-row">
+            <div class="contact-btn gmail-btn" onclick="redirectNotify('gmail')"><img src="g.logo.png" alt="Gmail"><span>Gmail</span></div>
+            <div class="contact-btn discord-btn" onclick="redirectNotify('discord')"><img src="d.logo.png" alt="Discord"><span>Discord</span></div>
+            <div class="contact-btn whatsapp-btn" onclick="redirectNotify('whatsapp')"><img src="w.logo.png" alt="WhatsApp"><span>WhatsApp</span></div>
+            <div class="contact-btn insta-btn" onclick="redirectNotify('instagram')"><img src="instagram-heksel.png" alt="Instagram"><span>Instagram</span></div>
+            <div class="contact-btn tiktok-btn" onclick="redirectNotify('tiktok')"><img src="tiktok-heksel.png" alt="TikTok"><span>TikTok</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- CREATE IN ADVANCE MODAL -->
+<div class="modal-overlay" id="createAdvanceModalOverlay">
+    <div class="order-modal" id="createAdvanceModal">
+        <button class="close-modal" onclick="closeCreateAdvanceModal()">&times;</button>
+        <div class="step-advance active-step" id="advanceStep1">
+            <h2 data-i18n="choose_platform">Choose your Platform</h2>
+            <p class="modal-subtitle" data-i18n="select_social">Select the social network you want to contact us on.</p>
+            <div class="contact-method-row">
+                <div class="contact-btn gmail-btn" onclick="advanceSelectPlatform('gmail')"><img src="g.logo.png" alt="Gmail"><span>Gmail</span></div>
+                <div class="contact-btn discord-btn" onclick="advanceSelectPlatform('discord')"><img src="d.logo.png" alt="Discord"><span>Discord</span></div>
+                <div class="contact-btn whatsapp-btn" onclick="advanceSelectPlatform('whatsapp')"><img src="w.logo.png" alt="WhatsApp"><span>WhatsApp</span></div>
+                <div class="contact-btn insta-btn" onclick="advanceSelectPlatform('instagram')"><img src="instagram-heksel.png" alt="Instagram"><span>Instagram</span></div>
+                <div class="contact-btn tiktok-btn" onclick="advanceSelectPlatform('tiktok')"><img src="tiktok-heksel.png" alt="TikTok"><span>TikTok</span></div>
+            </div>
+        </div>
+        <div class="step-advance" id="advanceStep2">
+            <h2 data-i18n="choose_language">Choose your Language</h2>
+            <p class="modal-subtitle" data-i18n="select_language">Select your preferred language for the message.</p>
+            <div style="position:relative; width:100%;">
+                <input type="text" id="advanceLangSearch" placeholder="Search language..." data-i18n-placeholder="search_language" style="width:100%;">
+                <div class="lang-list" id="advanceLangList" style="width:100%; max-height:200px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MULTI-STEP ORDER MODAL -->
+<div class="modal-overlay" id="orderModalOverlay">
+    <div class="order-modal" id="orderModal">
+        <button class="close-modal" onclick="closeOrderModal()">&times;</button>
+        <div class="step active-step" id="step1">
+            <h2 data-i18n="step1_title">Step 1</h2>
+            <p class="modal-subtitle" data-i18n="step1_sub">What's your brand or app name?</p>
+            <label data-i18n="brand_name_label">Brand / App Name *</label>
+            <input type="text" id="brandNameInput" placeholder="e.g. APEX STUDIO" required>
+            <button class="btn-next-step" onclick="goToStep(2)" data-i18n="next">Next →</button>
+        </div>
+        <div class="step" id="step2">
+            <h2 data-i18n="step2_title">Step 2</h2>
+            <p class="modal-subtitle" data-i18n="step2_sub">What do you need?</p>
+            <div class="radio-row">
+                <div class="radio-option"><input type="radio" name="operationType" value="Build from Zero" id="opZero" checked><label class="radio-card" for="opZero" data-i18n="build_zero">Build from Zero</label></div>
+                <div class="radio-option"><input type="radio" name="operationType" value="Upgrade Site" id="opSite"><label class="radio-card" for="opSite" data-i18n="upgrade_site">Upgrade Site</label></div>
+                <div class="radio-option"><input type="radio" name="operationType" value="Upgrade App" id="opApp"><label class="radio-card" for="opApp" data-i18n="upgrade_app">Upgrade App</label></div>
+            </div>
+            <button class="btn-next-step" onclick="goToStep(3)" data-i18n="next">Next →</button>
+        </div>
+        <div class="step" id="step3">
+            <h2 data-i18n="step3_title">Step 3</h2>
+            <p class="modal-subtitle" data-i18n="step3_sub">Your info</p>
+            <label data-i18n="your_name_label">Your Name *</label>
+            <input type="text" id="fullNameInput" placeholder="Enter your name" data-i18n-placeholder="enter_name" required>
+            <hr style="border-color:rgba(255,255,255,0.1); margin:16px 0;">
+            <label data-i18n="contact_method_label">How should we contact you?</label>
+            <div class="radio-row" style="justify-content:center;">
+                <div class="radio-option"><input type="radio" name="contactMethod" value="whatsapp" id="cmWhatsapp" checked><label class="radio-card" for="cmWhatsapp"><img src="w.logo.png" style="width:28px;display:block;margin:0 auto 4px;">WhatsApp</label></div>
+                <div class="radio-option"><input type="radio" name="contactMethod" value="discord" id="cmDiscord"><label class="radio-card" for="cmDiscord"><img src="d.logo.png" style="width:28px;display:block;margin:0 auto 4px;">Discord</label></div>
+                <div class="radio-option"><input type="radio" name="contactMethod" value="instagram" id="cmInsta"><label class="radio-card" for="cmInsta"><img src="instagram-heksel.png" style="width:28px;display:block;margin:0 auto 4px;">Instagram</label></div>
+                <div class="radio-option"><input type="radio" name="contactMethod" value="tiktok" id="cmTikTok"><label class="radio-card" for="cmTikTok"><img src="tiktok-heksel.png" style="width:28px;display:block;margin:0 auto 4px;">TikTok</label></div>
+                <div class="radio-option"><input type="radio" name="contactMethod" value="gmail" id="cmGmail"><label class="radio-card" for="cmGmail"><img src="g.logo.png" style="width:28px;display:block;margin:0 auto 4px;">Gmail</label></div>
+            </div>
+            <div id="contactDetailContainer">
+                <input type="text" id="whatsappInput" placeholder="Your phone number with DDD" data-i18n-placeholder="phone_placeholder" style="display:block;">
+                <input type="text" id="discordInput" placeholder="Your Discord ID" data-i18n-placeholder="discord_placeholder" style="display:none;">
+                <input type="text" id="instagramInput" placeholder="Your Instagram @" data-i18n-placeholder="instagram_placeholder" style="display:none;">
+                <input type="text" id="tiktokInput" placeholder="Your TikTok @" data-i18n-placeholder="tiktok_placeholder" style="display:none;">
+                <input type="email" id="gmailInput" placeholder="Your Gmail address" data-i18n-placeholder="gmail_placeholder" style="display:none;">
+            </div>
+            <button class="btn-next-step" onclick="goToStep(4)" data-i18n="next">Next →</button>
+        </div>
+        <div class="step" id="step4">
+            <h2 data-i18n="step4_title">Step 4 — Choose Your Plan</h2>
+            <p class="modal-subtitle" data-i18n="step4_sub">Freemium (test only) or Premium (get commercial proposal)</p>
+            <div class="radio-row">
+                <div class="radio-option"><input type="radio" name="pricingPlan" value="FREMIUM MODEL" id="planFreemiumRadio" checked><label class="radio-card" for="planFreemiumRadio">FREMIUM<br><small data-i18n="test_only">Test only</small></label></div>
+                <div class="radio-option"><input type="radio" name="pricingPlan" value="PREMIUM ARCHITECTURE" id="planPremiumRadio"><label class="radio-card" for="planPremiumRadio">PREMIUM<br><small data-i18n="commercial">Commercial</small></label></div>
+            </div>
+            <button class="btn-next-step" onclick="submitOrder()" data-i18n="start_conversation">Start Conversation</button>
+        </div>
+    </div>
+</div>
+
+<button class="theme-fab" id="themeFab" title="Switch theme" type="button"><span class="theme-icon" id="themeIcon">☀</span></button>
+<div class="easter-toast" id="easterToast"><span>🌈 SECRET MODE ACTIVATED!</span></div>
+
+<script>
+    // ═══════════════ COSMOS CANVAS 2D ENGINE ═══════════════
+    (function() {
+        const canvas = document.getElementById('cosmos-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        window.cosmosColors = { cyan: '#00f0ff', purple: '#b45eff' };
+        const starsLayers = [
+            { count: 300, speed: 0.02, sizeRange: [0.5, 1.2], opacity: 0.9 },
+            { count: 150, speed: 0.05, sizeRange: [1.0, 2.0], opacity: 0.7 },
+            { count: 60,  speed: 0.1,  sizeRange: [1.5, 3.0], opacity: 0.5 }
+        ];
+        const starsData = [];
+        function initStars() {
+            starsData.length = 0;
+            starsLayers.forEach(layer => {
+                const layerStars = [];
+                for (let i = 0; i < layer.count; i++) {
+                    layerStars.push({
+                        x: Math.random() * width, y: Math.random() * height,
+                        size: layer.sizeRange[0] + Math.random() * (layer.sizeRange[1] - layer.sizeRange[0]),
+                        speed: layer.speed * (0.8 + Math.random() * 0.4),
+                        opacity: layer.opacity * (0.6 + Math.random() * 0.4),
+                        twinkle: Math.random() * Math.PI * 2
+                    });
+                }
+                starsData.push(layerStars);
+            });
+        }
+        function drawComet(ctx, x, y, angle, nucleusColor, tailColor1, tailColor2, progress) {
+            ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
+            const nucleusGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 12);
+            nucleusGrad.addColorStop(0, nucleusColor); nucleusGrad.addColorStop(0.5, nucleusColor + 'cc'); nucleusGrad.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.arc(0, 0, 12, 0, Math.PI * 2); ctx.fillStyle = nucleusGrad; ctx.fill();
+            const tailLength = 80 + Math.sin(progress * 2) * 15;
+            const tailGrad = ctx.createLinearGradient(0, 0, -tailLength, 0);
+            tailGrad.addColorStop(0, tailColor1); tailGrad.addColorStop(0.6, tailColor2); tailGrad.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.moveTo(0, -6); ctx.lineTo(-tailLength, -1.5); ctx.lineTo(-tailLength, 1.5); ctx.lineTo(0, 6); ctx.closePath();
+            ctx.fillStyle = tailGrad; ctx.fill();
+            const glowGrad = ctx.createLinearGradient(0, 0, -tailLength * 0.5, 0);
+            glowGrad.addColorStop(0, 'rgba(255,255,255,0.4)'); glowGrad.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.moveTo(0, -2); ctx.lineTo(-tailLength * 0.5, -0.5); ctx.lineTo(-tailLength * 0.5, 0.5); ctx.lineTo(0, 2); ctx.closePath();
+            ctx.fillStyle = glowGrad; ctx.fill();
+            ctx.restore();
+        }
+        function drawNebula(ctx, x, y, radius, color1, color2) {
+            const grad = ctx.createRadialGradient(x, y, radius * 0.2, x, y, radius);
+            grad.addColorStop(0, color1); grad.addColorStop(0.7, color2); grad.addColorStop(1, 'transparent');
+            ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fillStyle = grad; ctx.fill();
+        }
+        function resizeCanvas() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; initStars(); }
+        let comet67P = { x: 0, y: 0, angle: 0, progress: 0 };
+        let cometNEOWISE = { x: 0, y: 0, angle: 0, progress: 0 };
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            drawNebula(ctx, width * 0.2, height * 0.3, 350,
+                `rgba(${parseInt(window.cosmosColors.purple.slice(1,3),16)}, ${parseInt(window.cosmosColors.purple.slice(3,5),16)}, ${parseInt(window.cosmosColors.purple.slice(5,7),16)}, 0.05)`,
+                `rgba(${parseInt(window.cosmosColors.cyan.slice(1,3),16)}, ${parseInt(window.cosmosColors.cyan.slice(3,5),16)}, ${parseInt(window.cosmosColors.cyan.slice(5,7),16)}, 0.02)`);
+            drawNebula(ctx, width * 0.7, height * 0.7, 300,
+                `rgba(${parseInt(window.cosmosColors.cyan.slice(1,3),16)}, ${parseInt(window.cosmosColors.cyan.slice(3,5),16)}, ${parseInt(window.cosmosColors.cyan.slice(5,7),16)}, 0.04)`,
+                `rgba(${parseInt(window.cosmosColors.purple.slice(1,3),16)}, ${parseInt(window.cosmosColors.purple.slice(3,5),16)}, ${parseInt(window.cosmosColors.purple.slice(5,7),16)}, 0.03)`);
+            starsData.forEach((layerStars) => {
+                layerStars.forEach(star => {
+                    star.x -= star.speed * 0.2; if (star.x < -10) star.x = width + 10;
+                    star.y += Math.sin(star.twinkle) * 0.1;
+                    const alpha = star.opacity * (0.7 + 0.3 * Math.sin(performance.now() * 0.002 + star.twinkle));
+                    ctx.beginPath(); ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.fill();
+                });
+            });
+            comet67P.progress += 0.0008; if (comet67P.progress > 1) comet67P.progress = 0;
+            const s67 = { x: width * 1.2, y: height * 0.1 }, e67 = { x: -width * 0.2, y: height * 0.9 };
+            comet67P.x = s67.x + (e67.x - s67.x) * comet67P.progress;
+            comet67P.y = s67.y + (e67.y - s67.y) * comet67P.progress;
+            comet67P.angle = Math.atan2(e67.y - s67.y, e67.x - s67.x) + Math.PI;
+            drawComet(ctx, comet67P.x, comet67P.y, comet67P.angle, window.cosmosColors.purple,
+                `rgba(${parseInt(window.cosmosColors.purple.slice(1,3),16)}, ${parseInt(window.cosmosColors.purple.slice(3,5),16)}, ${parseInt(window.cosmosColors.purple.slice(5,7),16)}, 0.15)`,
+                `rgba(${parseInt(window.cosmosColors.cyan.slice(1,3),16)}, ${parseInt(window.cosmosColors.cyan.slice(3,5),16)}, ${parseInt(window.cosmosColors.cyan.slice(5,7),16)}, 0.1)`, comet67P.progress);
+            cometNEOWISE.progress += 0.0006; if (cometNEOWISE.progress > 1) cometNEOWISE.progress = 0;
+            const sN = { x: -width * 0.2, y: height * 0.15 }, eN = { x: width * 1.2, y: height * 0.85 };
+            cometNEOWISE.x = sN.x + (eN.x - sN.x) * cometNEOWISE.progress;
+            cometNEOWISE.y = sN.y + (eN.y - sN.y) * cometNEOWISE.progress;
+            cometNEOWISE.angle = Math.atan2(eN.y - sN.y, eN.x - sN.x);
+            drawComet(ctx, cometNEOWISE.x, cometNEOWISE.y, cometNEOWISE.angle, window.cosmosColors.cyan,
+                `rgba(${parseInt(window.cosmosColors.cyan.slice(1,3),16)}, ${parseInt(window.cosmosColors.cyan.slice(3,5),16)}, ${parseInt(window.cosmosColors.cyan.slice(5,7),16)}, 0.15)`,
+                `rgba(${parseInt(window.cosmosColors.purple.slice(1,3),16)}, ${parseInt(window.cosmosColors.purple.slice(3,5),16)}, ${parseInt(window.cosmosColors.purple.slice(5,7),16)}, 0.1)`, cometNEOWISE.progress);
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas(); animate();
+        window.updateCosmosColors = function(color1Hex, color2Hex) {
+            window.cosmosColors.cyan = color1Hex; window.cosmosColors.purple = color2Hex;
+        };
+    })();
+
+    // ═══════════════ TRANSLATIONS ═══════════════
+    const translations = {
+        en: {
+            nav_home: "Home", nav_collection: "Collection", nav_create: "Create", nav_manifesto: "Manifesto",
+            notify_me: "Notify Me", vip_access: "VIP Access", search_language: "Search language...",
+            badge_neo_collection: "The NEO Collection 2026", hero_title_1: "From beginning", hero_title_2: "to infinity",
+            hero_subtitle: "Three lines. One empire. Performance, home wear and digital luxury — every step is a statement of power.",
+            order_my_sweatshirt: "✦ ORDER MY CUSTOMIZED SWEATSHIRT ✦", explore_all: "Explore All", explore_genesis: "Explore Our Genesis",
+            builders: "Builders", lines: "Lines", drop: "Drop", product_name: "MEO-NAI SWEATSHIRT?",
+            customize_canvas: "Customize Canvas", live_example: "Live Example",
+            viewer_badge: "YOUR SELECTED IMAGES WILL LOOK LIKE THIS",
+            item1_title: "Premium Custom Sweatshirt", item1_desc: "Dual-print (Bone Front / Furry Back) engineered heavyweight cotton.",
+            item2_title: "Heksel Genesis Keychain", item2_desc: "Perfect accessory for your backpack, bag, or car mirror.",
+            item3_title: "Official Genesis Sticker Pack", item3_desc: "High-fidelity vinyl stickers to customize your laptop or gear.",
+            item4_title: "Handcrafted Serialized Letter", item4_desc: "Custom thank-you card with your unique serial number (e.g., \"You are customer #10\"), locking your collector position.",
+            size: "Size", front_design: "Front Design", back_design: "Back Design", full_name: "Full Name", email: "Email",
+            address: "Shipping Address", city: "City", postal_code: "Postal Code", country: "Country",
+            your_name: "Your Name", street_number: "Street, number", city_placeholder: "City",
+            postal_code_placeholder: "Postal Code", country_placeholder: "Country",
+            secure_piece: "✦ COMPRAR AGORA ✦", payment_note: "Payment via Asaas. Your order goes to Printful once confirmed.",
+            manifesto_text: "\"Heksel Genesis is the ultimate gateway to digital sovereignty. We don't just build code; we template the future of elite branding. This is where your digital identity is conceived, conceptualized, and prepared for high-end deployment via Heksel Studio.\"",
+            safe_space_title: "Safe Space", safe_space_text: "At Heksel, we believe that great ideas are born from mutual respect. Our studio is a safe and inclusive space for all entrepreneurs, brands and creative minds. Here, diversity adds up and drives the future of technology.",
+            services_badge: "✦ Heksel Services", brand_title_1: "Want a website like this?", brand_title_2: "Build your brand.",
+            brand_subtitle: "Complete visual identity + professional website + digital ecosystem. From start to infinity.",
+            create_advance: "CREATE IN ADVANCE", create_my_brand: "✦ Create My Brand ✦",
+            live_preview: "Live Preview", freemium: "Freemium", free: "Free",
+            freemium_li1: "Interactive app simulation", freemium_li2: "Final design preview", freemium_li3: "Feature testing", freemium_li4: "No commitment",
+            try_now: "Try It Now", full_access: "Full Access", premium: "Premium",
+            premium_li1: "Complete website + store", premium_li2: "Exclusive visual identity", premium_li3: "Digital ecosystem", premium_li4: "Lifetime support",
+            hire_premium: "Hire Premium", perk1: "⚡ Ultra-professional", perk2: "🎨 Visual identity", perk3: "📱 100% responsive", perk4: "🚀 Fast delivery",
+            collection_tag: "⚡ NEO Collection — Drop 01", collection_title_1: "Every Line.", collection_title_2: "One Empire.",
+            collection_sub: "Laser-engineered performance meets street culture. Six silhouettes. One declaration.",
+            footer_desc: "Designed in Brazil.<br>Engineered Globally.", footer_col1_title: "Collection", footer_col2_title: "Studio",
+            heksel_studio: "Heksel Studio", custom_build: "Custom Build", inner_circle: "Inner Circle", footer_col3_title: "Support",
+            stay_updated: "Stay Updated", choose_channel: "Choose your preferred notification channel",
+            choose_platform: "Choose your Platform", select_social: "Select the social network you want to contact us on.",
+            choose_language: "Choose your Language", select_language: "Select your preferred language for the message.",
+            step1_title: "Step 1", step1_sub: "What's your brand or app name?", brand_name_label: "Brand / App Name *",
+            next: "Next →", step2_title: "Step 2", step2_sub: "What do you need?",
+            build_zero: "Build from Zero", upgrade_site: "Upgrade Site", upgrade_app: "Upgrade App",
+            step3_title: "Step 3", step3_sub: "Your info", your_name_label: "Your Name *",
+            enter_name: "Enter your name", contact_method_label: "How should we contact you?",
+            phone_placeholder: "Your phone number with DDD", discord_placeholder: "Your Discord ID",
+            instagram_placeholder: "Your Instagram @", tiktok_placeholder: "Your TikTok @", gmail_placeholder: "Your Gmail address",
+            step4_title: "Step 4 — Choose Your Plan", step4_sub: "Freemium (test only) or Premium (get commercial proposal)",
+            test_only: "Test only", commercial: "Commercial", start_conversation: "Start Conversation"
+        }
+    };
+
+    function getTranslation(key, lang) {
+        return (translations[lang] && translations[lang][key]) || translations['en'][key] || key;
+    }
+    function translatePage(lang) {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (key) el.textContent = getTranslation(key, lang);
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (key) el.placeholder = getTranslation(key, lang);
+        });
+        document.getElementById('langActiveLabel').textContent = lang.toUpperCase();
+    }
+
+    const LANGUAGES = [
+        { code: "en", name: "English", native: "English" }
+    ];
+    let currentLang = 'en';
+    const langToggle = document.getElementById('langToggle'), langDropdown = document.getElementById('langDropdown'), langSearch = document.getElementById('langSearch'), langList = document.getElementById('langList');
+    function renderLangOptions(query = '') {
+        const filtered = LANGUAGES.filter(l => l.name.toLowerCase().includes(query.toLowerCase()) || l.native.toLowerCase().includes(query.toLowerCase()));
+        langList.innerHTML = filtered.map(l => `<div class="lang-option ${l.code === currentLang ? 'active' : ''}" data-code="${l.code}"><span>${l.native}</span><span>${l.name}</span></div>`).join('');
+        langList.querySelectorAll('.lang-option').forEach(opt => { opt.addEventListener('click', () => { applyLanguage(opt.dataset.code); langDropdown.classList.remove('open'); }); });
+    }
+    function applyLanguage(code) { currentLang = code; translatePage(code); renderLangOptions(langSearch.value); }
+    langToggle.addEventListener('click', (e) => { e.stopPropagation(); if (langDropdown.classList.contains('open')) langDropdown.classList.remove('open'); else { langDropdown.classList.add('open'); langSearch.value = ''; renderLangOptions(); setTimeout(() => langSearch.focus(), 50); } });
+    document.addEventListener('click', (e) => { if (!langToggle.contains(e.target) && !langDropdown.contains(e.target)) langDropdown.classList.remove('open'); });
+    langSearch.addEventListener('input', () => renderLangOptions(langSearch.value));
+    renderLangOptions(); applyLanguage('en');
+
+    // ── CURSOR ──
+    (function(){ const cur = document.getElementById('cur'), ring = document.getElementById('cur-ring'); if (!cur || !ring) return; let mx=0, my=0, cx=0, cy=0; document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; }); setInterval(() => { cx+=(mx-cx)*0.2; cy+=(my-cy)*0.2; cur.style.left=cx+'px'; cur.style.top=cy+'px'; ring.style.left=mx+'px'; ring.style.top=my+'px'; }, 16); })();
+
+    // ── NAV SCROLL ──
+    window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 10); }, { passive: true });
+
+    // ── MOBILE MENU ──
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburgerBtn.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('active'); });
+    document.addEventListener('click', (e) => { if (!hamburgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) mobileMenu.classList.remove('active'); });
+    mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('active')));
+    function closeMobileMenu() { mobileMenu.classList.remove('active'); }
+
+    // ── NOTIFY MODAL ──
+    function openNotifyModal() { document.getElementById('notifyModalOverlay').style.display = 'flex'; closeMobileMenu(); }
+    function closeNotifyModal() { document.getElementById('notifyModalOverlay').style.display = 'none'; }
+    function redirectNotify(platform) { let url = ''; if (platform === 'gmail') url = 'mailto:hafavilhahafy@gmail.com'; else if (platform === 'whatsapp') url = 'https://chat.whatsapp.com/G5q3H5MuJSyCmdAOEcf78T'; else if (platform === 'discord') url = 'https://discord.gg/Y8CNkKFNM'; else if (platform === 'instagram') url = 'https://www.instagram.com/hafavilha'; else if (platform === 'tiktok') url = 'https://vt.tiktok.com/ZSxbdSUg9/'; if (url) { window.open(url, '_blank'); closeNotifyModal(); } }
+    document.getElementById('notifyModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeNotifyModal(); });
+
+    // ── CREATE IN ADVANCE MODAL ──
+    let advanceSelectedPlatform = null;
+    function openCreateAdvanceModal() { document.getElementById('createAdvanceModalOverlay').style.display = 'flex'; document.querySelectorAll('#createAdvanceModal .step-advance').forEach(s => s.classList.remove('active-step')); document.getElementById('advanceStep1').classList.add('active-step'); advanceSelectedPlatform = null; closeMobileMenu(); }
+    function closeCreateAdvanceModal() { document.getElementById('createAdvanceModalOverlay').style.display = 'none'; }
+    function advanceSelectPlatform(platform) { advanceSelectedPlatform = platform; document.querySelectorAll('#createAdvanceModal .step-advance').forEach(s => s.classList.remove('active-step')); document.getElementById('advanceStep2').classList.add('active-step'); renderAdvanceLangOptions(); }
+    function renderAdvanceLangOptions(query = '') { const advanceLangList = document.getElementById('advanceLangList'); if (!advanceLangList) return; const filtered = LANGUAGES.filter(l => l.name.toLowerCase().includes(query.toLowerCase()) || l.native.toLowerCase().includes(query.toLowerCase())); advanceLangList.innerHTML = filtered.map(l => `<div class="lang-option" data-code="${l.code}"><span>${l.native}</span><span>${l.name}</span></div>`).join(''); advanceLangList.querySelectorAll('.lang-option').forEach(opt => opt.addEventListener('click', () => advanceRedirect(opt.dataset.code))); }
+    function advanceRedirect(langCode) { if (!advanceSelectedPlatform) return; const msgMap = { pt: "Olá! Tenho interesse no serviço.", en: "Hello! I'm interested." }; const message = msgMap[langCode] || msgMap['en']; let url = ''; switch(advanceSelectedPlatform) { case 'gmail': url = `mailto:hafavilhahafy@gmail.com?body=${encodeURIComponent(message)}`; break; case 'whatsapp': url = `https://wa.me/5553991855262?text=${encodeURIComponent(message)}`; break; case 'discord': url = 'https://discord.gg/Y8CNkKFNM'; break; case 'instagram': url = 'https://www.instagram.com/hafavilha'; break; case 'tiktok': url = 'https://vt.tiktok.com/ZSxbdSUg9/'; break; } if (url) { window.open(url, '_blank'); closeCreateAdvanceModal(); } }
+    document.getElementById('advanceLangSearch')?.addEventListener('input', (e) => renderAdvanceLangOptions(e.target.value));
+    document.getElementById('createAdvanceModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeCreateAdvanceModal(); });
+
+    // ── MULTI-STEP ORDER ──
+    function toggleContactInput() { const method = document.querySelector('input[name="contactMethod"]:checked')?.value; document.getElementById('whatsappInput').style.display = method === 'whatsapp' ? 'block' : 'none'; document.getElementById('discordInput').style.display = method === 'discord' ? 'block' : 'none'; document.getElementById('instagramInput').style.display = method === 'instagram' ? 'block' : 'none'; document.getElementById('tiktokInput').style.display = method === 'tiktok' ? 'block' : 'none'; document.getElementById('gmailInput').style.display = method === 'gmail' ? 'block' : 'none'; }
+    document.querySelectorAll('input[name="contactMethod"]').forEach(radio => radio.addEventListener('change', toggleContactInput));
+    toggleContactInput();
+    function goToStep(n) { document.querySelectorAll('#orderModal .step').forEach(s => s.classList.remove('active-step')); document.getElementById('step' + n).classList.add('active-step'); }
+    function openOrderModal() { document.getElementById('orderModalOverlay').style.display = 'flex'; document.querySelectorAll('#orderModal .step').forEach(s => s.classList.remove('active-step')); document.getElementById('step1').classList.add('active-step'); document.getElementById('brandNameInput').value = ''; document.getElementById('fullNameInput').value = ''; document.getElementById('whatsappInput').value = ''; document.getElementById('discordInput').value = ''; document.getElementById('instagramInput').value = ''; document.getElementById('tiktokInput').value = ''; document.getElementById('gmailInput').value = ''; document.getElementById('cmWhatsapp').checked = true; toggleContactInput(); }
+    function closeOrderModal() { document.getElementById('orderModalOverlay').style.display = 'none'; }
+    document.getElementById('orderModalOverlay').addEventListener('click', function(e) { if (e.target === this) closeOrderModal(); });
+    function submitOrder() { const brandName = document.getElementById('brandNameInput').value.trim(); const fullName = document.getElementById('fullNameInput').value.trim(); const contactMethod = document.querySelector('input[name="contactMethod"]:checked')?.value || 'whatsapp'; const pricingPlan = document.querySelector('input[name="pricingPlan"]:checked')?.value || 'FREMIUM MODEL'; let contactValue = ''; switch(contactMethod) { case 'whatsapp': contactValue = document.getElementById('whatsappInput').value.trim(); break; case 'discord': contactValue = document.getElementById('discordInput').value.trim(); break; case 'instagram': contactValue = document.getElementById('instagramInput').value.trim(); break; case 'tiktok': contactValue = document.getElementById('tiktokInput').value.trim(); break; case 'gmail': contactValue = document.getElementById('gmailInput').value.trim(); break; } if (!brandName || !fullName || !contactValue) { alert('Please fill all fields'); return; } const messages = { pt: `Olá! Pedido do plano ${pricingPlan} para ${brandName}.`, en: `Hello! Ordered ${pricingPlan} for ${brandName}.` }; const message = messages[currentLang] || messages.en; db.collection('orders').add({ brandName, fullName, contactMethod, contactValue, pricingPlan, timestamp: new Date().toISOString(), lang: currentLang }).catch(() => {}); let url = ''; if (contactMethod === 'whatsapp') url = `https://wa.me/55${contactValue.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`; else if (contactMethod === 'gmail') url = `mailto:${contactValue}?body=${encodeURIComponent(message)}`; if (url) window.open(url, '_blank'); closeOrderModal(); }
+
+    // ── MEO-NAI VIEWER ──
+    function switchView(view) { document.getElementById('slideCustomize').classList.toggle('active', view === 'customize'); document.getElementById('slideExample').classList.toggle('active', view === 'example'); document.getElementById('btnCustomize').classList.toggle('active-view', view === 'customize'); document.getElementById('btnExample').classList.toggle('active-view', view === 'example'); }
+    document.getElementById('info-trigger').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('collector-info-modal').classList.toggle('show'); });
+    document.getElementById('collector-close-btn').addEventListener('click', (e) => { e.stopPropagation(); document.getElementById('collector-info-modal').classList.remove('show'); });
+
+    let frontFile = null, backFile = null;
+    window.handleFileSelect = function(side) {
+        const input = side === 'front' ? document.getElementById('frontFileInput') : document.getElementById('backFileInput');
+        const preview = side === 'front' ? document.getElementById('frontPreview') : document.getElementById('backPreview');
+        const file = input.files[0];
+        if (side === 'front') frontFile = file; else backFile = file;
+        if (file) { const reader = new FileReader(); reader.onload = function(e) { preview.src = e.target.result; preview.style.display = 'block'; }; reader.readAsDataURL(file); }
+        else { preview.style.display = 'none'; }
+    };
+    window.openCustomization = function() { const panel = document.getElementById('customization-panel'); panel.classList.toggle('open'); if (panel.classList.contains('open')) setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100); };
+
+    // ═══════════════ INICIALIZAÇÃO DOS SELETORES ═══════════════
+    (function() {
+        const colorPicker = document.getElementById('colorPicker');
+        const colorHexDisplay = document.getElementById('colorHexDisplay');
+        const selectedColorHexInput = document.getElementById('selectedColorHex');
+        const moletomPreview = document.getElementById('moletomPreview');
+        function updateSweaterColor(hex) {
+            if (moletomPreview) moletomPreview.style.background = hex;
+            if (colorHexDisplay) colorHexDisplay.textContent = hex;
+            if (selectedColorHexInput) selectedColorHexInput.value = hex;
+        }
+        if (colorPicker) { colorPicker.addEventListener('input', () => updateSweaterColor(colorPicker.value)); updateSweaterColor(colorPicker.value); }
+        const styleBtns = document.querySelectorAll('.style-btn');
+        const selectedStyleInput = document.getElementById('selectedStyle');
+        const moletomImage = document.getElementById('moletomImage');
+        styleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                styleBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedStyleInput.value = btn.dataset.style;
+                if (moletomImage && btn.dataset.image) {
+                    moletomImage.src = btn.dataset.image;
+                }
+            });
+        });
+        const positionBtns = document.querySelectorAll('.position-btn');
+        const selectedPositionInput = document.getElementById('selectedPosition');
+        positionBtns.forEach(btn => { btn.addEventListener('click', () => { positionBtns.forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedPositionInput.value = btn.dataset.position; }); });
+        const sizeBtns = document.querySelectorAll('.size-btn');
+        const selectedSizeInput = document.getElementById('selectedSize');
+        const customSizeInput = document.getElementById('customSizeInput');
+        const otherSizeBtn = document.getElementById('otherSizeBtn');
+        let isCustomSize = false;
+        sizeBtns.forEach(btn => {
+            if (btn === otherSizeBtn) {
+                btn.addEventListener('click', () => { isCustomSize = !isCustomSize; if (isCustomSize) { customSizeInput.style.display = 'block'; btn.classList.add('selected'); sizeBtns.forEach(b => { if (b !== btn) b.classList.remove('selected'); }); selectedSizeInput.value = ''; } else { customSizeInput.style.display = 'none'; btn.classList.remove('selected'); const any = [...sizeBtns].some(b => b.classList.contains('selected') && b !== btn); if (!any) { sizeBtns[0].classList.add('selected'); selectedSizeInput.value = sizeBtns[0].dataset.size; } } });
+            } else {
+                btn.addEventListener('click', () => { if (isCustomSize) { isCustomSize = false; customSizeInput.style.display = 'none'; otherSizeBtn.classList.remove('selected'); } sizeBtns.forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSizeInput.value = btn.dataset.size; });
+            }
+        });
+        customSizeInput.addEventListener('input', () => { if (isCustomSize) selectedSizeInput.value = customSizeInput.value; });
+    })();
+
+    // ═══════════════ CHECKOUT LEVE (NOVO LINK DO MAKE) ═══════════════
+    window.secureYourPiece = async function() {
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const postalCode = document.getElementById('postalCode').value.trim();
+        const country = document.getElementById('country').value.trim();
+        const selectedColorHex = document.getElementById('selectedColorHex').value;
+        const selectedStyle = document.getElementById('selectedStyle').value;
+        const selectedPosition = document.getElementById('selectedPosition').value;
+        const selectedSize = document.getElementById('selectedSize').value;
+        const leftSleeve = document.getElementById('leftSleeveCheck').checked;
+        const rightSleeve = document.getElementById('rightSleeveCheck').checked;
+        if (!fullName || !email || !address || !city || !postalCode || !country) { alert('Please fill all shipping fields.'); return; }
+        if (!selectedSize) { alert('Please select a size or enter a custom size.'); return; }
+        const overlay = document.getElementById('loadingOverlay');
+        const logDiv = document.getElementById('loadingLog');
+        overlay.classList.add('active');
+        logDiv.innerHTML = '';
+        const messages = ['💸 [FINANCIAL INBOUND] Validating transaction...','🔐 [ENCRYPTION] Securing payload...','🏭 [HEKSEL FACTORY] Spinning production...','🧵 [MATERIAL] Picking premium cotton...','🖨️ [PRINT HEAD] Calibrating...'];
+        let i = 0;
+        const interval = setInterval(() => { if (i < messages.length) { const span = document.createElement('span'); span.textContent = messages[i]; logDiv.appendChild(span); i++; } else clearInterval(interval); }, 800);
+        try {
+            await db.collection('heksel_orders').add({
+                fullName, email, address, city, postalCode, country,
+                size: selectedSize, colorHex: selectedColorHex, style: selectedStyle,
+                position: selectedPosition, leftSleeve, rightSleeve,
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            // NOVO LINK DO MAKE ATUALIZADO
+            const makeWebhookUrl = 'https://hook.us2.make.com/cuijl325qrnxbjhkmp9bolezh2qrkxew';
+            const lightPayload = {
+                fullName, email, address, city, postalCode, country,
+                colorHex: selectedColorHex,
+                size: selectedSize,
+                style: selectedStyle,
+                chestPrintStyle: selectedPosition,
+                leftSleevePrint: leftSleeve,
+                rightSleevePrint: rightSleeve,
+                totalValue: "R$ 300,00",
+                product: "MEO-NAI Sweatshirt",
+                gifts: "Carta Personalizada 🃏 + Adesivo Exclusivo Heksel + Fragrância Especial Imperium 🧪",
+                timestamp: new Date().toISOString()
+            };
+            const response = await fetch(makeWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(lightPayload)
+            });
+            if (!response.ok) throw new Error('Webhook failed');
+            const receiptCard = document.getElementById('receiptCard');
+            document.getElementById('receiptDetails').innerHTML = `
+                Name: ${fullName}<br>
+                Size: ${selectedSize}<br>
+                Color: ${selectedColorHex}<br>
+                Style: ${selectedStyle}<br>
+                Position: ${selectedPosition}<br>
+                Left Sleeve: ${leftSleeve ? 'Yes' : 'No'}<br>
+                Right Sleeve: ${rightSleeve ? 'Yes' : 'No'}<br>
+                Order ID: ${Math.floor(Math.random()*1000000)}
+            `;
+            receiptCard.classList.add('show');
+            overlay.classList.remove('active');
+            logDiv.innerHTML = '';
+            clearInterval(interval);
+        } catch (error) {
+            alert('Error processing order: ' + error.message);
+            overlay.classList.remove('active');
+            logDiv.innerHTML = '';
+            clearInterval(interval);
+        }
+    };
+
+    // ═══════════════ THEME TOGGLE ═══════════════
+    (function initTheme() {
+        const FAB = document.getElementById('themeFab'), ICON = document.getElementById('themeIcon'), TOAST = document.getElementById('easterToast'), body = document.body;
+        function randomHex() { return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'); }
+        function hexToRgba(hex, alpha) { const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},${alpha})`; }
+        let mode = 'dark', clickTimes = [], toastTimer;
+        FAB?.addEventListener('click', () => {
+            const now = Date.now(); clickTimes.push(now); clickTimes = clickTimes.filter(t => now - t < 1200);
+            if (clickTimes.length >= 3) { clickTimes = []; activateSecret(); return; }
+            if (mode === 'dark') { body.classList.add('theme-light'); body.classList.remove('theme-secret'); ICON.textContent = '🌙'; mode = 'light'; window.updateCosmosColors('#00f0ff', '#b45eff'); }
+            else if (mode === 'light') { body.classList.remove('theme-light', 'theme-secret'); ICON.textContent = '☀'; mode = 'dark'; window.updateCosmosColors('#00f0ff', '#b45eff'); }
+            else { body.classList.remove('theme-light', 'theme-secret'); ICON.textContent = '☀'; mode = 'dark'; window.updateCosmosColors('#00f0ff', '#b45eff'); }
+        });
+        function activateSecret() {
+            const color1 = randomHex(), color2 = randomHex();
+            body.classList.remove('theme-light'); body.classList.add('theme-secret');
+            body.style.background = `linear-gradient(135deg, ${hexToRgba(color1,0.18)}, ${hexToRgba(color2,0.12)}), #050508`;
+            const root = document.documentElement.style;
+            root.setProperty('--cyan', color1); root.setProperty('--purple', color2);
+            root.setProperty('--cyan-glow', hexToRgba(color1,0.6)); root.setProperty('--purple-glow', hexToRgba(color2,0.6));
+            root.setProperty('--cyan-dim', hexToRgba(color1,0.2)); root.setProperty('--purple-dim', hexToRgba(color2,0.2));
+            ICON.textContent = '🌈'; mode = 'secret';
+            window.updateCosmosColors(color1, color2);
+            if (TOAST) { TOAST.querySelector('span').textContent = `🌈 SECRET — ${color1} × ${color2}`; TOAST.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => TOAST.classList.remove('show'), 3000); }
+        }
+    })();
+</script>
+</body>
+</html>

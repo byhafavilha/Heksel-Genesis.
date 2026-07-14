@@ -514,35 +514,58 @@ html, body {
 *, *::before, *::after { box-sizing: border-box; }
 
 @media (max-width: 800px) {
-  /* Inner sections: tighter side padding on mobile */
-  .section-inner { padding: 0 20px !important; }
+  /* Sections: 16px side padding matches the original HTML */
+  .section-inner { padding: 0 16px !important; width: 100% !important; max-width: 100% !important; }
 
-  .hero { margin-top: 0; padding-top: 60px; }
-  .hero .section-inner { grid-template-columns: 1fr; gap: 16px; justify-items: center; }
-  .hero-left { text-align: center; align-items: center; display: flex; flex-direction: column; width: 100%; order: 1; }
-  .hero-right { order: 0; width: 100%; display: flex; justify-content: center; }
+  /* Nav */
+  nav { height: 60px; }
+
+  /* Hero: full dynamic viewport height, centred */
+  .hero { height: 100dvh; margin-top: 0; padding-top: 60px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .hero .section-inner { grid-template-columns: 1fr; justify-items: center; align-items: center; gap: 16px; padding: 16px !important; width: 100% !important; max-width: 100% !important; margin: 0 auto; height: 100%; overflow-y: auto; }
+  .hero-left { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; order: 1; flex-shrink: 0; }
+  .hero-right { order: 0; width: 100%; display: flex; justify-content: center; flex-shrink: 0; }
   .hero-left h1 { font-size: clamp(2rem,8vw,3rem); margin-bottom: 12px; }
   .hero-left p { max-width: 100%; margin-bottom: 18px; font-size: .9rem; }
   .hero-actions { width: 100%; margin-bottom: 30px; }
-  .hero-actions-inner { flex-direction: column; gap: 10px; }
+  .hero-actions-inner { width: 100%; flex-direction: column; gap: 10px; }
   .btn-primary, .btn-order { width: 100%; justify-content: center; padding: 12px 20px; font-size: .7rem; }
   .hero-stats { gap: 16px; justify-content: center; width: 100%; }
   .stat-divider { height: 18px; width: 1px; }
   .stat-num { font-size: 1.3rem; }
   .stat-label { font-size: .5rem; }
   .product-viewer { max-width: 100%; }
+
+  /* Manifesto */
   .manifesto-section { padding: 60px 0; }
   .manifesto-text { font-size: 1.2rem; }
+
+  /* Safe space */
   .safe-space-section { padding: 50px 0; }
   .safe-space-card { padding: 32px 20px; }
   .safe-space-title { font-size: 1.4rem; }
+
+  /* Brand / Plans (vanilla CSS classes from the original HTML) */
+  .brand-section { padding: 80px 0; }
+  .brand-section h2 { font-size: clamp(1.8rem,5vw,2.8rem); }
+  .plan-duo { gap: 20px; }
+  .plan-card { padding: 28px 20px 24px; }
+
+  /* Collection grid */
   .collection { padding: 80px 0; }
   .card-grid { grid-template-columns: repeat(2,1fr); gap: 20px; }
   .prod-card { max-width: 100%; }
+
+  /* Footer */
+  footer { padding: 60px 0 28px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { justify-content: center; flex-direction: column; align-items: center; gap: 8px; }
+  .footer-logo { text-align: center; }
+  .social-icons { justify-content: center; }
+  .footer-copy { text-align: center; }
 }
 
 @media (max-width: 480px) {
   /* Single-column product grid on very small screens */
   .card-grid { grid-template-columns: 1fr; gap: 16px; }
-  .section-inner { padding: 0 16px !important; }
 }
