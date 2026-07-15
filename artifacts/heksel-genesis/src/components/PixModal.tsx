@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, X, QrCode } from 'lucide-react';
+import { Copy, Check, X, ExternalLink } from 'lucide-react';
 
 interface PixModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSimulateSuccess: () => void;
 }
+
+// ==========================================================
+// ⚙️ CONFIGURAÇÃO DE PAGAMENTO REAL DA HEKSEL GENESIS
+// ==========================================================
+const LINK_PAGAMENTO_ASAAS = "https://www.asaas.com/c/pene9j40zamre2ci";
+const SUA_CHAVE_PIX_REAL = "9ef8eb7f-94d7-4009-8fe0-c971038cbece"; // Sua chave aleatória do Asaas
+const NOME_DO_BENEFICIARIO = "HEKSEL GENESIS"; 
+const CIDADE_DO_BENEFICIARIO = "SAO PAULO"; 
+const VALOR_DA_COBRANCA = "300.00"; 
+// ==========================================================
 
 const logs = [
   "💸 [FINANCIAL INBOUND] Validating transaction...",
@@ -16,35 +26,70 @@ const logs = [
   "🖨️ [PRINT HEAD] Calibrating..."
 ];
 
-// Simple UUID generator for demo
-function generateUUID() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
+function gerarPixCopiaECola(chave: string, nome: string, cidade: string, valor: string) {
+  const formatField = (id: string, value: string) => {
+    const len = value.length.toString().padStart(2, '0');
+    return `${id}${len}${value}`;
+  };
 
-function fakeCRC() {
-  return Math.floor(Math.random() * 65535).toString(16).toUpperCase().padStart(4, '0');
+  const merchantAccountInfo = formatField('01', '36') + formatField('01', chave);
+  const payloadFormat = formatField('00', '01');
+  const categoryCode = formatField('52', '0000');
+  const currencyCode = formatField('53', '986');
+  const transactionAmount = formatField('54', valor);
+  const countryCode = formatField('58', 'BR');
+  const merchantName = formatField('59', nome.slice(0, 25));
+  const merchantCity = formatField('60', cidade.slice(0, 15));
+  const additionalData = formatField('62', formatField('05', 'HEKSELGENESIS'));
+
+  const payload = payloadFormat + 
+                  formatField('26', merchantAccountInfo) + 
+                  categoryCode + 
+                  currencyCode + 
+                  transactionAmount + 
+                  countryCode + 
+                  merchantName + 
+                  merchantCity + 
+                  additionalData + 
+                  "6304"; 
+
+  let crc = 0xFFFF;
+  for (let c = 0; c < payload.length; c++) {
+    crc ^= payload.charCodeAt(c) << 8;
+    for (let i = 0; i < 8; i++) {
+      if (crc & 0x8000) {
+        crc = (crc << 1) ^ 0x1021;
+      } else {
+        crc = crc << 1;
+      }
+    }
+  }
+  const crcHex = (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+  return payload + crcHex;
 }
 
 export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) {
   const [loadingStep, setLoadingStep] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
+  const [timeLeft, setTimeLeft] = useState(600); 
   const [copied, setCopied] = useState(false);
   const [pixCode, setPixCode] = useState("");
 
-  // Reset state when opened
   useEffect(() => {
     if (isOpen) {
       setLoadingStep(0);
       setIsLoading(true);
       setTimeLeft(600);
       setCopied(false);
-      setPixCode(`00020126580014br.gov.bcb.pix0136${generateUUID()}5204000053039865802BR5913HekselGenesis6008SaoPaulo62290525HEKSEL${Date.now().toString(36).toUpperCase()}6304${fakeCRC()}`);
-      
-      // Sequence logs
+
+      const realPix = gerarPixCopiaECola(
+        SUA_CHAVE_PIX_REAL, 
+        NOME_DO_BENEFICIARIO, 
+        CIDADE_DO_BENEFICIARIO, 
+        VALOR_DA_COBRANCA
+      );
+      setPixCode(realPix);
+
       const interval = setInterval(() => {
         setLoadingStep(prev => {
           if (prev >= logs.length - 1) {
@@ -55,19 +100,18 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
           return prev + 1;
         });
       }, 800);
-      
+
       return () => clearInterval(interval);
     }
   }, [isOpen]);
 
-  // Timer
   useEffect(() => {
     if (!isOpen || isLoading || timeLeft <= 0) return;
-    
+
     const timer = setInterval(() => {
       setTimeLeft(prev => prev - 1);
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [isOpen, isLoading, timeLeft]);
 
@@ -80,8 +124,8 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  
+  const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0network')}`;
+
   let timerColor = 'border-cyan text-cyan';
   if (timeLeft <= 300) timerColor = 'border-gold text-gold';
   if (timeLeft <= 120) timerColor = 'border-red-500 text-red-500 animate-pulse';
@@ -123,80 +167,68 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
               <X className="w-5 h-5" />
             </button>
 
-            <div className="text-center mb-8">
-              <h2 className="font-display font-bold text-3xl text-cyan mb-2">🎉 ORDER CONFIRMED</h2>
-              <p className="text-white/60 font-sans text-sm">Escaneie o QR Code ou use o código Pix abaixo para pagar</p>
+            <div className="text-center mb-6">
+              <h2 className="font-display font-bold text-3xl text-cyan mb-2">🎉 VALOR DA COMPRA: R$ 300,00</h2>
+              <p className="text-white/60 font-sans text-sm">Escolha a sua forma de pagamento preferida:</p>
             </div>
 
-            {/* Fake QR Code */}
-            <div className="bg-white p-4 rounded-xl w-[200px] h-[200px] mx-auto mb-8 relative">
-              <div className="absolute inset-4 grid grid-cols-[repeat(21,1fr)] grid-rows-[repeat(21,1fr)] gap-[1px]">
-                {/* Generated deterministic pattern based on time/render */}
-                {Array.from({ length: 441 }).map((_, i) => {
-                  const row = Math.floor(i / 21);
-                  const col = i % 21;
-                  // Finder patterns
-                  const isTL = row < 7 && col < 7;
-                  const isTR = row < 7 && col > 13;
-                  const isBL = row > 13 && col < 7;
-                  
-                  if (isTL || isTR || isBL) {
-                    if (row === 0 || row === 6 || col === 0 || col === 6 || (isTR && (row === 0 || row===6 || col===14 || col===20)) || (isBL && (row===14 || row===20 || col===0 || col===6))) return <div key={i} className="bg-black"></div>;
-                    if (row >= 2 && row <= 4 && col >= 2 && col <= 4) return <div key={i} className="bg-black"></div>;
-                    if (isTR && row >= 2 && row <= 4 && col >= 16 && col <= 18) return <div key={i} className="bg-black"></div>;
-                    if (isBL && row >= 16 && row <= 18 && col >= 2 && col <= 4) return <div key={i} className="bg-black"></div>;
-                    return <div key={i} className="bg-white"></div>;
-                  }
-                  
-                  // Random-ish data
-                  const isBlack = (row * 3 + col * 7) % 2 === 0;
-                  return <div key={i} className={isBlack ? "bg-black" : "bg-white"}></div>;
-                })}
-              </div>
+            {/* 💳 BOTÃO DE PAGAMENTO DIRETO DO ASAAS (MÉTODO PREMIUM) */}
+            <a 
+              href={LINK_PAGAMENTO_ASAAS} 
+              target="_bin" 
+              rel="noopener noreferrer"
+              className="w-full py-4 mb-6 bg-gradient-to-r from-cyan to-purple-600 hover:from-cyan/80 hover:to-purple-700 text-white rounded-xl font-display font-bold uppercase flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transform hover:-translate-y-0.5"
+            >
+              <ExternalLink className="w-5 h-5" />
+              💳 PAGAR COM CARTÃO / PIX / BOLETO
+            </a>
+
+            <div className="relative flex py-2 items-center mb-6">
+                <div className="flex-grow border-t border-white/10"></div>
+                <span className="flex-shrink mx-4 text-white/40 font-mono text-xs">OU SE PREFERIR PIX DIRETO</span>
+                <div className="flex-grow border-t border-white/10"></div>
             </div>
 
-            <div className="mb-6">
-              <label className="text-xs font-mono text-white/50 mb-2 block">PIX COPIA E COLA</label>
+            {/* QR Code */}
+            <div className="bg-white p-4 rounded-xl w-[190px] h-[190px] mx-auto mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+              {pixCode && (
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(pixCode)}`} 
+                  alt="QR Code Pix" 
+                  className="w-[160px] h-[160px]"
+                />
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label className="text-[10px] font-mono text-white/50 mb-1.5 block uppercase">PIX COPIA E COLA</label>
               <input 
                 type="text" 
                 readOnly 
                 value={pixCode}
-                className="w-full bg-black/50 border border-white/10 rounded-lg p-3 font-mono text-xs text-cyan focus:outline-none"
+                onClick={handleCopy}
+                className="w-full bg-black/50 border border-white/10 rounded-lg p-2.5 font-mono text-[10px] text-cyan focus:outline-none cursor-pointer"
               />
             </div>
 
             <button 
               onClick={handleCopy}
               disabled={timeLeft <= 0}
-              className="w-full py-3 mb-8 bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-xl font-display uppercase flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 mb-6 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg font-display text-sm uppercase flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
             >
-              {copied ? <Check className="w-5 h-5 text-green-400" /> : <Copy className="w-5 h-5" />}
-              {copied ? "✅ COPIADO!" : "📋 COPIAR CÓDIGO PIX"}
+              {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+              {copied ? "COPIADO!" : "COPIAR CÓDIGO PIX"}
             </button>
 
             {/* Timer */}
-            <div className={`p-4 border rounded-xl text-center mb-6 transition-colors ${timerColor}`}>
-              <div className="text-[10px] font-mono uppercase tracking-wider mb-1">⚡ TEMPO RESTANTE PARA PAGAMENTO</div>
+            <div className={`p-3 border rounded-xl text-center mb-6 transition-colors text-xs ${timerColor}`}>
+              <div className="text-[9px] font-mono uppercase tracking-wider mb-0.5">⚡ TEMPO RESTANTE PARA PAGAMENTO</div>
               {timeLeft > 0 ? (
-                <div className="font-mono text-3xl font-bold">{timeString}</div>
+                <div className="font-mono text-2xl font-bold">{timeString}</div>
               ) : (
-                <div className="font-mono text-sm text-red-500">⏰ TEMPO EXPIRADO — Gere um novo código</div>
+                <div className="font-mono text-xs text-red-500">⏰ TEMPO EXPIRADO — Gere um novo código</div>
               )}
             </div>
-
-            {/* Sim Button */}
-            {timeLeft > 0 && (
-              <motion.button
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3 }}
-                onClick={() => {
-                  onSimulateSuccess();
-                  onClose();
-                }}
-                className="w-full py-2 border border-green-500/50 text-green-400 hover:bg-green-500/10 rounded-lg text-xs font-mono uppercase transition-colors"
-              >
-                SIMULAR PAGAMENTO CONFIRMADO
-              </motion.button>
-            )}
 
           </motion.div>
         )}

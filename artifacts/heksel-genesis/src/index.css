@@ -382,7 +382,7 @@
 }
 .hero .section-inner {
   display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 48px;
-  padding-top: 24px; padding-bottom: 48px;
+  min-height: 100vh; padding-top: 88px; padding-bottom: 48px;
 }
 .hero-left { position: relative; z-index: 1; }
 .badge {

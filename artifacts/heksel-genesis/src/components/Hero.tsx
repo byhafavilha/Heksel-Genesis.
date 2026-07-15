@@ -13,7 +13,7 @@ export function Hero({ onOrderClick }: HeroProps) {
   return (
     <section className="hero" id="hero">
       <div className="scanline" />
-      <div className="section-inner" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px', alignItems: 'center', minHeight: '100vh', paddingTop: '88px', paddingBottom: '48px' }}>
+      <div className="section-inner">
 
         {/* Left */}
         <div className="hero-left">
