@@ -1,3 +1,6 @@
+Por favor, atualize o arquivo `src/components/SafeSpace.tsx` substituindo todo o conteúdo dele por este novo código com estilo cyber-luxury de alta costura e estética cyberpunk tecnológica:
+
+```tsx
 import React, { useEffect, useState } from 'react';
 import { Heart, Zap, Network, Eye, Code } from 'lucide-react';
 
