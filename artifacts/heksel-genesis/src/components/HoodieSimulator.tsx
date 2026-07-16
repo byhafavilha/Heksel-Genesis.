@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 /* ─────────────────────────────────────────────────────
-   CREATING MY BRAND — Hoodie Color Simulator
+   SEE AN INTERACTIVE EXAMPLE — Hoodie Color Simulator
    Layout: modelo-cards grandes em cima (scroll horizontal
    no mobile) + preview central com sobreposição de cor
 ───────────────────────────────────────────────────── */
@@ -81,10 +81,16 @@ export function HoodieSimulator() {
 
       <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
 
-        {/* Header */}
+        {/* Header (Texto alterado e com degradê neon pulsante!) */}
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <span className="section-tag">⚡ Simulador de Identidade</span>
-          <h2 className="section-title">Creating My<br /><span className="glow-text">Brand.</span></h2>
+          <h2 className="section-title" style={{ lineHeight: '1.1', textTransform: 'none' }}>
+            See an
+            <br />
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse" style={{ display: 'inline-block' }}>
+              interactive example
+            </span>
+          </h2>
           <p className="section-sub" style={{ maxWidth: 540, margin: '0 auto' }}>
             Escolha o modelo base, selecione a cor da sua identidade e veja como vai ficar.
           </p>
@@ -483,7 +489,7 @@ export function HoodieSimulator() {
               <div style={{
                 padding: '13px 22px', borderTop: '1px solid rgba(255,255,255,0.05)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              }}>
+              }} vapour-border-bottom="">
                 <span style={{
                   fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
                   color: 'rgba(255,255,255,0.18)', letterSpacing: '0.12em',
