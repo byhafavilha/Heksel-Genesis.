@@ -1,3 +1,6 @@
+Crie um arquivo chamado `src/components/SafeSpace.tsx` e cole o seguinte código React/TypeScript impecável nele:
+
+```tsx
 import React from 'react';
 import { Heart, Globe, Sparkles } from 'lucide-react';
 

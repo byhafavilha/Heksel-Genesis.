@@ -1,0 +1,34 @@
+Você é um Arquiteto de Software Sênior. Vamos reconstruir a HEKSEL GENESIS com o seu design original impecável. 
+
+### 🌌 ESTILO VISUAL OBRIGATÓRIO:
+- **Fundo Espacial de Luxo:** Todo o site deve ter um fundo profissional de espaço sideral escuro, com estrelas sutis e poeira cósmica (subtle glowing space background). O visual deve ser extremamente premium, escuro e galáctico.
+- **Sem Invencionices:** Delete qualquer menção a "Trosk Factory". Mantenha o design limpo e de alta costura original.
+
+### 🗺️ A ORDEM EXATA DAS 6 SEÇÕES (DE CIMA PARA BAIXO):
+
+1. **Seção 1: Simulador de Moletons & "Safe Space"**
+   - Deve carregar o simulador interativo de moletons (`HoodieSimulator`).
+   - Deve conter o texto sagrado do **"Safe Space"**: Uma mensagem emocionante e profissional explicando que a Heksel é um espaço seguro e acolhedor para todos — lésbicas, gays, furries, pessoas trans —, pois todos são pessoas normais e incríveis com gostos diferentes. Essa mensagem deve ser altamente cativante e fazer qualquer um se apaixonar pela marca.
+
+2. **Seção 2: "From beginning to infinity"**
+   - Uma seção de transição ou Hero com o texto de impacto "From beginning to infinity" flutuando sobre o fundo estrelado cósmico.
+
+3. **Seção 3: "A Diretiva Gênesis"**
+   - Seção de copywriting com textos matadores e persuasivos de alta conversão, mostrando que a Heksel Genesis é a grande porta de entrada para o futuro da moda e tecnologia.
+
+4. **Seção 4: "See an interactive example"**
+   - Área interativa mostrando um exemplo prático e dinâmico de como a marca funciona.
+
+5. **Seção 5: "Want a website like this? Build your brand."**
+   - A nossa tabela de preços oficial com os planos de marca:
+     * **Plano Freemio** (recursos iniciais)
+     * **Plano Preemio** (recursos de elite)
+
+6. **Seção 6: "See what the future holds" (Coleção de Tênis)**
+   - O componente oficial de tênis (`Collection`), mostrando os cards com os contadores de escassez (ex: "🔥 ONLY 15 LEFT") e o botão de reservar.
+
+### 🚨 REQUISITOS TÉCNICOS:
+- Conecte o componente de checkout via Pix (`PixModa.tsx`) para abrir perfeitamente com o QR Code e o botão "Copia e Cola" quando o cliente clicar para comprar qualquer produto (moleton ou tênis).
+- Não crie arquivos duplicados com números (como `vite.config (1).ts`). Mantenha a árvore de arquivos 100% limpa.
+
+Configure a estrutura agora e me diga quando estiver pronto para eu enviar os códigos dos componentes!
