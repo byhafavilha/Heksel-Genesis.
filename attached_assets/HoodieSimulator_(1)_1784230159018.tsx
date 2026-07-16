@@ -489,7 +489,7 @@ export function HoodieSimulator() {
               <div style={{
                 padding: '13px 22px', borderTop: '1px solid rgba(255,255,255,0.05)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              }}>
+              }} vapour-border-bottom="">
                 <span style={{
                   fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
                   color: 'rgba(255,255,255,0.18)', letterSpacing: '0.12em',

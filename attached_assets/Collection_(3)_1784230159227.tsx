@@ -110,6 +110,13 @@ const PRODUCTS: Product[] = [
   }
 ];
 
+const IMAGE_PATHS = [
+  '\${base}/attached_assets/\${img}',
+  '\${base}/\${img}',
+  'attached_assets/\${img}',
+  '\${img}'
+];
+
 /* ============================================
    STYLES (CSS String)
    ============================================ */
@@ -396,12 +403,11 @@ function ProductCard({ product, onNotifyMe }: ProductCardProps) {
 
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-  const candidatePaths = [
-    `${base}/attached_assets/${encodeURIComponent(product.img)}`,
-    `${base}/${encodeURIComponent(product.img)}`,
-    `attached_assets/${encodeURIComponent(product.img)}`,
-    encodeURIComponent(product.img),
-  ];
+  const candidatePaths = IMAGE_PATHS.map(path =>
+    path
+      .replace('\${base}', base)
+      .replace('\${img}', encodeURIComponent(product.img))
+  );
 
   const currentSrc = candidatePaths[currentPathIndex];
 
@@ -470,7 +476,7 @@ function ProductCard({ product, onNotifyMe }: ProductCardProps) {
         <button
           className="notify-btn-card"
           onClick={onNotifyMe}
-          aria-label={`Get notifications for ${product.name}`}
+          aria-label={`Get notifications for \${product.name}`}
         >
           <Bell size={14} />
           Secure Access
