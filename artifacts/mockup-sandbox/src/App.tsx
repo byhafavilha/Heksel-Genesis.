@@ -1,146 +1,92 @@
-import { useEffect, useState, type ComponentType } from "react";
+import { useState } from 'react';
+import { Route, Switch, Router as WouterRouter } from 'wouter';
+import { CosmosCanvas } from '@/components/CosmosCanvas';
+import { CustomCursor } from '@/components/CustomCursor';
+import { Navbar } from '@/components/Navbar';
+import { Hero } from '@/components/Hero';
+import { CustomizationPanel } from '@/components/CustomizationPanel';
+import { Manifesto } from '@/components/Manifesto';
+import { SafeSpace } from '@/components/SafeSpace';
+import { BrandSection } from '@/components/BrandSection';
+import { HoodieSimulator } from '@/components/HoodieSimulator';
+import { Collection } from '@/components/Collection';
+import { Footer } from '@/components/Footer';
+import { PixModal } from '@/components/PixModal';
+import { NotifyModal, CreateBrandModal, CreateAdvanceModal } from '@/components/Modals';
+import { ThemeToggleFAB } from '@/components/ThemeToggleFAB';
 
-import { modules as discoveredModules } from "./.generated/mockup-components";
+function HekselApp() {
+  const [customizationOpen, setCustomizationOpen] = useState(false);
 
-type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
+  // Modals state
+  const [showPixModal, setShowPixModal] = useState(false);
+  const [showNotifyModal, setShowNotifyModal] = useState(false);
+  const [showBrandModal, setShowBrandModal] = useState(false);
+  const [showAdvanceModal, setShowAdvanceModal] = useState(false);
 
-function _resolveComponent(
-  mod: Record<string, unknown>,
-  name: string,
-): ComponentType | undefined {
-  const fns = Object.values(mod).filter(
-    (v) => typeof v === "function",
-  ) as ComponentType[];
   return (
-    (mod.default as ComponentType) ||
-    (mod.Preview as ComponentType) ||
-    (mod[name] as ComponentType) ||
-    fns[fns.length - 1]
-  );
-}
+    <div className="min-h-screen bg-background text-foreground selection:bg-cyan/30 selection:text-white">
+      <CustomCursor />
+      <CosmosCanvas />
 
-function PreviewRenderer({
-  componentPath,
-  modules,
-}: {
-  componentPath: string;
-  modules: ModuleMap;
-}) {
-  const [Component, setComponent] = useState<ComponentType | null>(null);
-  const [error, setError] = useState<string | null>(null);
+      <Navbar onNotifyMe={() => setShowNotifyModal(true)} />
 
-  useEffect(() => {
-    let cancelled = false;
+      <main className="relative z-10">
+        <Hero onOrderClick={() => setCustomizationOpen(true)} />
 
-    setComponent(null);
-    setError(null);
+        <CustomizationPanel 
+          isOpen={customizationOpen} 
+          onClose={() => setCustomizationOpen(false)} 
+          onCheckout={() => {
+            setCustomizationOpen(false);
+            setShowPixModal(true);
+          }}
+        />
 
-    async function loadComponent(): Promise<void> {
-      const key = `./components/mockups/${componentPath}.tsx`;
-      const loader = modules[key];
-      if (!loader) {
-        setError(`No component found at ${componentPath}.tsx`);
-        return;
-      }
+        <Manifesto />
+        <SafeSpace />
 
-      try {
-        const mod = await loader();
-        if (cancelled) {
-          return;
-        }
-        const name = componentPath.split("/").pop()!;
-        const comp = _resolveComponent(mod, name);
-        if (!comp) {
-          setError(
-            `No exported React component found in ${componentPath}.tsx\n\nMake sure the file has at least one exported function component.`,
-          );
-          return;
-        }
-        setComponent(() => comp);
-      } catch (e) {
-        if (cancelled) {
-          return;
-        }
+        <HoodieSimulator />
 
-        const message = e instanceof Error ? e.message : String(e);
-        setError(`Failed to load preview.\n${message}`);
-      }
-    }
+        <BrandSection 
+          onCreateAdvance={() => setShowAdvanceModal(true)}
+          onHirePremium={() => setShowPixModal(true)}
+        />
 
-    void loadComponent();
+        <Collection onNotifyMe={() => setShowNotifyModal(true)} />
+      </main>
 
-    return () => {
-      cancelled = true;
-    };
-  }, [componentPath, modules]);
+      <Footer />
 
-  if (error) {
-    return (
-      <pre style={{ color: "red", padding: "2rem", fontFamily: "system-ui" }}>
-        {error}
-      </pre>
-    );
-  }
+      {/* Modals */}
+      <PixModal 
+        isOpen={showPixModal} 
+        onClose={() => setShowPixModal(false)}
+        onSimulateSuccess={() => {
+          setTimeout(() => {
+            document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }}
+      />
 
-  if (!Component) return null;
+      <NotifyModal isOpen={showNotifyModal} onClose={() => setShowNotifyModal(false)} />
+      <CreateBrandModal isOpen={showBrandModal} onClose={() => setShowBrandModal(false)} />
+      <CreateAdvanceModal isOpen={showAdvanceModal} onClose={() => setShowAdvanceModal(false)} />
 
-  return <Component />;
-}
-
-function getBasePath(): string {
-  return import.meta.env.BASE_URL.replace(/\/$/, "");
-}
-
-function getPreviewExamplePath(): string {
-  const basePath = getBasePath();
-  return `${basePath}/preview/ComponentName`;
-}
-
-function Gallery() {
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-8">
-      <div className="text-center max-w-md">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-3">
-          Component Preview Server
-        </h1>
-        <p className="text-gray-500 mb-4">
-          This server renders individual components for the workspace canvas.
-        </p>
-        <p className="text-sm text-gray-400">
-          Access component previews at{" "}
-          <code className="bg-gray-100 px-1.5 py-0.5 rounded text-gray-600">
-            {getPreviewExamplePath()}
-          </code>
-        </p>
-      </div>
+      <ThemeToggleFAB />
     </div>
   );
 }
 
-function getPreviewPath(): string | null {
-  const basePath = getBasePath();
-  const { pathname } = window.location;
-  const local =
-    basePath && pathname.startsWith(basePath)
-      ? pathname.slice(basePath.length) || "/"
-      : pathname;
-  const match = local.match(/^\/preview\/(.+)$/);
-  return match ? match[1] : null;
-}
-
 function App() {
-  const previewPath = getPreviewPath();
-
-  if (previewPath) {
-    return (
-      <PreviewRenderer
-        componentPath={previewPath}
-        modules={discoveredModules}
-      />
-    );
-  }
-
-  return <Gallery />;
+  return (
+    <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+      <Switch>
+        <Route path="/" component={HekselApp} />
+        <Route component={HekselApp} />
+      </Switch>
+    </WouterRouter>
+  );
 }
 
 export default App;
