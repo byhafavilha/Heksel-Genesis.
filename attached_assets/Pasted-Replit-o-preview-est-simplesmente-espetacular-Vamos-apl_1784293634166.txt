@@ -1,0 +1,32 @@
+Replit, o preview está simplesmente espetacular! Vamos aplicar os ajustes finais de engenharia e design para transformar isso no sistema definitivo de e-commerce cyber-luxury. 
+
+Por favor, implemente com total atenção as seguintes atualizações no projeto:
+
+### 1️⃣ FUNDO ESPACIAL PROFISSIONAL (Global Cyber-Space Background)
+- Atualize o plano de fundo principal do site para um tema espacial profundo de alta fidelidade.
+- Use um gradiente rico que transicione entre `#000000`, um azul-cósmico bem escuro e roxo-nebula profundo, adicionando partículas ou texturas sutis que lembrem estrelas distantes e poeira cósmica, mantendo o visual luxuoso, limpo e futurista.
+
+### 2️⃣ CUSTOMIZAÇÃO EM 4 ÁREAS (Estilo Printful Premium)
+- No simulador da Seção 4 ("See an interactive example"), expanda a lógica para permitir que o usuário gerencie **4 áreas independentes de estampa**:
+  1. Frente (Front)
+  2. Atrás (Back)
+  3. Manga Esquerda (Left Sleeve)
+  4. Manga Direita (Right Sleeve)
+- O usuário deve conseguir fazer o upload de imagens diferentes para cada uma dessas 4 posições e visualizar o preview em tempo real ao alternar os seletores.
+
+### 3️⃣ TRAVA DE MOVIMENTAÇÃO VERTICAL NA FRENTE
+- Para garantir a simetria perfeita da alta costura da Heksel, adicione uma restrição no ajuste de posição da estampa da **Frente (Front)**:
+  - O usuário **só poderá mover a imagem da frente para cima e para baixo (eixo Y)**. 
+  - Bloqueie completamente qualquer movimento lateral (eixo X) para manter o gráfico sempre perfeitamente centralizado.
+
+### 4️⃣ INTEGRAÇÃO DO PixModal.tsx COM DADOS DO BANCO (Checkout Asaas/Nubank)
+- Adicione um botão premium de "Finalizar Compra / Adquirir Moletom Personalizado".
+- Ao clicar, abra o nosso componente `PixModal.tsx`.
+- Esse modal deve coletar as informações obrigatórias que intermediadores e bancos (como Asaas ou Nubank) exigem para gerar um Pix Dinâmico seguro:
+  - Nome Completo
+  - CPF ou CNPJ
+  - E-mail
+  - Telefone / WhatsApp
+- Após preencher esses dados e confirmar, a interface deve exibir de forma ultra profissional o **QR Code do Pix** gerado e o botão funcional de **"Copiar e Colar"** da chave Pix para o cliente pagar instantaneamente.
+
+Execute essas atualizações mantendo todo o estilo brutalista dark intacto e verifique se o build compila 100% sem erros!

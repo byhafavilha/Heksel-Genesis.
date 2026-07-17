@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, X, ExternalLink } from 'lucide-react';
+import { Copy, Check, X, ExternalLink, ChevronRight, User, CreditCard, Mail, Phone } from 'lucide-react';
 
 interface PixModalProps {
   isOpen: boolean;
@@ -12,10 +12,10 @@ interface PixModalProps {
 // ⚙️ CONFIGURAÇÃO DE PAGAMENTO REAL DA HEKSEL GENESIS
 // ==========================================================
 const LINK_PAGAMENTO_ASAAS = "https://www.asaas.com/c/pene9j40zamre2ci";
-const SUA_CHAVE_PIX_REAL = "3d1b7fde-f1fd-406d-9d36-140751f1af91"; 
-const NOME_DO_BENEFICIARIO = "HEKSEL GENESIS"; 
-const CIDADE_DO_BENEFICIARIO = "SAO PAULO"; 
-const VALOR_DA_COBRANCA = "300.00"; 
+const SUA_CHAVE_PIX_REAL = "3d1b7fde-f1fd-406d-9d36-140751f1af91";
+const NOME_DO_BENEFICIARIO = "HEKSEL GENESIS";
+const CIDADE_DO_BENEFICIARIO = "SAO PAULO";
+const VALOR_DA_COBRANCA = "300.00";
 // ==========================================================
 
 const logs = [
@@ -23,21 +23,18 @@ const logs = [
   "🔐 [ENCRYPTION] Securing payload...",
   "🏭 [HEKSEL FACTORY] Spinning production...",
   "🧵 [MATERIAL] Picking premium cotton...",
-  "🖨️ [PRINT HEAD] Calibrating..."
+  "🖨️ [PRINT HEAD] Calibrating...",
 ];
 
-// Gerador Real de Pix Estático com cálculo de CRC16 CCITT
+// Gerador Real de Pix Estático com CRC16 CCITT
 function gerarPixCopiaECola(chave: string, nome: string, cidade: string, valor: string) {
   const formatField = (id: string, value: string) => {
     const len = value.length.toString().padStart(2, '0');
     return `${id}${len}${value}`;
   };
-
-  // 🔥 O SEGREDO ESTAVA AQUI: Inserindo a assinatura do Banco Central "br.gov.bcb.pix"
   const gui = formatField('00', 'br.gov.bcb.pix');
   const key = formatField('01', chave);
   const merchantAccountInfo = gui + key;
-
   const payloadFormat = formatField('00', '01');
   const categoryCode = formatField('52', '0000');
   const currencyCode = formatField('53', '986');
@@ -46,80 +43,145 @@ function gerarPixCopiaECola(chave: string, nome: string, cidade: string, valor: 
   const merchantName = formatField('59', nome.substring(0, 25));
   const merchantCity = formatField('60', cidade.substring(0, 15));
   const additionalData = formatField('62', formatField('05', 'HEKSELGENESIS'));
-
-  const payload = payloadFormat + 
-                  formatField('26', merchantAccountInfo) + 
-                  categoryCode + 
-                  currencyCode + 
-                  transactionAmount + 
-                  countryCode + 
-                  merchantName + 
-                  merchantCity + 
-                  additionalData + 
-                  "6304"; 
-
-  // Algoritmo CRC16 Oficial
+  const payload =
+    payloadFormat +
+    formatField('26', merchantAccountInfo) +
+    categoryCode + currencyCode + transactionAmount +
+    countryCode + merchantName + merchantCity + additionalData + "6304";
   let crc = 0xFFFF;
   for (let c = 0; c < payload.length; c++) {
     crc ^= payload.charCodeAt(c) << 8;
     for (let i = 0; i < 8; i++) {
-      if (crc & 0x8000) {
-        crc = (crc << 1) ^ 0x1021;
-      } else {
-        crc = crc << 1;
-      }
+      crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1;
     }
   }
-  const crcHex = (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
-  return payload + crcHex;
+  return payload + (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
 }
 
-export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) {
-  const [loadingStep, setLoadingStep] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(600); 
-  const [copied, setCopied] = useState(false);
-  const [pixCode, setPixCode] = useState("");
+// CPF/CNPJ mask helper
+function maskDoc(value: string) {
+  const digits = value.replace(/\D/g, '');
+  if (digits.length <= 11) {
+    // CPF: 000.000.000-00
+    return digits
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  }
+  // CNPJ: 00.000.000/0000-00
+  return digits
+    .replace(/(\d{2})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1/$2')
+    .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+}
 
+function maskPhone(value: string) {
+  const digits = value.replace(/\D/g, '');
+  if (digits.length <= 10) {
+    return digits.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3').trim().replace(/-$/, '');
+  }
+  return digits.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3').trim().replace(/-$/, '');
+}
+
+type ModalStep = 'form' | 'loading' | 'qr';
+
+interface FormData {
+  nome: string;
+  doc: string;
+  email: string;
+  phone: string;
+}
+
+interface FieldErrors {
+  nome?: string;
+  doc?: string;
+  email?: string;
+  phone?: string;
+}
+
+const inputStyle: React.CSSProperties = {
+  width: '100%', background: 'rgba(255,255,255,0.04)',
+  border: '1.5px solid rgba(255,255,255,0.1)',
+  borderRadius: 10, padding: '12px 14px',
+  fontFamily: "'DM Sans',sans-serif", fontSize: '0.9rem',
+  color: '#fff', outline: 'none', transition: 'border-color 0.2s',
+};
+
+const labelStyle: React.CSSProperties = {
+  fontFamily: "'Space Mono',monospace", fontSize: '0.58rem',
+  color: 'rgba(255,255,255,0.4)', letterSpacing: '0.18em',
+  textTransform: 'uppercase', marginBottom: 6, display: 'block',
+};
+
+export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) {
+  const [step, setStep] = useState<ModalStep>('form');
+  const [form, setForm] = useState<FormData>({ nome: '', doc: '', email: '', phone: '' });
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+
+  const [loadingStep, setLoadingStep] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(600);
+  const [copied, setCopied] = useState(false);
+  const [pixCode, setPixCode] = useState('');
+
+  // Reset on open
   useEffect(() => {
     if (isOpen) {
-      setLoadingStep(0);
-      setIsLoading(true);
-      setTimeLeft(600);
+      setStep('form');
+      setForm({ nome: '', doc: '', email: '', phone: '' });
+      setErrors({});
+      setFocusedField(null);
       setCopied(false);
-
-      const realPix = gerarPixCopiaECola(
-        SUA_CHAVE_PIX_REAL, 
-        NOME_DO_BENEFICIARIO, 
-        CIDADE_DO_BENEFICIARIO, 
-        VALOR_DA_COBRANCA
-      );
-      setPixCode(realPix);
-
-      const interval = setInterval(() => {
-        setLoadingStep(prev => {
-          if (prev >= logs.length - 1) {
-            clearInterval(interval);
-            setTimeout(() => setIsLoading(false), 800);
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, 800);
-
-      return () => clearInterval(interval);
     }
   }, [isOpen]);
 
+  // Loading animation → QR
   useEffect(() => {
-    if (!isOpen || isLoading || timeLeft <= 0) return;
+    if (step !== 'loading') return;
+    setLoadingStep(0);
+    setTimeLeft(600);
+    const realPix = gerarPixCopiaECola(SUA_CHAVE_PIX_REAL, NOME_DO_BENEFICIARIO, CIDADE_DO_BENEFICIARIO, VALOR_DA_COBRANCA);
+    setPixCode(realPix);
+    const interval = setInterval(() => {
+      setLoadingStep(prev => {
+        if (prev >= logs.length - 1) {
+          clearInterval(interval);
+          setTimeout(() => setStep('qr'), 800);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 700);
+    return () => clearInterval(interval);
+  }, [step]);
 
-    const timer = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
-    }, 1000);
-
+  // QR countdown
+  useEffect(() => {
+    if (step !== 'qr' || timeLeft <= 0) return;
+    const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
     return () => clearInterval(timer);
-  }, [isOpen, isLoading, timeLeft]);
+  }, [step, timeLeft]);
+
+  const validateForm = (): boolean => {
+    const newErrors: FieldErrors = {};
+    if (!form.nome.trim() || form.nome.trim().split(' ').length < 2)
+      newErrors.nome = 'Informe nome e sobrenome';
+    const docDigits = form.doc.replace(/\D/g, '');
+    if (docDigits.length !== 11 && docDigits.length !== 14)
+      newErrors.doc = 'CPF (11 dígitos) ou CNPJ (14 dígitos)';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+      newErrors.email = 'E-mail inválido';
+    const phoneDigits = form.phone.replace(/\D/g, '');
+    if (phoneDigits.length < 10 || phoneDigits.length > 11)
+      newErrors.phone = 'Telefone inválido (DDD + número)';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) setStep('loading');
+  };
 
   const handleCopy = () => {
     if (timeLeft <= 0) return;
@@ -131,127 +193,483 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-  let timerColor = 'border-cyan text-cyan';
-  if (timeLeft <= 300) timerColor = 'border-gold text-gold';
-  if (timeLeft <= 120) timerColor = 'border-red-500 text-red-500 animate-pulse';
+  let timerColor = '#00f0ff';
+  if (timeLeft <= 300) timerColor = '#c9a84c';
+  if (timeLeft <= 120) timerColor = '#ff2d55';
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm">
+    <div
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: 'rgba(0,0,0,0.92)', backdropFilter: 'blur(8px)',
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <AnimatePresence mode="wait">
-        {isLoading ? (
-          <motion.div 
+
+        {/* ── STEP: FORM ── */}
+        {step === 'form' && (
+          <motion.div
+            key="form"
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35 }}
+            style={{
+              width: '100%', maxWidth: 480,
+              background: '#08080f',
+              border: '1.5px solid rgba(180,94,255,0.35)',
+              borderRadius: 24, padding: '32px 32px 28px',
+              boxShadow: '0 0 60px rgba(180,94,255,0.15), 0 0 120px rgba(0,0,0,0.6)',
+              maxHeight: '90vh', overflowY: 'auto',
+              position: 'relative',
+            }}
+          >
+            <button onClick={onClose} style={{
+              position: 'absolute', top: 16, right: 16,
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: 'rgba(255,255,255,0.4)', transition: 'color 0.2s',
+            }}>
+              <X size={20} />
+            </button>
+
+            {/* Header */}
+            <div style={{ textAlign: 'center', marginBottom: 28 }}>
+              <div style={{
+                fontFamily: "'Space Mono',monospace", fontSize: '0.58rem',
+                color: 'rgba(180,94,255,0.8)', letterSpacing: '0.22em',
+                textTransform: 'uppercase', marginBottom: 10,
+              }}>
+                🔐 Checkout Seguro — Heksel Genesis
+              </div>
+              <div style={{
+                fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '1.6rem',
+                background: 'linear-gradient(135deg,#b45eff,#00f0ff)',
+                WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+                marginBottom: 8,
+              }}>
+                R$ 300,00
+              </div>
+              <p style={{
+                fontFamily: "'DM Sans',sans-serif", fontSize: '0.82rem',
+                color: 'rgba(255,255,255,0.45)', lineHeight: 1.5,
+              }}>
+                Preencha seus dados para gerar o Pix dinâmico seguro via Asaas.
+              </p>
+            </div>
+
+            {/* Fields */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+
+              {/* Nome */}
+              <div>
+                <label style={labelStyle}>
+                  <User size={10} style={{ display: 'inline', marginRight: 6 }} />
+                  Nome Completo *
+                </label>
+                <input
+                  type="text"
+                  placeholder="Ex: Ana Souza"
+                  value={form.nome}
+                  onChange={(e) => setForm(f => ({ ...f, nome: e.target.value }))}
+                  onFocus={() => setFocusedField('nome')}
+                  onBlur={() => setFocusedField(null)}
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.nome
+                      ? 'rgba(255,45,85,0.7)'
+                      : focusedField === 'nome'
+                      ? 'rgba(180,94,255,0.7)'
+                      : 'rgba(255,255,255,0.1)',
+                  }}
+                />
+                {errors.nome && (
+                  <span style={{
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.5rem',
+                    color: '#ff2d55', marginTop: 5, display: 'block',
+                  }}>
+                    ⚠ {errors.nome}
+                  </span>
+                )}
+              </div>
+
+              {/* CPF/CNPJ */}
+              <div>
+                <label style={labelStyle}>
+                  <CreditCard size={10} style={{ display: 'inline', marginRight: 6 }} />
+                  CPF ou CNPJ *
+                </label>
+                <input
+                  type="text"
+                  placeholder="000.000.000-00"
+                  value={form.doc}
+                  onChange={(e) => setForm(f => ({ ...f, doc: maskDoc(e.target.value) }))}
+                  onFocus={() => setFocusedField('doc')}
+                  onBlur={() => setFocusedField(null)}
+                  maxLength={18}
+                  style={{
+                    ...inputStyle,
+                    fontFamily: "'Space Mono',monospace",
+                    borderColor: errors.doc
+                      ? 'rgba(255,45,85,0.7)'
+                      : focusedField === 'doc'
+                      ? 'rgba(180,94,255,0.7)'
+                      : 'rgba(255,255,255,0.1)',
+                  }}
+                />
+                {errors.doc && (
+                  <span style={{
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.5rem',
+                    color: '#ff2d55', marginTop: 5, display: 'block',
+                  }}>
+                    ⚠ {errors.doc}
+                  </span>
+                )}
+              </div>
+
+              {/* Email */}
+              <div>
+                <label style={labelStyle}>
+                  <Mail size={10} style={{ display: 'inline', marginRight: 6 }} />
+                  E-mail *
+                </label>
+                <input
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={form.email}
+                  onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  style={{
+                    ...inputStyle,
+                    borderColor: errors.email
+                      ? 'rgba(255,45,85,0.7)'
+                      : focusedField === 'email'
+                      ? 'rgba(180,94,255,0.7)'
+                      : 'rgba(255,255,255,0.1)',
+                  }}
+                />
+                {errors.email && (
+                  <span style={{
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.5rem',
+                    color: '#ff2d55', marginTop: 5, display: 'block',
+                  }}>
+                    ⚠ {errors.email}
+                  </span>
+                )}
+              </div>
+
+              {/* Telefone */}
+              <div>
+                <label style={labelStyle}>
+                  <Phone size={10} style={{ display: 'inline', marginRight: 6 }} />
+                  Telefone / WhatsApp *
+                </label>
+                <input
+                  type="tel"
+                  placeholder="(11) 99999-9999"
+                  value={form.phone}
+                  onChange={(e) => setForm(f => ({ ...f, phone: maskPhone(e.target.value) }))}
+                  onFocus={() => setFocusedField('phone')}
+                  onBlur={() => setFocusedField(null)}
+                  maxLength={15}
+                  style={{
+                    ...inputStyle,
+                    fontFamily: "'Space Mono',monospace",
+                    borderColor: errors.phone
+                      ? 'rgba(255,45,85,0.7)'
+                      : focusedField === 'phone'
+                      ? 'rgba(180,94,255,0.7)'
+                      : 'rgba(255,255,255,0.1)',
+                  }}
+                />
+                {errors.phone && (
+                  <span style={{
+                    fontFamily: "'Space Mono',monospace", fontSize: '0.5rem',
+                    color: '#ff2d55', marginTop: 5, display: 'block',
+                  }}>
+                    ⚠ {errors.phone}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* CTA */}
+            <button
+              onClick={handleSubmit}
+              style={{
+                marginTop: 24, width: '100%', padding: '14px 20px',
+                background: 'linear-gradient(135deg, #b45eff, #6b21a8)',
+                border: 'none', borderRadius: 12, cursor: 'pointer',
+                fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '0.82rem',
+                color: '#fff', letterSpacing: '0.12em', textTransform: 'uppercase',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                boxShadow: '0 0 30px rgba(180,94,255,0.35)',
+                transition: 'all 0.3s',
+              }}
+            >
+              Gerar Pix Seguro
+              <ChevronRight size={16} />
+            </button>
+
+            {/* Alt: card payment */}
+            <div style={{ marginTop: 16, textAlign: 'center' }}>
+              <div style={{
+                fontFamily: "'Space Mono',monospace", fontSize: '0.48rem',
+                color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em',
+                marginBottom: 10,
+              }}>
+                — OU PAGUE DIRETO —
+              </div>
+              <a
+                href={LINK_PAGAMENTO_ASAAS}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: '0.7rem',
+                  color: '#00f0ff', letterSpacing: '0.1em', textTransform: 'uppercase',
+                  textDecoration: 'none',
+                  padding: '10px 20px',
+                  border: '1px solid rgba(0,240,255,0.3)',
+                  borderRadius: 10,
+                  background: 'rgba(0,240,255,0.06)',
+                  transition: 'all 0.2s',
+                }}
+              >
+                <ExternalLink size={12} />
+                Cartão / Boleto via Asaas
+              </a>
+            </div>
+
+            <p style={{
+              marginTop: 16, textAlign: 'center',
+              fontFamily: "'Space Mono',monospace", fontSize: '0.46rem',
+              color: 'rgba(255,255,255,0.15)', letterSpacing: '0.08em',
+            }}>
+              🔒 Dados protegidos · Pagamento processado por Asaas
+            </p>
+          </motion.div>
+        )}
+
+        {/* ── STEP: LOADING ── */}
+        {step === 'loading' && (
+          <motion.div
             key="loading"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="text-left font-mono text-sm max-w-md w-full p-8"
+            style={{ textAlign: 'left', fontFamily: "'Space Mono',monospace", fontSize: '0.85rem', maxWidth: 440, width: '100%', padding: '2rem' }}
           >
             {logs.slice(0, loadingStep + 1).map((log, i) => (
-              <motion.div 
-                key={i} 
-                initial={{ opacity: 0, x: -10 }} 
-                animate={{ opacity: 1, x: 0 }}
-                className={i === loadingStep ? "text-cyan" : "text-white/40"}
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+                style={{ color: i === loadingStep ? '#00f0ff' : 'rgba(255,255,255,0.35)', marginBottom: 10 }}
               >
                 {log}
               </motion.div>
             ))}
-            <div className="mt-4 flex gap-1 items-center h-4 text-cyan">
-              <span className="animate-bounce">.</span>
-              <span className="animate-bounce" style={{ animationDelay: "0.1s" }}>.</span>
-              <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>.</span>
+            <div style={{ marginTop: 16, display: 'flex', gap: 4, color: '#00f0ff' }}>
+              <span style={{ animation: 'bounce 0.8s infinite' }}>.</span>
+              <span style={{ animation: 'bounce 0.8s 0.1s infinite' }}>.</span>
+              <span style={{ animation: 'bounce 0.8s 0.2s infinite' }}>.</span>
             </div>
           </motion.div>
-        ) : (
-          <motion.div 
-            key="receipt"
-            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
-            className="w-full max-w-lg bg-[#0a0a0f] border border-cyan/50 rounded-2xl p-6 md:p-8 shadow-[0_0_50px_rgba(0,240,255,0.15)] relative max-h-[90vh] overflow-y-auto"
+        )}
+
+        {/* ── STEP: QR CODE ── */}
+        {step === 'qr' && (
+          <motion.div
+            key="qr"
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+            style={{
+              width: '100%', maxWidth: 480,
+              background: '#08080f',
+              border: '1.5px solid rgba(0,240,255,0.35)',
+              borderRadius: 24, padding: '28px',
+              boxShadow: '0 0 60px rgba(0,240,255,0.12)',
+              maxHeight: '90vh', overflowY: 'auto',
+              position: 'relative',
+            }}
           >
-            <button onClick={onClose} className="absolute top-4 right-4 p-2 text-white/50 hover:text-white transition-colors">
-              <X className="w-5 h-5" />
+            <button onClick={onClose} style={{
+              position: 'absolute', top: 16, right: 16,
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: 'rgba(255,255,255,0.4)',
+            }}>
+              <X size={20} />
             </button>
 
-            <div className="text-center mb-6">
-              <h2 className="font-display font-bold text-3xl text-cyan mb-2">🎉 VALOR DA COMPRA: R$ 300,00</h2>
-              <p className="text-white/60 font-sans text-sm">Escolha a sua forma de pagamento preferida:</p>
+            {/* Customer summary */}
+            <div style={{
+              marginBottom: 20, padding: '12px 16px', borderRadius: 12,
+              background: 'rgba(180,94,255,0.07)', border: '1px solid rgba(180,94,255,0.2)',
+            }}>
+              <div style={{
+                fontFamily: "'Space Mono',monospace", fontSize: '0.5rem',
+                color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em',
+                textTransform: 'uppercase', marginBottom: 6,
+              }}>
+                Comprador
+              </div>
+              <div style={{
+                fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: '0.88rem', color: '#fff',
+              }}>
+                {form.nome}
+              </div>
+              <div style={{
+                fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                color: 'rgba(255,255,255,0.4)', marginTop: 4,
+              }}>
+                {form.doc} · {form.email}
+              </div>
             </div>
 
-            {/* 💳 BOTÃO DE PAGAMENTO DIRETO DO ASAAS */}
-            <a 
-              href={LINK_PAGAMENTO_ASAAS} 
-              target="_blank" 
+            <div style={{ textAlign: 'center', marginBottom: 20 }}>
+              <h2 style={{
+                fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '1.6rem',
+                background: 'linear-gradient(135deg,#00f0ff,#b45eff)',
+                WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+                marginBottom: 4,
+              }}>
+                🎉 R$ 300,00
+              </h2>
+              <p style={{
+                fontFamily: "'DM Sans',sans-serif", fontSize: '0.8rem',
+                color: 'rgba(255,255,255,0.45)',
+              }}>
+                Escaneie o QR Code ou copie o código Pix
+              </p>
+            </div>
+
+            {/* Direct Asaas button */}
+            <a
+              href={LINK_PAGAMENTO_ASAAS}
+              target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-4 mb-6 bg-gradient-to-r from-cyan to-purple-600 hover:from-cyan/80 hover:to-purple-700 text-white rounded-xl font-display font-bold uppercase flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transform hover:-translate-y-0.5"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                width: '100%', padding: '14px', marginBottom: 20,
+                background: 'linear-gradient(135deg,#00f0ff,#b45eff)',
+                border: 'none', borderRadius: 12, cursor: 'pointer',
+                fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '0.78rem',
+                color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase',
+                textDecoration: 'none',
+                boxShadow: '0 0 24px rgba(0,240,255,0.3)',
+              }}
             >
-              <ExternalLink className="w-5 h-5" />
+              <ExternalLink size={14} />
               💳 PAGAR COM CARTÃO / PIX / BOLETO
             </a>
 
-            <div className="relative flex py-2 items-center mb-6">
-                <div className="flex-grow border-t border-white/10"></div>
-                <span className="flex-shrink mx-4 text-white/40 font-mono text-xs">OU SE PREFERIR PIX DIRETO</span>
-                <div className="flex-grow border-t border-white/10"></div>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20,
+            }}>
+              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
+              <span style={{
+                fontFamily: "'Space Mono',monospace", fontSize: '0.48rem',
+                color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em',
+              }}>
+                OU PIX DIRETO
+              </span>
+              <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
             </div>
 
             {/* QR Code */}
-            <div className="bg-white p-4 rounded-xl w-[190px] h-[190px] mx-auto mb-6 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+            <div style={{
+              background: '#fff', padding: 12, borderRadius: 16,
+              width: 180, height: 180, margin: '0 auto 20px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 0 20px rgba(0,240,255,0.15)',
+            }}>
               {pixCode && (
-                <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(pixCode)}`} 
-                  alt="QR Code Pix" 
-                  className="w-[160px] h-[160px]"
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=155x155&data=${encodeURIComponent(pixCode)}`}
+                  alt="QR Code Pix"
+                  style={{ width: 155, height: 155 }}
                 />
               )}
             </div>
 
-            <div className="mb-4">
-              <label className="text-[10px] font-mono text-white/50 mb-1.5 block uppercase">PIX COPIA E COLA</label>
-              <input 
-                type="text" 
-                readOnly 
-                value={pixCode}
+            {/* Pix code */}
+            <div style={{ marginBottom: 12 }}>
+              <label style={labelStyle}>PIX COPIA E COLA</label>
+              <input
+                type="text" readOnly value={pixCode}
                 onClick={handleCopy}
-                className="w-full bg-black/50 border border-white/10 rounded-lg p-2.5 font-mono text-[10px] text-cyan focus:outline-none cursor-pointer"
+                style={{
+                  ...inputStyle,
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
+                  color: '#00f0ff', cursor: 'pointer',
+                }}
               />
             </div>
 
-            <button 
+            <button
               onClick={handleCopy}
               disabled={timeLeft <= 0}
-              className="w-full py-2.5 mb-6 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg font-display text-sm uppercase flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+              style={{
+                width: '100%', padding: '12px', marginBottom: 16,
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 10, cursor: timeLeft > 0 ? 'pointer' : 'not-allowed',
+                fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: '0.78rem',
+                color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                transition: 'all 0.2s', opacity: timeLeft > 0 ? 1 : 0.4,
+              }}
             >
-              {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-              {copied ? "COPIADO!" : "COPIAR CÓDIGO PIX"}
+              {copied ? <Check size={14} color="#4ade80" /> : <Copy size={14} />}
+              {copied ? 'COPIADO!' : 'COPIAR CÓDIGO PIX'}
             </button>
 
             {/* Timer */}
-            <div className={`p-3 border rounded-xl text-center mb-4 transition-colors text-xs ${timerColor}`}>
-              <div className="text-[9px] font-mono uppercase tracking-wider mb-0.5">⚡ TEMPO RESTANTE PARA PAGAMENTO</div>
+            <div style={{
+              padding: '12px', borderRadius: 12, border: `1px solid ${timerColor}55`,
+              textAlign: 'center', marginBottom: 14, transition: 'border-color 0.4s',
+            }}>
+              <div style={{
+                fontFamily: "'Space Mono',monospace", fontSize: '0.48rem',
+                color: 'rgba(255,255,255,0.35)', letterSpacing: '0.15em', marginBottom: 4,
+              }}>
+                ⚡ TEMPO RESTANTE
+              </div>
               {timeLeft > 0 ? (
-                <div className="font-mono text-2xl font-bold">{timeString}</div>
+                <div style={{
+                  fontFamily: "'Space Mono',monospace", fontSize: '1.8rem',
+                  fontWeight: 700, color: timerColor, transition: 'color 0.4s',
+                }}>
+                  {timeString}
+                </div>
               ) : (
-                <div className="font-mono text-xs text-red-500">⏰ TEMPO EXPIRADO — Gere um novo código</div>
+                <div style={{
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.72rem',
+                  color: '#ff2d55',
+                }}>
+                  ⏰ EXPIRADO — Volte ao início para um novo código
+                </div>
               )}
             </div>
 
-            {/* Botão de Simular Sucesso */}
+            {/* Simulate success */}
             {timeLeft > 0 && (
               <motion.button
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3 }}
-                onClick={() => {
-                  onSimulateSuccess();
-                  onClose();
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
+                onClick={() => { onSimulateSuccess(); onClose(); }}
+                style={{
+                  width: '100%', padding: '10px',
+                  background: 'none', border: '1px solid rgba(74,222,128,0.4)',
+                  borderRadius: 10, cursor: 'pointer',
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                  color: '#4ade80', letterSpacing: '0.1em', textTransform: 'uppercase',
+                  transition: 'all 0.2s',
                 }}
-                className="w-full py-2 border border-green-500/50 text-green-400 hover:bg-green-500/10 rounded-lg text-[10px] font-mono uppercase transition-colors"
               >
                 SIMULAR PAGAMENTO CONFIRMADO
               </motion.button>
             )}
-
           </motion.div>
         )}
+
       </AnimatePresence>
     </div>
   );
