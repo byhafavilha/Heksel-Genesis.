@@ -1,3 +1,6 @@
+Por favor, atualize o arquivo `src/components/SafeSpace.tsx` com o seguinte código interativo, que traz efeitos holográficos, chuva de emojis ao clique e estilo cyber-luxury de alta costura:
+
+```tsx
 import React, { useEffect, useState } from 'react';
 import { Heart, Zap, Network, Eye, Code, Send } from 'lucide-react';
 
@@ -69,20 +72,29 @@ export const SafeSpace: React.FC = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Glow Ciano Superior Esquerdo */}
         <div 
-          className="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500 rounded-full blur-3xl animate-pulse"
-          style={{ opacity: 0.4 * glowIntensity }}
+          className="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500 rounded-full blur-3xl opacity-40 animate-pulse"
+          style={{ 
+            animationDelay: '0s',
+            opacity: 0.4 * glowIntensity
+          }}
         ></div>
         
         {/* Glow Roxo Inferior Direito */}
         <div 
-          className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600 rounded-full blur-3xl animate-pulse" 
-          style={{ animationDelay: '1s', opacity: 0.4 * glowIntensity }}
+          className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600 rounded-full blur-3xl opacity-40 animate-pulse" 
+          style={{ 
+            animationDelay: '1s',
+            opacity: 0.4 * glowIntensity
+          }}
         ></div>
         
         {/* Glow Rosa Neon Centro */}
         <div 
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: '0.5s', opacity: 0.5 * glowIntensity }}
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500 rounded-full blur-3xl opacity-50 animate-pulse"
+          style={{ 
+            animationDelay: '0.5s',
+            opacity: 0.5 * glowIntensity
+          }}
         ></div>
 
         {/* Grid Background Sutil */}
@@ -91,7 +103,7 @@ export const SafeSpace: React.FC = () => {
           style={{
             backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.08) 25%, rgba(0, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.08) 75%, rgba(0, 255, 255, 0.08) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.08) 25%, rgba(0, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.08) 75%, rgba(0, 255, 255, 0.08) 76%, transparent 77%, transparent)',
             backgroundSize: '50px 50px',
-            opacity: 0.1 * glowIntensity,
+            opacity: 0.1 * glowIntensity
           }}
         ></div>
       </div>
@@ -100,13 +112,12 @@ export const SafeSpace: React.FC = () => {
       {floatingEmojis.map((item) => (
         <div
           key={item.id}
-          className="absolute text-3xl pointer-events-none"
+          className="absolute text-3xl pointer-events-none animate-bounce"
           style={{
             left: `${item.x}%`,
             top: `${item.y}%`,
             animation: `emojiRain ${item.duration}s linear forwards`,
             opacity: 1,
-            zIndex: 50,
           }}
         >
           {item.emoji}
@@ -116,10 +127,10 @@ export const SafeSpace: React.FC = () => {
       {/* Card Principal - Cyber Luxury */}
       <div className="relative z-10 w-full max-w-4xl">
         {/* Glow ao redor do card */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 via-purple-500/30 to-pink-500/30 opacity-75 blur-xl pointer-events-none"></div>
+        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 via-purple-500/30 to-pink-500/30 rounded-none opacity-75 blur-xl group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
         <div 
-          className="relative backdrop-blur-xl bg-black/60 border border-cyan-500/40 p-8 md:p-12 lg:p-16 shadow-2xl transition-all duration-500 group hover:border-pink-500/60 overflow-hidden"
+          className="relative backdrop-blur-xl bg-black/60 border border-cyan-500/40 rounded-none p-8 md:p-12 lg:p-16 shadow-2xl transition-all duration-500 group hover:border-pink-500/60 overflow-hidden"
           style={{ borderRadius: '2px' }}
         >
           {/* Corner Accents - Design Futurista */}
@@ -128,10 +139,13 @@ export const SafeSpace: React.FC = () => {
           <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-purple-500/80 pointer-events-none"></div>
           <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-cyan-500/80 pointer-events-none"></div>
 
+          {/* Animated Border Glow */}
+          <div className="absolute inset-0 border border-gradient-to-r from-cyan-500/0 via-pink-500/20 to-purple-500/0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
           {/* Content Container */}
           <div className="relative z-20 space-y-10">
             
-            {/* System Status Bar */}
+            {/* System Status Bar - COM EMOJIS */}
             <div className="flex items-center justify-between text-xs tracking-widest text-cyan-400/90 font-mono">
               <span className="flex items-center gap-2 hover:text-cyan-300 transition-colors duration-300">
                 <Code className="w-3 h-3" />
@@ -149,46 +163,43 @@ export const SafeSpace: React.FC = () => {
             {/* Top Icons Section */}
             <div className="flex items-center justify-center gap-6">
               <div 
-                className="p-3 border border-cyan-500/40 hover:border-cyan-500 hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 cursor-pointer group/icon"
+                className="p-3 border border-cyan-500/40 rounded-none hover:border-cyan-500 hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 cursor-pointer group"
                 style={{ borderRadius: '2px' }}
                 onMouseEnter={() => handleSectionHover('love')}
                 onMouseLeave={() => setActiveSection(null)}
               >
                 <div className="flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-cyan-400 group-hover/icon:text-cyan-200 transition-colors" />
-                  <span className="text-lg group-hover/icon:scale-125 transition-transform inline-block">🏳️‍🌈</span>
+                  <Heart className="w-5 h-5 text-cyan-400 group-hover:text-cyan-200 transition-colors" />
+                  <span className="text-lg group-hover:scale-125 transition-transform">🏳️‍🌈</span>
                 </div>
               </div>
               <div className="relative">
                 <Zap className="w-5 h-5 text-pink-500 animate-pulse" />
-                <span className="absolute -top-1 -right-2 text-lg animate-bounce inline-block">⚡</span>
+                <span className="absolute -top-1 -right-2 text-lg animate-bounce">⚡</span>
               </div>
               <div 
-                className="p-3 border border-pink-500/40 hover:border-pink-500 hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 cursor-pointer group/icon"
+                className="p-3 border border-pink-500/40 rounded-none hover:border-pink-500 hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 cursor-pointer group"
                 style={{ borderRadius: '2px' }}
                 onMouseEnter={() => handleSectionHover('community')}
                 onMouseLeave={() => setActiveSection(null)}
               >
                 <div className="flex items-center gap-2">
-                  <Network className="w-5 h-5 text-pink-400 group-hover/icon:text-pink-200 transition-colors" />
-                  <span className="text-lg group-hover/icon:scale-125 transition-transform inline-block">🫂</span>
+                  <Network className="w-5 h-5 text-pink-400 group-hover:text-pink-200 transition-colors" />
+                  <span className="text-lg group-hover:scale-125 transition-transform">🫂</span>
                 </div>
               </div>
             </div>
 
-            {/* Title - Manifesto Holográfico */}
+            {/* Title - Manifesto Holográfico COM EMOJIS */}
             <div className="space-y-4">
-              <div className="flex justify-center gap-2 text-2xl md:text-3xl mb-2">
-                <span className="animate-bounce inline-block">🌌</span>
-                <span className="animate-bounce inline-block" style={{ animationDelay: '0.2s' }}>💫</span>
-                <span className="animate-bounce inline-block" style={{ animationDelay: '0.4s' }}>🛰️</span>
+              <div className="flex justify-center gap-2 text-2xl md:text-3xl mb-2 animate-bounce" style={{ animationDelay: '0s' }}>
+                <span>🌌</span>
+                <span style={{ animationDelay: '0.2s' }}>💫</span>
+                <span style={{ animationDelay: '0.4s' }}>🛰️</span>
               </div>
-              <h1
-                className="text-5xl md:text-6xl lg:text-7xl font-black tracking-widest text-white text-center leading-tight hover:scale-105 transition-transform duration-300"
-                style={{ 
-                  textShadow: `0 0 20px rgba(0, 255, 255, ${0.6 * glowIntensity}), 0 0 40px rgba(236, 72, 153, ${0.4 * glowIntensity})` 
-                }}
-              >
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-widest text-white text-center leading-tight hover:scale-105 transition-transform duration-300" style={{ 
+                textShadow: `0 0 20px rgba(0, 255, 255, ${0.6 * glowIntensity}), 0 0 40px rgba(236, 72, 153, ${0.4 * glowIntensity})` 
+              }}>
                 HEKSEL
                 <br />
                 GENESIS
@@ -208,11 +219,11 @@ export const SafeSpace: React.FC = () => {
             {/* Separator */}
             <div className="h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent"></div>
 
-            {/* Main Manifesto - INTERATIVO */}
+            {/* Main Manifesto - INTERATIVO COM EMOJIS E HOVER EFFECTS */}
             <div className="space-y-6 font-light">
               {/* Seção 1 - O Futuro */}
               <div 
-                className={`text-center space-y-4 p-4 transition-all duration-300 cursor-pointer ${
+                className={`text-center space-y-4 p-4 rounded-none transition-all duration-300 cursor-pointer group ${
                   activeSection === 'future' 
                     ? 'bg-cyan-500/20 border border-cyan-500/40' 
                     : 'hover:bg-cyan-500/10 border border-transparent'
@@ -221,23 +232,24 @@ export const SafeSpace: React.FC = () => {
                 onMouseLeave={() => setActiveSection(null)}
                 style={{ borderRadius: '2px' }}
               >
-                <p className="text-base md:text-lg text-white/95 leading-relaxed">
+                <p className="text-base md:text-lg text-white/95 leading-relaxed group-hover:text-white transition-colors">
                   Aqui, o futuro é de todos. 🌌✨
                 </p>
+                
                 <p className={`text-sm md:text-base font-mono tracking-wider transition-all duration-300 ${
                   activeSection === 'future' 
                     ? 'text-cyan-300 glow-text' 
-                    : 'text-cyan-300/80'
+                    : 'text-cyan-300/80 group-hover:text-cyan-300'
                 }`}>
                   &gt; A Heksel Genesis nasceu para ser um espaço absolutamente seguro, acolhedor e livre de julgamentos. 🫂
                 </p>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"></div>
+              <div className="h-px bg-gradient-to-r from-transparent via-pink-500/30 to-transparent group-hover:via-pink-500/60 transition-all duration-300"></div>
 
               {/* Seção 2 - Diversidade */}
               <div 
-                className={`text-center space-y-3 p-4 transition-all duration-300 cursor-pointer ${
+                className={`text-center space-y-3 p-4 rounded-none transition-all duration-300 cursor-pointer group ${
                   activeSection === 'diversity' 
                     ? 'bg-pink-500/20 border border-pink-500/40' 
                     : 'hover:bg-pink-500/10 border border-transparent'
@@ -246,23 +258,24 @@ export const SafeSpace: React.FC = () => {
                 onMouseLeave={() => setActiveSection(null)}
                 style={{ borderRadius: '2px' }}
               >
-                <p className="text-base md:text-lg text-white/95 leading-relaxed">
+                <p className="text-base md:text-lg text-white/95 leading-relaxed group-hover:text-white transition-colors">
                   Seja você quem for, ame quem você amar, expresse-se como quiser. 🏳️‍🌈🏳️‍⚧️
                 </p>
+                
                 <p className={`text-sm md:text-base font-mono tracking-wider transition-all duration-300 ${
                   activeSection === 'diversity' 
                     ? 'text-pink-300 glow-text' 
-                    : 'text-pink-300/80'
+                    : 'text-pink-300/80 group-hover:text-pink-300'
                 }`}>
                   Nossa comunidade celebra a diversidade em todas as suas cores. 🦄💜
                 </p>
               </div>
 
-              <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
+              <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent group-hover:via-cyan-500/60 transition-all duration-300"></div>
 
               {/* Seção 3 - Unicidade */}
               <div 
-                className={`text-center pt-4 p-4 transition-all duration-300 cursor-pointer ${
+                className={`text-center pt-4 p-4 rounded-none transition-all duration-300 cursor-pointer group ${
                   activeSection === 'unique' 
                     ? 'bg-purple-500/20 border border-purple-500/40' 
                     : 'hover:bg-purple-500/10 border border-transparent'
@@ -271,11 +284,12 @@ export const SafeSpace: React.FC = () => {
                 onMouseLeave={() => setActiveSection(null)}
                 style={{ borderRadius: '2px' }}
               >
-                <p className="text-base md:text-lg text-white/95 leading-relaxed">
+                <p className="text-base md:text-lg text-white/95 leading-relaxed group-hover:text-white transition-colors">
                   Porque no final das contas, somos todos seres únicos com gostos extraordinários. 💎✨
                 </p>
-                <p className={`text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 font-bold tracking-widest pt-6 transition-transform duration-300 ${
-                  activeSection === 'unique' ? 'animate-pulse scale-110' : ''
+
+                <p className={`text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 font-bold tracking-widest pt-6 group-hover:scale-110 transition-transform duration-300 ${
+                  activeSection === 'unique' ? 'animate-pulse' : ''
                 }`}>
                   VISTA SUA IDENTIDADE COM ORGULHO. 🌈💪
                 </p>
@@ -303,7 +317,7 @@ export const SafeSpace: React.FC = () => {
               <button
                 onClick={triggerEmojiRain}
                 disabled={isButtonPressed}
-                className={`relative px-8 py-4 font-mono tracking-widest text-sm font-bold border-2 transition-all duration-300 overflow-hidden ${
+                className={`group relative px-8 py-4 font-mono tracking-widest text-sm font-bold rounded-none border-2 transition-all duration-300 overflow-hidden ${
                   isButtonPressed
                     ? 'border-purple-500 bg-purple-500/30 text-purple-300 cursor-not-allowed'
                     : 'border-cyan-500/60 bg-black/40 text-cyan-300 hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-2xl hover:shadow-cyan-500/50'
@@ -323,11 +337,18 @@ export const SafeSpace: React.FC = () => {
                     </>
                   )}
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/30 to-cyan-500/0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+
+                {/* Glow Background no Hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/30 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+
+                {/* Additional Action Button */}
+                {!isButtonPressed && (
+                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/0 via-pink-500/0 to-purple-500/0 rounded-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur pointer-events-none -z-10"></div>
+                )}
               </button>
             </div>
 
-            {/* Neon Pulse Dots */}
+            {/* Neon Pulse Dots com Status */}
             <div className="flex items-center justify-center gap-3 pt-6">
               {[0, 1, 2].map((i) => (
                 <div
@@ -336,7 +357,7 @@ export const SafeSpace: React.FC = () => {
                   style={{
                     animation: `neonPulse 2s ease-in-out infinite`,
                     animationDelay: `${i * 0.25}s`,
-                    boxShadow: '0 0 10px currentColor',
+                    boxShadow: `0 0 10px currentColor`,
                   }}
                 ></div>
               ))}
@@ -362,30 +383,121 @@ export const SafeSpace: React.FC = () => {
       {/* Animated Styles */}
       <style>{`
         @keyframes neonPulse {
-          0%, 100% { opacity: 0.4; box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
-          50%       { opacity: 1;   box-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+          0%, 100% {
+            opacity: 0.4;
+            box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+          }
+          50% {
+            opacity: 1;
+            box-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
+          }
         }
 
         @keyframes glitch {
-          0%, 100% { clip-path: inset(0 0 0 0); }
-          20%       { clip-path: inset(0 0 65% 0); }
-          40%       { clip-path: inset(25% 0 58% 0); }
-          60%       { clip-path: inset(77% 0 15% 0); }
-          80%       { clip-path: inset(40% 0 58% 0); }
+          0%, 100% {
+            clip-path: inset(0 0 0 0);
+          }
+          20% {
+            clip-path: inset(0 0 65% 0);
+          }
+          40% {
+            clip-path: inset(25% 0 58% 0);
+          }
+          60% {
+            clip-path: inset(77% 0 15% 0);
+          }
+          80% {
+            clip-path: inset(40% 0 58% 0);
+          }
         }
 
         @keyframes emojiRain {
-          0%   { transform: translateY(0) rotateZ(0deg);   opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translateY(100vh) rotateZ(360deg); opacity: 0; }
+          0% {
+            transform: translateY(0) rotateZ(0deg);
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) rotateZ(360deg);
+            opacity: 0;
+          }
         }
 
         @keyframes glow-text {
-          0%, 100% { text-shadow: 0 0 5px rgba(0,255,255,0.5), 0 0 10px rgba(0,255,255,0.3); }
-          50%       { text-shadow: 0 0 15px rgba(0,255,255,0.8), 0 0 30px rgba(0,255,255,0.6), 0 0 45px rgba(236,72,153,0.4); }
+          0%, 100% {
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3);
+          }
+          50% {
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.6), 0 0 45px rgba(236, 72, 153, 0.4);
+          }
         }
 
-        .glow-text { animation: glow-text 1.5s ease-in-out infinite; }
+        .glow-text {
+          animation: glow-text 1.5s ease-in-out infinite;
+        }
+
+        .group {
+          position: relative;
+        }
+
+        .group:hover {
+          animation: cyberpulse 0.6s ease-out;
+        }
+
+        @keyframes cyberpulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.02);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        /* Neon Glow Text Effect */
+        h1 {
+          letter-spacing: 0.1em;
+        }
+
+        /* Hover Effects para Seções */
+        .group:has(:hover) {
+          transition: all 0.3s ease;
+        }
+
+        /* Animação de escala no botão */
+        button:not(:disabled):hover {
+          animation: buttonGlow 0.6s ease-out;
+        }
+
+        @keyframes buttonGlow {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        /* Bounce customizado */
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+
+        .animate-bounce {
+          animation: bounce 1s infinite;
+        }
       `}</style>
     </div>
   );
