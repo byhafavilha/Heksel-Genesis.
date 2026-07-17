@@ -23,8 +23,7 @@ export function BrandSection({ onCreateAdvance, onHirePremium }: BrandSectionPro
             <span className="text-xs font-mono text-purple uppercase tracking-widest">{brand.badge}</span>
           </div>
 
-          {/* Mesmas classes do Hero h1 "From beginning to infinity" */}
-          <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black font-['Syne',sans-serif] leading-[0.9] tracking-tight uppercase mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-5xl font-black font-['Syne',sans-serif] leading-tight tracking-tight uppercase mb-6 text-center break-words px-4">
             <span className="block bg-gradient-to-br from-white to-white/85 bg-clip-text text-transparent">
               {brand.title1}
             </span>
