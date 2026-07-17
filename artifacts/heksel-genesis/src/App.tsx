@@ -13,10 +13,7 @@ import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
 import { SafeSpace } from './components/SafeSpace';
 
-// 2. "From beginning to infinity" — declaração brutalista
-import { BeginningToInfinity } from './components/BeginningToInfinity';
-
-// 3. A Diretiva Gênesis (Genesis Directive — Manifesto)
+// 2. A Diretiva Gênesis (Genesis Directive — Manifesto)
 import { Manifesto } from './components/Manifesto';
 
 // 4. See an interactive example (Printful 4-área stamp simulator)
@@ -69,13 +66,7 @@ export default function App() {
         <SafeSpace />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 2 — "From beginning to infinity"
-                       Declaração brutalista autônoma
-        ══════════════════════════════════════════════ */}
-        <BeginningToInfinity />
-
-        {/* ══════════════════════════════════════════════
-            SEÇÃO 3 — A Diretiva Gênesis (Genesis Directive)
+            SEÇÃO 2 — A Diretiva Gênesis (Genesis Directive)
         ══════════════════════════════════════════════ */}
         <Manifesto />
 

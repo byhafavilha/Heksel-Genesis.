@@ -1,4 +1,4 @@
-import { Zap, Shield, Rocket, Check, Code, Cpu } from 'lucide-react';
+import { Shield, Check, Code, Cpu } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 interface BrandSectionProps {
@@ -12,69 +12,71 @@ export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: B
   const { brand } = t;
 
   return (
-    <section id="brand" className="py-12 md:py-20 relative bg-[linear-gradient(to_bottom,#08080d,#1a0b2e)]">
+    <section id="brand" className="py-8 md:py-14 relative bg-[linear-gradient(to_bottom,#08080d,#1a0b2e)]">
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="relative z-10 w-full max-w-md md:max-w-xl lg:max-w-4xl mx-auto px-4">
 
-        <div className="text-center mb-16">
+        {/* ── Header ── */}
+        <div className="text-center mb-8 md:mb-12">
+
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple/30 bg-purple/10 backdrop-blur-sm mb-6">
-            <span className="text-purple">✦</span>
-            <span className="text-xs font-mono text-purple uppercase tracking-widest">{brand.badge}</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple/30 bg-purple/10 backdrop-blur-sm mb-4">
+            <span className="text-purple text-xs">✦</span>
+            <span className="text-[0.6rem] font-mono text-purple uppercase tracking-widest">{brand.badge}</span>
           </div>
 
-          <h2 className="text-2xl md:text-3xl lg:text-5xl font-black font-['Syne',sans-serif] leading-tight tracking-tight uppercase mb-6 text-center break-words px-4">
+          {/* Title — pequeno e legível no mobile */}
+          <h2 className="text-lg md:text-2xl lg:text-3xl font-black font-['Syne',sans-serif] leading-tight tracking-tight uppercase mb-4 break-words px-2">
             <span className="block bg-gradient-to-br from-white to-white/85 bg-clip-text text-transparent">
               {brand.title1}
             </span>
-            <span className="block bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse mt-[0.1em]">
+            <span className="block bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mt-0.5">
               {brand.title2}
             </span>
           </h2>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+          {/* CTAs rápidos */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <button
               onClick={onCreateAdvance}
-              className="relative px-8 py-4 rounded-xl text-sm font-display font-bold uppercase tracking-wider text-white overflow-hidden group bg-black border border-white/10 w-full sm:w-auto"
+              className="relative px-6 py-3 rounded-xl text-xs font-display font-bold uppercase tracking-wider text-white overflow-hidden group bg-black border border-white/10 w-full sm:w-auto min-h-[44px] active:scale-95 transition-all"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-cyan/20 via-purple/20 to-cyan/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute -inset-1 bg-gradient-to-r from-cyan via-purple to-cyan rounded-xl opacity-20 group-hover:opacity-50 blur transition-opacity" />
               <span className="relative z-10">{brand.btnAdvance}</span>
             </button>
 
             <button
               onClick={() => document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })}
-              className="cyber-btn cyber-purple px-8 py-4 rounded-xl text-sm w-full sm:w-auto"
+              className="cyber-btn cyber-purple px-6 py-3 rounded-xl text-xs w-full sm:w-auto min-h-[44px] active:scale-95 transition-all"
             >
               {brand.btnBrand}
             </button>
           </div>
         </div>
 
-        {/* Pricing Cards */}
-        <div id="plans" className="grid md:grid-cols-2 gap-6 px-4 max-w-5xl mx-auto mt-16">
+        {/* ── Pricing Cards ── empilhados no mobile, lado a lado no desktop */}
+        <div id="plans" className="flex flex-col lg:flex-row gap-4">
 
-          {/* Freemium Card */}
-          <div className="bg-card/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-cyan/50 transition-colors">
-            <div className="absolute top-0 right-0 p-8 opacity-5">
-              <Code className="w-32 h-32" />
+          {/* ── Freemio Card ── */}
+          <div className="flex-1 bg-card/50 backdrop-blur-xl border border-white/10 rounded-2xl p-5 md:p-7 flex flex-col relative overflow-hidden group hover:border-cyan/50 transition-colors">
+            <div className="absolute top-0 right-0 p-5 opacity-5 pointer-events-none">
+              <Code className="w-20 h-20" />
             </div>
 
-            <div className="mb-8 relative z-10">
-              <span className="inline-block px-3 py-1 rounded bg-cyan/10 text-cyan text-xs font-mono mb-4 border border-cyan/20">
+            <div className="mb-5 relative z-10">
+              <span className="inline-block px-2.5 py-0.5 rounded bg-cyan/10 text-cyan text-[0.6rem] font-mono mb-3 border border-cyan/20">
                 {brand.freemium.badge}
               </span>
-              <h3 className="text-2xl font-display font-bold text-white mb-2">{brand.freemium.name}</h3>
-              <div className="text-4xl font-mono text-white">{brand.freemium.price}</div>
-              <p className="text-sm text-white/50 mt-4">{brand.freemium.desc}</p>
+              <h3 className="text-lg font-display font-bold text-white mb-1">{brand.freemium.name}</h3>
+              <div className="text-3xl font-mono text-white">{brand.freemium.price}</div>
+              <p className="text-xs text-white/50 mt-3 leading-relaxed">{brand.freemium.desc}</p>
             </div>
 
-            <ul className="space-y-4 mb-10 flex-grow relative z-10">
+            <ul className="space-y-2.5 mb-6 flex-grow relative z-10">
               {brand.freemium.features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-white/70">
-                  <Check className="w-5 h-5 text-cyan shrink-0" />
+                <li key={i} className="flex items-start gap-2.5 text-xs text-white/70">
+                  <Check className="w-4 h-4 text-cyan shrink-0 mt-0.5" />
                   {feature}
                 </li>
               ))}
@@ -82,47 +84,50 @@ export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: B
 
             <button
               onClick={onTryFreemio}
-              className="w-full py-4 rounded-xl border border-white/20 text-white font-display uppercase hover:bg-white/5 active:scale-95 transition-all relative z-10 min-h-[44px]"
+              className="w-full py-3 rounded-xl border border-white/20 text-white text-sm font-display uppercase hover:bg-white/5 active:scale-95 transition-all relative z-10 min-h-[44px]"
             >
               {brand.freemium.cta}
             </button>
           </div>
 
-          {/* Premium Card */}
-          <div className="bg-black/60 backdrop-blur-xl border-2 border-gold/40 rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-gold hover:shadow-[0_0_30px_rgba(201,168,76,0.15)] transition-all">
+          {/* ── Preemio Card ── */}
+          <div className="flex-1 bg-black/60 backdrop-blur-xl border-2 border-gold/40 rounded-2xl p-5 md:p-7 flex flex-col relative overflow-hidden group hover:border-gold hover:shadow-[0_0_24px_rgba(201,168,76,0.15)] transition-all">
             <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent pointer-events-none" />
-            <div className="absolute top-0 right-0 p-8 opacity-5">
-              <Cpu className="w-32 h-32" />
+            <div className="absolute top-0 right-0 p-5 opacity-5 pointer-events-none">
+              <Cpu className="w-20 h-20" />
             </div>
 
-            <div className="mb-8 relative z-10">
+            <div className="mb-5 relative z-10">
               <div className="flex justify-between items-start">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded bg-gold/10 text-gold text-xs font-mono mb-4 border border-gold/30">
-                  <Shield className="w-3 h-3" /> {brand.premium.badge}
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-gold/10 text-gold text-[0.6rem] font-mono mb-3 border border-gold/30">
+                  <Shield className="w-2.5 h-2.5" /> {brand.premium.badge}
                 </span>
-                <span className="animate-pulse flex h-3 w-3">
+                <span className="animate-pulse flex h-2.5 w-2.5 mt-0.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-gold" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-gold" />
                 </span>
               </div>
-              <h3 className="text-2xl font-display font-bold text-white mb-2">{brand.premium.name}</h3>
+              <h3 className="text-lg font-display font-bold text-white mb-1">{brand.premium.name}</h3>
               <div className="flex items-end gap-2">
-                <div className="text-4xl font-mono text-gold glow-gold">{brand.premium.price}</div>
-                <div className="text-sm text-white/40 mb-1">{brand.premium.period}</div>
+                <div className="text-3xl font-mono text-gold glow-gold">{brand.premium.price}</div>
+                <div className="text-xs text-white/40 mb-1">{brand.premium.period}</div>
               </div>
-              <p className="text-sm text-white/50 mt-4">{brand.premium.desc}</p>
+              <p className="text-xs text-white/50 mt-3 leading-relaxed">{brand.premium.desc}</p>
             </div>
 
-            <ul className="space-y-4 mb-10 flex-grow relative z-10">
+            <ul className="space-y-2.5 mb-6 flex-grow relative z-10">
               {brand.premium.features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-white/90">
-                  <span className="text-gold mt-0.5">✦</span>
+                <li key={i} className="flex items-start gap-2.5 text-xs text-white/90">
+                  <span className="text-gold mt-0.5 shrink-0">✦</span>
                   {feature}
                 </li>
               ))}
             </ul>
 
-            <button onClick={onHirePremium} className="cyber-btn cyber-gold w-full py-4 rounded-xl text-lg relative z-10">
+            <button
+              onClick={onHirePremium}
+              className="cyber-btn cyber-gold w-full py-3 rounded-xl text-base relative z-10 min-h-[44px] active:scale-95 transition-all"
+            >
               {brand.premium.cta}
             </button>
           </div>
