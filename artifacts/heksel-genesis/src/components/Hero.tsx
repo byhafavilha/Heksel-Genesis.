@@ -100,6 +100,7 @@ const AnimatedBackground = ({ satelliteCount = 40 }: { satelliteCount?: number }
 
 export function Hero() {
   const [activeTab, setActiveTab] = useState<TabKey>("customize");
+  const [infoOpen, setInfoOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -133,7 +134,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <div className="w-full max-w-[550px] bg-[#0e0e16]/70 backdrop-blur-xl border border-purple-500/30 rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(168,85,247,0.15)]">
+          <div className="w-full max-w-[550px] bg-[#0e0e16]/70 backdrop-blur-xl border border-purple-500/30 rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(168,85,247,0.15)] relative">
             {/* Título overlay */}
             <div className="relative z-10 flex items-center justify-center gap-2 py-4 px-6 bg-[#0e0e16]/85 backdrop-blur-sm">
               <span className="text-white font-bold font-['Syne',sans-serif] text-base md:text-lg tracking-[0.12em]">
@@ -143,17 +144,144 @@ export function Hero() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="w-7 h-7 rounded-full border-2 border-purple-500 bg-purple-500/10 text-purple-400 font-bold font-['Syne',sans-serif] text-sm flex items-center justify-center hover:bg-purple-500/25 hover:shadow-[0_0_16px_rgba(168,85,247,0.5)] transition-all"
-                onClick={() => {
-                  const modal = document.getElementById("collector-info-modal");
-                  if (modal) {
-                    modal.classList.toggle("show");
-                  }
-                }}
+                onClick={() => setInfoOpen((v) => !v)}
                 title="Collector Pack Details"
               >
                 ?
               </motion.button>
             </div>
+
+            {/* ── Collector Pack Info Panel ── */}
+            <AnimatePresence>
+              {infoOpen && (
+                <motion.div
+                  key="collector-panel"
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  style={{
+                    position: "absolute", inset: 0, zIndex: 30,
+                    background: "rgba(6,4,18,0.97)",
+                    backdropFilter: "blur(16px)",
+                    display: "flex", flexDirection: "column",
+                    overflowY: "auto",
+                  }}
+                >
+                  {/* Close */}
+                  <button
+                    onClick={() => setInfoOpen(false)}
+                    style={{
+                      position: "absolute", top: 14, right: 14,
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      borderRadius: "50%", width: 30, height: 30,
+                      color: "rgba(255,255,255,0.5)", fontSize: "1rem",
+                      cursor: "pointer", display: "flex",
+                      alignItems: "center", justifyContent: "center",
+                      lineHeight: 1, zIndex: 31,
+                    }}
+                  >
+                    ×
+                  </button>
+
+                  <div style={{ padding: "28px 24px 24px" }}>
+                    {/* Price */}
+                    <div style={{
+                      fontFamily: "'Space Mono',monospace",
+                      fontSize: "0.55rem", letterSpacing: "0.2em",
+                      color: "rgba(180,94,255,0.7)",
+                      textTransform: "uppercase", marginBottom: 6,
+                    }}>
+                      ✦ Collector Pack — O que está incluso
+                    </div>
+                    <div style={{
+                      fontFamily: "'Syne',sans-serif", fontWeight: 800,
+                      fontSize: "2rem",
+                      background: "linear-gradient(135deg,#b45eff,#00f0ff)",
+                      WebkitBackgroundClip: "text", backgroundClip: "text",
+                      color: "transparent", marginBottom: 4,
+                    }}>
+                      R$ 300,00
+                    </div>
+                    <div style={{
+                      fontFamily: "'DM Sans',sans-serif", fontSize: "0.78rem",
+                      color: "rgba(255,255,255,0.45)", marginBottom: 22, lineHeight: 1.5,
+                    }}>
+                      Inclui: Carta Personalizada 🃏 + Adesivo Exclusivo Heksel + Fragrância Especial Imperium 🧪
+                    </div>
+
+                    {/* Divider */}
+                    <div style={{ height: 1, background: "rgba(180,94,255,0.15)", marginBottom: 20 }} />
+
+                    {/* Items */}
+                    {[
+                      {
+                        icon: "🟪",
+                        title: "Premium Custom Sweatshirt",
+                        desc: "Dual-print (Bone Front / Furry Back) engineered heavyweight cotton.",
+                      },
+                      {
+                        icon: "🔑",
+                        title: "Heksel Genesis Keychain",
+                        desc: "Perfect accessory for your backpack, bag, or car mirror.",
+                      },
+                      {
+                        icon: "💎",
+                        title: "Official Genesis Sticker Pack",
+                        desc: "High-fidelity vinyl stickers to customize your laptop or gear.",
+                      },
+                      {
+                        icon: "✉️",
+                        title: "Handcrafted Serialized Letter",
+                        desc: 'Custom thank-you card with your unique serial number (e.g., "You are customer #10"), locking your collector position.',
+                      },
+                    ].map((item) => (
+                      <div
+                        key={item.title}
+                        style={{
+                          display: "flex", gap: 14, marginBottom: 18,
+                          padding: "14px 14px",
+                          background: "rgba(180,94,255,0.05)",
+                          border: "1px solid rgba(180,94,255,0.12)",
+                          borderRadius: 12,
+                        }}
+                      >
+                        <div style={{ fontSize: "1.4rem", flexShrink: 0, lineHeight: 1.2 }}>
+                          {item.icon}
+                        </div>
+                        <div>
+                          <div style={{
+                            fontFamily: "'Syne',sans-serif", fontWeight: 800,
+                            fontSize: "0.82rem", color: "#fff", marginBottom: 4,
+                          }}>
+                            {item.title}
+                          </div>
+                          <div style={{
+                            fontFamily: "'DM Sans',sans-serif", fontSize: "0.76rem",
+                            color: "rgba(255,255,255,0.45)", lineHeight: 1.55,
+                          }}>
+                            {item.desc}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* CTA reminder */}
+                    <div style={{
+                      marginTop: 6, padding: "10px 14px", borderRadius: 10,
+                      background: "rgba(0,240,255,0.05)",
+                      border: "1px solid rgba(0,240,255,0.18)",
+                      fontFamily: "'Space Mono',monospace", fontSize: "0.52rem",
+                      color: "rgba(0,240,255,0.7)", letterSpacing: "0.1em",
+                      textAlign: "center",
+                    }}>
+                      🔒 EDIÇÃO LIMITADA · SERIAL ÚNICO · ENTREGA PREMIUM
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Área da imagem com transição entre abas */}
             <div className="relative w-full aspect-square flex items-center justify-center p-6 bg-[#09090f]/50">

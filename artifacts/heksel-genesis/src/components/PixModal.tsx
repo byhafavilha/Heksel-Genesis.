@@ -119,6 +119,7 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
   const [form, setForm] = useState<FormData>({ nome: '', doc: '', email: '', phone: '' });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [openTip, setOpenTip] = useState<string | null>(null);
 
   const [loadingStep, setLoadingStep] = useState(0);
   const [timeLeft, setTimeLeft] = useState(600);
@@ -262,12 +263,39 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
             {/* Fields */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
 
+              {/* ── Inline help tooltip helper ── */}
+              {/* rendered inline below each label when openTip matches */}
+
               {/* Nome */}
               <div>
-                <label style={labelStyle}>
-                  <User size={10} style={{ display: 'inline', marginRight: 6 }} />
-                  Nome Completo *
-                </label>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <label style={{ ...labelStyle, marginBottom: 0 }}>
+                    <User size={10} style={{ display: 'inline', marginRight: 6 }} />
+                    Nome Completo *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setOpenTip(openTip === 'nome' ? null : 'nome')}
+                    style={{
+                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                      border: '1px solid rgba(100,200,255,0.35)',
+                      background: openTip === 'nome' ? 'rgba(0,240,255,0.12)' : 'rgba(255,255,255,0.04)',
+                      color: 'rgba(100,200,255,0.7)', fontSize: '0.6rem', fontWeight: 700,
+                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.2s', lineHeight: 1,
+                    }}
+                  >?</button>
+                </div>
+                {openTip === 'nome' && (
+                  <div style={{
+                    marginBottom: 8, padding: '8px 12px', borderRadius: 8,
+                    background: 'rgba(0,240,255,0.06)', border: '1px solid rgba(0,240,255,0.2)',
+                    fontFamily: "'DM Sans',sans-serif", fontSize: '0.72rem',
+                    color: 'rgba(0,240,255,0.85)', lineHeight: 1.55,
+                  }}>
+                    Seu nome completo é necessário para emitir a nota fiscal e confirmar a titularidade do pedido Heksel Genesis.
+                  </div>
+                )}
                 <input
                   type="text"
                   placeholder="Ex: Ana Souza"
@@ -296,10 +324,34 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
 
               {/* CPF/CNPJ */}
               <div>
-                <label style={labelStyle}>
-                  <CreditCard size={10} style={{ display: 'inline', marginRight: 6 }} />
-                  CPF ou CNPJ *
-                </label>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <label style={{ ...labelStyle, marginBottom: 0 }}>
+                    <CreditCard size={10} style={{ display: 'inline', marginRight: 6 }} />
+                    CPF ou CNPJ *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setOpenTip(openTip === 'doc' ? null : 'doc')}
+                    style={{
+                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                      border: '1px solid rgba(100,200,255,0.35)',
+                      background: openTip === 'doc' ? 'rgba(0,240,255,0.12)' : 'rgba(255,255,255,0.04)',
+                      color: 'rgba(100,200,255,0.7)', fontSize: '0.6rem', fontWeight: 700,
+                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.2s', lineHeight: 1,
+                    }}
+                  >?</button>
+                </div>
+                {openTip === 'doc' && (
+                  <div style={{
+                    marginBottom: 8, padding: '8px 12px', borderRadius: 8,
+                    background: 'rgba(0,240,255,0.06)', border: '1px solid rgba(0,240,255,0.2)',
+                    fontFamily: "'DM Sans',sans-serif", fontSize: '0.72rem',
+                    color: 'rgba(0,240,255,0.85)', lineHeight: 1.55,
+                  }}>
+                    Required by Central Bank regulations to process instant Pix transactions securely.
+                  </div>
+                )}
                 <input
                   type="text"
                   placeholder="000.000.000-00"
@@ -330,10 +382,34 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
 
               {/* Email */}
               <div>
-                <label style={labelStyle}>
-                  <Mail size={10} style={{ display: 'inline', marginRight: 6 }} />
-                  E-mail *
-                </label>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <label style={{ ...labelStyle, marginBottom: 0 }}>
+                    <Mail size={10} style={{ display: 'inline', marginRight: 6 }} />
+                    E-mail *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setOpenTip(openTip === 'email' ? null : 'email')}
+                    style={{
+                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                      border: '1px solid rgba(100,200,255,0.35)',
+                      background: openTip === 'email' ? 'rgba(0,240,255,0.12)' : 'rgba(255,255,255,0.04)',
+                      color: 'rgba(100,200,255,0.7)', fontSize: '0.6rem', fontWeight: 700,
+                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.2s', lineHeight: 1,
+                    }}
+                  >?</button>
+                </div>
+                {openTip === 'email' && (
+                  <div style={{
+                    marginBottom: 8, padding: '8px 12px', borderRadius: 8,
+                    background: 'rgba(0,240,255,0.06)', border: '1px solid rgba(0,240,255,0.2)',
+                    fontFamily: "'DM Sans',sans-serif", fontSize: '0.72rem',
+                    color: 'rgba(0,240,255,0.85)', lineHeight: 1.55,
+                  }}>
+                    Your order confirmation and shipping updates will be sent exclusively to this address.
+                  </div>
+                )}
                 <input
                   type="email"
                   placeholder="seu@email.com"
@@ -362,10 +438,35 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
 
               {/* Telefone */}
               <div>
-                <label style={labelStyle}>
-                  <Phone size={10} style={{ display: 'inline', marginRight: 6 }} />
-                  Telefone / WhatsApp *
-                </label>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                  <label style={{ ...labelStyle, marginBottom: 0 }}>
+                    <Phone size={10} style={{ display: 'inline', marginRight: 6 }} />
+                    Telefone / WhatsApp *
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setOpenTip(openTip === 'phone' ? null : 'phone')}
+                    style={{
+                      width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                      border: '1px solid rgba(100,200,255,0.35)',
+                      background: openTip === 'phone' ? 'rgba(0,240,255,0.12)' : 'rgba(255,255,255,0.04)',
+                      color: 'rgba(100,200,255,0.7)', fontSize: '0.6rem', fontWeight: 700,
+                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.2s', lineHeight: 1,
+                    }}
+                  >?</button>
+                </div>
+                {openTip === 'phone' && (
+                  <div style={{
+                    marginBottom: 8, padding: '8px 12px', borderRadius: 8,
+                    background: 'rgba(0,240,255,0.06)', border: '1px solid rgba(0,240,255,0.2)',
+                    fontFamily: "'DM Sans',sans-serif", fontSize: '0.72rem',
+                    color: 'rgba(0,240,255,0.85)', lineHeight: 1.55,
+                  }}>
+                    Used exclusively to send your order tracking number and digital receipt.
+                  </div>
+                )}
+                
                 <input
                   type="tel"
                   placeholder="(11) 99999-9999"
@@ -650,22 +751,30 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
               )}
             </div>
 
-            {/* Simulate success */}
+            {/* Waiting status */}
             {timeLeft > 0 && (
-              <motion.button
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
-                onClick={() => { onSimulateSuccess(); onClose(); }}
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
                 style={{
-                  width: '100%', padding: '10px',
-                  background: 'none', border: '1px solid rgba(74,222,128,0.4)',
-                  borderRadius: 10, cursor: 'pointer',
+                  width: '100%', padding: '12px',
+                  background: 'rgba(180,94,255,0.05)',
+                  border: '1px solid rgba(180,94,255,0.2)',
+                  borderRadius: 10,
                   fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
-                  color: '#4ade80', letterSpacing: '0.1em', textTransform: 'uppercase',
-                  transition: 'all 0.2s',
+                  color: 'rgba(180,94,255,0.7)', letterSpacing: '0.1em',
+                  textTransform: 'uppercase', textAlign: 'center', lineHeight: 1.8,
                 }}
               >
-                SIMULAR PAGAMENTO CONFIRMADO
-              </motion.button>
+                <span style={{
+                  display: 'inline-block',
+                  animation: 'pulse 2s ease-in-out infinite',
+                }}>✦</span>
+                {' '}TRANSACTION RECORDED. AWAITING NETWORK CONFIRMATION...{' '}
+                <span style={{
+                  display: 'inline-block',
+                  animation: 'pulse 2s ease-in-out infinite',
+                }}>✦</span>
+              </motion.div>
             )}
           </motion.div>
         )}

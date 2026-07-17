@@ -1,0 +1,31 @@
+Replit, estamos na reta final (97% concluído)! Vamos aplicar os últimos ajustes de refinamento comercial para deixar o site 100% profissional e pronto para vendas de luxo. 
+
+Por favor, implemente estas 3 alterações cirúrgicas agora:
+
+### 1️⃣ ATIVAR O POPUP/TOOLTIP DO BOTÃO "?" (MEO-NAI SWEATSHIRT?)
+- No simulador de moletons, localize o botão "?" que fica à direita com o texto "MEO-NAI SWEATSHIRT?".
+- Faça com que, ao clicar (ou passar o mouse de forma otimizada), abra um painel/aba flutuante elegante (estilo modal sutil ou tooltip dark) exibindo EXATAMENTE este texto de alta costura:
+  
+  R$ 300,00
+  Inclui: Carta Personalizada 🃏 + Adesivo Exclusivo Heksel + Fragrância Especial Imperium 🧪
+  🟪
+  Premium Custom Sweatshirt – Dual-print (Bone Front / Furry Back) engineered heavyweight cotton.
+  🔑
+  Heksel Genesis Keychain – Perfect accessory for your backpack, bag, or car mirror.
+  💎
+  Official Genesis Sticker Pack – High-fidelity vinyl stickers to customize your laptop or gear.
+  ✉️
+  Handcrafted Serialized Letter – Custom thank-you card with your unique serial number (e.g., "You are customer #10"), locking your collector position.
+
+### 2️⃣ REMOVER O TEXTO "SIMULATED PAYMENT CONFIRMED"
+- No fluxo do PixModal ou nas mensagens de status de pagamento, REMOVA COMPLETAMENTE a frase "SIMULATED PAYMENT CONFIRMED" ou qualquer menção a "simulado/teste". 
+- Substitua por uma mensagem real, profissional e imersiva de alta grife, como:
+  > "✦ TRANSACTION RECORDED. AWAITING NETWORK CONFIRMATION... ✦" ou apenas "✦ WAITING FOR PAYMENT ✦". O site não é mais um teste!
+
+### 3️⃣ ADICIONAR BOTÕES DE AJUDA "?" NO FORMULÁRIO DO PIX
+- Na tela onde o usuário digita as informações obrigatórias para o banco (Nome, CPF, E-mail, WhatsApp) antes de gerar o QR Code, adicione um pequeno ícone de interrogação "?" cinza/ciano discreto ao lado de cada campo de input (ou no canto do cabeçalho do formulário).
+- Ao clicar nesses botões "?", exiba uma pequena mensagem explicando o motivo, para dar total segurança ao cliente. Exemplos:
+  - Ao lado do campo CPF: "?" -> "Required by Central Bank regulations to process instant Pix transactions securely."
+  - Ao lado do campo WhatsApp: "?" -> "Used exclusively to send your order tracking number and digital receipt."
+
+Ajuste esses detalhes para batermo os 100% e irmos pro deploy na Vercel!
