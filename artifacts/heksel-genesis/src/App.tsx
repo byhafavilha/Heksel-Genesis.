@@ -12,9 +12,6 @@ import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
 import { SafeSpace } from './components/SafeSpace';
 
-// 2. "From beginning to infinity" — declaração visual autônoma
-import { BeginningToInfinity } from './components/BeginningToInfinity';
-
 // 3. A Diretiva Gênesis (Genesis Directive — Manifesto)
 import { Manifesto } from './components/Manifesto';
 
@@ -64,12 +61,7 @@ export default function App() {
         <SafeSpace />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 2 — "From beginning to infinity"
-        ══════════════════════════════════════════════ */}
-        <BeginningToInfinity />
-
-        {/* ══════════════════════════════════════════════
-            SEÇÃO 3 — A Diretiva Gênesis (Genesis Directive)
+            SEÇÃO 2 — A Diretiva Gênesis (Genesis Directive)
         ══════════════════════════════════════════════ */}
         <Manifesto />
 
