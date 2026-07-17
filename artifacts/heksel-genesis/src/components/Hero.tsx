@@ -139,7 +139,7 @@ export function Hero() {
           <div className="w-full max-w-[550px] bg-[#0e0e16]/70 backdrop-blur-xl border border-purple-500/30 rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(168,85,247,0.15)] relative">
             {/* Título overlay */}
             <div className="relative z-10 flex items-center justify-center gap-2 py-4 px-6 bg-[#0e0e16]/85 backdrop-blur-sm">
-              <span className="text-white font-bold font-['Syne',sans-serif] text-base md:text-lg tracking-[0.12em]">
+              <span className="font-bold font-['Syne',sans-serif] text-base md:text-lg tracking-[0.12em]" style={{ color: '#ffffff' }}>
                 MEO-NAI SWEATSHIRT?
               </span>
               <motion.button
