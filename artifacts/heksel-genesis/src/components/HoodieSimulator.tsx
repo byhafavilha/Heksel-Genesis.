@@ -55,7 +55,11 @@ const COLORS = [
   { id: 'pink',   label: 'Neo Rose',     hex: '#ff6ec7', glow: 'rgba(255,110,199,0.55)', border: 'rgba(255,110,199,0.9)', blend: 'rgba(255,100,180,0.42)'},
 ];
 
-export function HoodieSimulator() {
+interface HoodieSimulatorProps {
+  onOrder?: (model: string, color: string, colorHex: string) => void;
+}
+
+export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
   const [activeModel, setActiveModel] = useState(MODELS[0]);
   const [activeColor, setActiveColor] = useState<typeof COLORS[0] | null>(null);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -371,9 +375,15 @@ export function HoodieSimulator() {
             <button
               className="btn-order"
               style={{ fontSize: '0.68rem' }}
-              onClick={() => document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => onOrder?.(
+                activeModel.label,
+                activeColor?.label ?? '',
+                activeColor?.hex ?? '#b45eff'
+              )}
             >
-              ✦ I WANT TO SECURE MY SWEATSHIRT ✦
+              {activeColor
+                ? `✦ PEDIR ${activeModel.label} — ${activeColor.label} ✦`
+                : '✦ ESCOLHA UMA COR PARA PEDIR ✦'}
             </button>
           </div>
 

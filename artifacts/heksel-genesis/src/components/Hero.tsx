@@ -247,10 +247,9 @@ export function Hero() {
               whileTap={{ scale: 0.97 }}
               className="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.12em] uppercase shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-shadow"
               onClick={() => {
-                const panel = document.getElementById("customization-panel");
-                if (panel) {
-                  panel.scrollIntoView({ behavior: "smooth", block: "center" });
-                }
+                document
+                  .getElementById("interactive-example")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
             >
               ✦ ORDER MY CUSTOMIZED SWEATSHIRT ✦

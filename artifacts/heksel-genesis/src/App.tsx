@@ -30,6 +30,7 @@ import { Collection } from './components/Collection';
 import { NotifyModal, CreateBrandModal, CreateAdvanceModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
 import { CustomizationPanel } from './components/CustomizationPanel';
+import { OrderModal } from './components/OrderModal';
 
 export default function App() {
   // ── Estado dos modais ────────────────────────────────────
@@ -40,7 +41,20 @@ export default function App() {
   const [pixOpen, setPixOpen]                     = useState(false);
   const [paymentSuccess, setPaymentSuccess]       = useState(false);
 
-  // Abre o PixModal (usado por hoodie E tênis)
+  // ── OrderModal (fluxo do moletom) ────────────────────────
+  const [orderOpen, setOrderOpen]         = useState(false);
+  const [orderModel, setOrderModel]       = useState('');
+  const [orderColor, setOrderColor]       = useState('');
+  const [orderColorHex, setOrderColorHex] = useState('#b45eff');
+
+  const openOrder = (model: string, color: string, colorHex: string) => {
+    setOrderModel(model);
+    setOrderColor(color);
+    setOrderColorHex(colorHex);
+    setOrderOpen(true);
+  };
+
+  // Abre o PixModal (usado pelos tênis via Collection)
   const openPix = () => setPixOpen(true);
 
   const handleCheckout = () => {
