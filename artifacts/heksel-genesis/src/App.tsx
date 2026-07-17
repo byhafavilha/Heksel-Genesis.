@@ -8,60 +8,39 @@ import { ThemeToggleFAB } from './components/ThemeToggleFAB';
 import { Footer } from './components/Footer';
 
 // ── SEÇÕES (ordem sagrada do spec) ──────────────────────────
-// 1. HoodieSimulator + SafeSpace
-import { HoodieSimulator } from './components/HoodieSimulator';
+// 1. Hero (Simulador Principal — produto visual) + SafeSpace
+import { Hero } from './components/Hero';
 import { SafeSpace } from './components/SafeSpace';
 
-// 2. Hero — "From beginning to infinity"
-import { Hero } from './components/Hero';
+// 2. "From beginning to infinity" — declaração visual autônoma
+import { BeginningToInfinity } from './components/BeginningToInfinity';
 
-// 3. A Diretiva Gênesis (Manifesto)
+// 3. A Diretiva Gênesis (Genesis Directive — Manifesto)
 import { Manifesto } from './components/Manifesto';
 
-// 4. See an interactive example (HoodieSimulator inline — full interactive)
-// (same component, independent state instance)
+// 4. See an interactive example (Printful 4-área stamp simulator)
+import { HoodieSimulator } from './components/HoodieSimulator';
 
-// 5. Want a website like this? Build your brand. (BrandSection)
+// 5. Planos: Freemio & Preemio (BrandSection)
 import { BrandSection } from './components/BrandSection';
 
-// 6. See what the future holds (Collection — tênis)
+// 6. Footer — Coleção NEO'S "See what the future holds"
 import { Collection } from './components/Collection';
 
 // Modais
 import { NotifyModal, CreateBrandModal, CreateAdvanceModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
-import { CustomizationPanel } from './components/CustomizationPanel';
-import { OrderModal } from './components/OrderModal';
 
 export default function App() {
   // ── Estado dos modais ────────────────────────────────────
   const [notifyOpen, setNotifyOpen]               = useState(false);
   const [createBrandOpen, setCreateBrandOpen]     = useState(false);
   const [createAdvanceOpen, setCreateAdvanceOpen] = useState(false);
-  const [customizationOpen, setCustomizationOpen] = useState(false);
   const [pixOpen, setPixOpen]                     = useState(false);
   const [paymentSuccess, setPaymentSuccess]       = useState(false);
 
-  // ── OrderModal (fluxo do moletom) ────────────────────────
-  const [orderOpen, setOrderOpen]         = useState(false);
-  const [orderModel, setOrderModel]       = useState('');
-  const [orderColor, setOrderColor]       = useState('');
-  const [orderColorHex, setOrderColorHex] = useState('#b45eff');
-
-  const openOrder = (model: string, color: string, colorHex: string) => {
-    setOrderModel(model);
-    setOrderColor(color);
-    setOrderColorHex(colorHex);
-    setOrderOpen(true);
-  };
-
-  // Abre o PixModal (usado pelos tênis via Collection)
+  // Abre o PixModal
   const openPix = () => setPixOpen(true);
-
-  const handleCheckout = () => {
-    setCustomizationOpen(false);
-    setPixOpen(true);
-  };
 
   return (
     <LanguageProvider>
@@ -78,33 +57,32 @@ export default function App() {
       <main>
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 1 — "From beginning to infinity" (PRIMEIRA)
+            SEÇÃO 1 — Hero (Simulador Principal de Moletons)
+                       + SafeSpace logo abaixo
         ══════════════════════════════════════════════ */}
         <Hero />
+        <SafeSpace />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 2 — HoodieSimulator + SafeSpace
+            SEÇÃO 2 — "From beginning to infinity"
         ══════════════════════════════════════════════ */}
-        <section style={{ position: 'relative' }}>
-          {/* Safe Space — mensagem de acolhimento */}
-          <SafeSpace />
-        </section>
+        <BeginningToInfinity />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 3 — A Diretiva Gênesis (Manifesto)
+            SEÇÃO 3 — A Diretiva Gênesis (Genesis Directive)
         ══════════════════════════════════════════════ */}
         <Manifesto />
 
         {/* ══════════════════════════════════════════════
             SEÇÃO 4 — See an interactive example
+                       Printful · 4 stamp areas · Front Y-lock
         ══════════════════════════════════════════════ */}
         <div id="interactive-example">
-          <HoodieSimulator onOrder={() => setPixOpen(true)} />
+          <HoodieSimulator onOrder={openPix} />
         </div>
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 5 — Want a website like this?
-                       Build your brand. (Planos)
+            SEÇÃO 5 — Planos: Freemio & Preemio
         ══════════════════════════════════════════════ */}
         <BrandSection
           onCreateAdvance={() => setCreateAdvanceOpen(true)}
@@ -112,7 +90,7 @@ export default function App() {
         />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 6 — See what the future holds (Tênis)
+            SEÇÃO 6 — NEO'S Collection — See what the future holds
         ══════════════════════════════════════════════ */}
         <Collection onNotifyMe={openPix} />
 
@@ -121,7 +99,7 @@ export default function App() {
       {/* ── FOOTER ── */}
       <Footer />
 
-      {/* ── FAB de tema ── */}
+      {/* ── FAB de tema 🎨 ── */}
       <ThemeToggleFAB />
 
       {/* ── MODAIS ── */}
@@ -129,7 +107,6 @@ export default function App() {
       <CreateBrandModal    isOpen={createBrandOpen}   onClose={() => setCreateBrandOpen(false)} />
       <CreateAdvanceModal  isOpen={createAdvanceOpen} onClose={() => setCreateAdvanceOpen(false)} />
 
-      {/* PixModal — abre para hoodies (via CustomizationPanel) E tênis (via Collection) */}
       <PixModal
         isOpen={pixOpen}
         onClose={() => setPixOpen(false)}

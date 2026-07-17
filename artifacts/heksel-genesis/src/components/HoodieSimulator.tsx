@@ -1,4 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import type { StampArea as _SA } from '../context/LanguageContext';
 
 /* ─────────────────────────────────────────────────────
    SEE AN INTERACTIVE EXAMPLE — Printful-Level Hoodie Simulator

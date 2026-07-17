@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Heart, Zap, Network, Eye, Code, Send } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FloatingEmoji {
   id: number;
