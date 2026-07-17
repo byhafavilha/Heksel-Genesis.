@@ -97,7 +97,7 @@ export default function App() {
             SEÇÃO 4 — See an interactive example
         ══════════════════════════════════════════════ */}
         <div id="interactive-example">
-          <HoodieSimulator />
+          <HoodieSimulator onOrder={() => setPixOpen(true)} />
         </div>
 
         {/* ══════════════════════════════════════════════
