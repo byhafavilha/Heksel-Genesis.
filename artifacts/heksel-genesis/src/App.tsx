@@ -67,23 +67,10 @@ export default function App() {
         <Hero />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 2 — Simulador de Moletons
-                      depois Safe Space abaixo
+            SEÇÃO 2 — HoodieSimulator + SafeSpace
         ══════════════════════════════════════════════ */}
         <section style={{ position: 'relative' }}>
-          {/* 1a: HoodieSimulator — simulador interativo de moletons */}
-          <HoodieSimulator />
-
-          {/* 1b: Painel de personalização completa (expande inline) */}
-          <div>
-            <CustomizationPanel
-              isOpen={customizationOpen}
-              onClose={() => setCustomizationOpen(false)}
-              onCheckout={handleCheckout}
-            />
-          </div>
-
-          {/* 1c: Safe Space — mensagem de acolhimento */}
+          {/* Safe Space — mensagem de acolhimento */}
           <SafeSpace />
         </section>
 
