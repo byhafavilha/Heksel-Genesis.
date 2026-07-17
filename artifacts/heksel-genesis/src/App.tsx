@@ -7,9 +7,9 @@ import { ThemeToggleFAB } from './components/ThemeToggleFAB';
 import { Footer } from './components/Footer';
 
 // ── SEÇÕES (ordem sagrada do spec) ──────────────────────────
-// 1. SafeSpace + HoodieSimulator
-import { SafeSpace } from './components/SafeSpace';
+// 1. HoodieSimulator + SafeSpace
 import { HoodieSimulator } from './components/HoodieSimulator';
+import { SafeSpace } from './components/SafeSpace';
 
 // 2. Hero — "From beginning to infinity"
 import { Hero } from './components/Hero';
@@ -17,8 +17,8 @@ import { Hero } from './components/Hero';
 // 3. A Diretiva Gênesis (Manifesto)
 import { Manifesto } from './components/Manifesto';
 
-// 4. See an interactive example (CustomizationPanel inline)
-import { CustomizationPanel } from './components/CustomizationPanel';
+// 4. See an interactive example (HoodieSimulator inline — full interactive)
+// (same component, independent state instance)
 
 // 5. Want a website like this? Build your brand. (BrandSection)
 import { BrandSection } from './components/BrandSection';
@@ -29,6 +29,7 @@ import { Collection } from './components/Collection';
 // Modais
 import { NotifyModal, CreateBrandModal, CreateAdvanceModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
+import { CustomizationPanel } from './components/CustomizationPanel';
 
 export default function App() {
   // ── Estado dos modais ────────────────────────────────────
@@ -41,9 +42,6 @@ export default function App() {
 
   // Abre o PixModal (usado por hoodie E tênis)
   const openPix = () => setPixOpen(true);
-
-  // Fluxo hoodie: abre painel → "COMPRAR AGORA" → PixModal
-  const openCustomization = () => setCustomizationOpen(true);
 
   const handleCheckout = () => {
     setCustomizationOpen(false);
@@ -64,23 +62,24 @@ export default function App() {
       <main>
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 1 — Simulador de Moletons & Safe Space
+            SEÇÃO 1 — Simulador de Moletons (PRIMEIRO)
+                      depois Safe Space abaixo
         ══════════════════════════════════════════════ */}
         <section style={{ position: 'relative' }}>
-          {/* Safe Space — mensagem de acolhimento */}
-          <SafeSpace />
-
-          {/* HoodieSimulator — simulador interativo de moletons */}
+          {/* 1a: HoodieSimulator — simulador interativo de moletons */}
           <HoodieSimulator />
 
-          {/* Painel de compra do moletom (expande inline) */}
-          <div id="customization-panel">
+          {/* 1b: Painel de personalização completa (expande inline) */}
+          <div>
             <CustomizationPanel
               isOpen={customizationOpen}
               onClose={() => setCustomizationOpen(false)}
               onCheckout={handleCheckout}
             />
           </div>
+
+          {/* 1c: Safe Space — mensagem de acolhimento */}
+          <SafeSpace />
         </section>
 
         {/* ══════════════════════════════════════════════
@@ -95,40 +94,12 @@ export default function App() {
 
         {/* ══════════════════════════════════════════════
             SEÇÃO 4 — See an interactive example
-            (painel de personalização + CTA de compra)
+            Segundo HoodieSimulator (estado independente)
+            com id diferente para não colidir com #create
         ══════════════════════════════════════════════ */}
-        <section
-          id="create"
-          style={{
-            padding: '80px 0',
-            background: 'linear-gradient(180deg,rgba(10,10,18,0.98) 0%,rgba(26,11,46,0.95) 100%)',
-            borderTop: '1px solid rgba(255,255,255,0.05)',
-          }}
-        >
-          <div className="section-inner" style={{ textAlign: 'center', marginBottom: 48 }}>
-            <span className="section-tag">✦ Personalização Premium</span>
-            <h2 className="section-title" style={{ lineHeight: 1.1 }}>
-              See an<br />
-              <span style={{
-                background: 'linear-gradient(135deg,#00f0ff,#b45eff,#ff6ec7)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>
-                interactive example
-              </span>
-            </h2>
-            <p className="section-sub" style={{ maxWidth: 520, margin: '0 auto 36px' }}>
-              Configure o seu moletom, escolha as opções e garanta o seu com checkout instantâneo via Pix.
-            </p>
-            <button
-              className="btn-primary"
-              onClick={openCustomization}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}
-            >
-              ✦ PERSONALIZAR MEU MOLETOM ✦
-            </button>
-          </div>
-        </section>
+        <div id="interactive-example">
+          <HoodieSimulator />
+        </div>
 
         {/* ══════════════════════════════════════════════
             SEÇÃO 5 — Want a website like this?
@@ -143,7 +114,6 @@ export default function App() {
             SEÇÃO 6 — See what the future holds
                        (Coleção de Tênis)
         ══════════════════════════════════════════════ */}
-        {/* onNotifyMe → abre PixModal: cliente clica "Secure Access" → checkout */}
         <Collection onNotifyMe={openPix} />
 
       </main>
@@ -155,9 +125,9 @@ export default function App() {
       <ThemeToggleFAB />
 
       {/* ── MODAIS ── */}
-      <NotifyModal    isOpen={notifyOpen}        onClose={() => setNotifyOpen(false)} />
-      <CreateBrandModal   isOpen={createBrandOpen}   onClose={() => setCreateBrandOpen(false)} />
-      <CreateAdvanceModal isOpen={createAdvanceOpen} onClose={() => setCreateAdvanceOpen(false)} />
+      <NotifyModal         isOpen={notifyOpen}        onClose={() => setNotifyOpen(false)} />
+      <CreateBrandModal    isOpen={createBrandOpen}   onClose={() => setCreateBrandOpen(false)} />
+      <CreateAdvanceModal  isOpen={createAdvanceOpen} onClose={() => setCreateAdvanceOpen(false)} />
 
       {/* PixModal — abre para hoodies (via CustomizationPanel) E tênis (via Collection) */}
       <PixModal
