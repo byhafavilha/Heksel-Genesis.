@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, Menu, X, Search, ChevronRight } from 'lucide-react';
+import { useLanguage, Lang } from '../context/LanguageContext';
 
 interface NavbarProps {
   onNotifyMe: () => void;
@@ -10,6 +11,7 @@ export function Navbar({ onNotifyMe }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const { lang, setLang } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,9 +82,17 @@ export function Navbar({ onNotifyMe }: NavbarProps) {
                     <input type="text" placeholder="Search..." className="w-full bg-black/50 border border-white/5 rounded-lg py-1.5 pl-8 pr-2 text-sm text-white focus:outline-none focus:border-cyan/50" />
                   </div>
                   <div className="flex flex-col">
-                    {languages.map(lang => (
-                      <button key={lang} className="text-left px-3 py-1.5 text-sm text-white/70 hover:text-white hover:bg-white/5 rounded-md transition-colors">
-                        {lang}
+                    {languages.map(l => (
+                      <button
+                        key={l}
+                        onClick={() => { setLang(l as Lang); setLangOpen(false); }}
+                        className={`text-left px-3 py-1.5 text-sm rounded-md transition-colors ${
+                          lang === l
+                            ? 'text-cyan-400 bg-white/10 font-semibold'
+                            : 'text-white/70 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        {l}
                       </button>
                     ))}
                   </div>

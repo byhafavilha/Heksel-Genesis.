@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../context/LanguageContext";
 
 // ---------------------------------------------------------------------------
 // Constantes (Ajustadas com as suas imagens reais!)
@@ -102,6 +103,7 @@ export function Hero() {
   const [activeTab, setActiveTab] = useState<TabKey>("customize");
   const [infoOpen, setInfoOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { collectorPack } = useLanguage();
 
   return (
     <section
@@ -193,7 +195,7 @@ export function Hero() {
                       color: "rgba(180,94,255,0.7)",
                       textTransform: "uppercase", marginBottom: 6,
                     }}>
-                      ✦ Collector Pack — O que está incluso
+                      {collectorPack.header}
                     </div>
                     <div style={{
                       fontFamily: "'Syne',sans-serif", fontWeight: 800,
@@ -202,41 +204,20 @@ export function Hero() {
                       WebkitBackgroundClip: "text", backgroundClip: "text",
                       color: "transparent", marginBottom: 4,
                     }}>
-                      R$ 300,00
+                      {collectorPack.price}
                     </div>
                     <div style={{
                       fontFamily: "'DM Sans',sans-serif", fontSize: "0.78rem",
                       color: "rgba(255,255,255,0.45)", marginBottom: 22, lineHeight: 1.5,
                     }}>
-                      Inclui: Carta Personalizada 🃏 + Adesivo Exclusivo Heksel + Fragrância Especial Imperium 🧪
+                      {collectorPack.includes}
                     </div>
 
                     {/* Divider */}
                     <div style={{ height: 1, background: "rgba(180,94,255,0.15)", marginBottom: 20 }} />
 
                     {/* Items */}
-                    {[
-                      {
-                        icon: "🟪",
-                        title: "Premium Custom Sweatshirt",
-                        desc: "Dual-print (Bone Front / Furry Back) engineered heavyweight cotton.",
-                      },
-                      {
-                        icon: "🔑",
-                        title: "Heksel Genesis Keychain",
-                        desc: "Perfect accessory for your backpack, bag, or car mirror.",
-                      },
-                      {
-                        icon: "💎",
-                        title: "Official Genesis Sticker Pack",
-                        desc: "High-fidelity vinyl stickers to customize your laptop or gear.",
-                      },
-                      {
-                        icon: "✉️",
-                        title: "Handcrafted Serialized Letter",
-                        desc: 'Custom thank-you card with your unique serial number (e.g., "You are customer #10"), locking your collector position.',
-                      },
-                    ].map((item) => (
+                    {collectorPack.items.map((item) => (
                       <div
                         key={item.title}
                         style={{
@@ -276,7 +257,7 @@ export function Hero() {
                       color: "rgba(0,240,255,0.7)", letterSpacing: "0.1em",
                       textAlign: "center",
                     }}>
-                      🔒 EDIÇÃO LIMITADA · SERIAL ÚNICO · ENTREGA PREMIUM
+                      {collectorPack.badge}
                     </div>
                   </div>
                 </motion.div>

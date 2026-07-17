@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { LanguageProvider } from './context/LanguageContext';
 
 // Layout
 import { Navbar } from './components/Navbar';
@@ -63,6 +64,7 @@ export default function App() {
   };
 
   return (
+    <LanguageProvider>
     <>
       {/* Fundo animado global */}
       <div className="animated-bg" aria-hidden="true" />
@@ -167,5 +169,6 @@ export default function App() {
         </div>
       )}
     </>
+    </LanguageProvider>
   );
 }

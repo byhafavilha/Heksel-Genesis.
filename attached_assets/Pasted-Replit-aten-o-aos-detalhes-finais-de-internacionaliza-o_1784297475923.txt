@@ -1,0 +1,51 @@
+Replit, atenção aos detalhes finais de internacionalização (i18n) e limpeza de marca. O site precisa estar 100% impecável para o público global. 
+
+Por favor, implemente estas correções cirúrgicas agora mesmo:
+
+### 1️⃣ TRADUÇÃO DINÂMICA DO POPUP "?" (MEO-NAI SWEATSHIRT?)
+O texto com os detalhes do pacote de R$ 300,00 não pode ficar fixo ("hardcoded") misturando português e inglês. Ele deve ser integrado ao nosso sistema de troca de idiomas do site, para que mude de forma dinâmica para Inglês, Francês ou Português dependendo da escolha do usuário.
+
+Cadastre as chaves de tradução no dicionário de idiomas do projeto usando as versões oficiais abaixo:
+
+**🇺🇸 Versão em Inglês (Base Global):**
+"R$ 300.00
+Includes: Personalized Letter 🃏 + Exclusive Heksel Sticker + Special Imperium Fragrance 🧪
+🟪
+Premium Custom Sweatshirt – Dual-print (Bone Front / Furry Back) engineered heavyweight cotton.
+🔑
+Heksel Genesis Keychain – Perfect accessory for your backpack, bag, or car mirror.
+💎
+Official Genesis Sticker Pack – High-fidelity vinyl stickers to customize your laptop or gear.
+✉️
+Handcrafted Serialized Letter – Custom thank-you card with your unique serial number (e.g., 'You are customer #10'), locking your collector position."
+
+**🇫🇷 Versão em Francês (Luxo Cyber):**
+"300,00 R$
+Comprend : Lettre Personnalisée 🃏 + Autocollant Exclusif Heksel + Parfum Spécial Imperium 🧪
+🟪
+Sweat-shirt Personnalisé Premium – Double impression (Bone Front / Furry Back) en coton épais de haute qualité.
+🔑
+Porte-clés Heksel Genesis – L'accessoire parfait pour votre sac à dos, sac ou rétroviseur de voiture.
+💎
+Pack d'Autocollants Officiels Genesis – Autocollants en vinyle haute fidélité pour personnaliser votre ordinateur portable ou vos équipements.
+✉️
+Lettre Sérialisée Fabriquée à la Main – Carte de remerciement personnalisée avec vos numéros de série uniques (ex. : 'Vous êtes le client #10'), sécurisant votre position de collectionneur."
+
+**🇧🇷 Versão em Português:**
+"R$ 300,00
+Inclui: Carta Personalizada 🃏 + Adesivo Exclusivo Heksel + Fragrância Especial Imperium 🧪
+🟪
+Moletom Personalizado Premium – Estampa dupla (Frente Bone / Costas Furry) em algodão encorpado de alta engenharia.
+🔑
+Chaveiro Heksel Genesis – Acessório perfeito para sua mochila, bolsa ou espelho do carro.
+💎
+Pack de Adesivos Oficiais Genesis – Adesivos de vinil de alta fidelidade para customizar seu notebook ou acessórios.
+✉️
+Carta Serializada Feita à Mão – Cartão de agradecimento personalizado com seu número de série exclusivo (ex.: 'Você é o cliente #10'), garantindo sua posição de colecionador."
+
+*👉 Certifique-se de que o componente do popup puxe essa string dinamicamente usando a chave de tradução correspondente ao idioma ativo!*
+
+### 2️⃣ REMOVER O TEXTO "Trosk Factor"
+- Vá até o rodapé da página (Footer / abaixo da seção do "STUDIO") e REMOVA COMPLETAMENTE o texto escrito "Trosk Factor". Deixe essa área limpa, minimalista e brutalista de luxo.
+
+Execute estes ajustes finos e verifique o build de compilação!

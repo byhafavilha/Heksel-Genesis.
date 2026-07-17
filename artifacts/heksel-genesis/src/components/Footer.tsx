@@ -49,7 +49,7 @@ export function Footer() {
           <div>
             <h4 className="font-mono text-sm text-white mb-6 uppercase tracking-wider">Studio</h4>
             <ul className="space-y-4">
-              {['Brand Identity', 'Web Development', 'Fábrica TroskIA', 'Case Studies'].map(link => (
+              {['Brand Identity', 'Web Development', 'Case Studies'].map(link => (
                 <li key={link}><a href="#brand" className="text-white/50 text-sm hover:text-purple transition-colors">{link}</a></li>
               ))}
             </ul>
