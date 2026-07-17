@@ -62,7 +62,12 @@ export default function App() {
       <main>
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 1 — Simulador de Moletons (PRIMEIRO)
+            SEÇÃO 0 — The MEO 2026 Collection (PRIMEIRO)
+        ══════════════════════════════════════════════ */}
+        <Collection onNotifyMe={openPix} />
+
+        {/* ══════════════════════════════════════════════
+            SEÇÃO 1 — Simulador de Moletons
                       depois Safe Space abaixo
         ══════════════════════════════════════════════ */}
         <section style={{ position: 'relative' }}>
@@ -110,11 +115,6 @@ export default function App() {
           onHirePremium={() => setCreateBrandOpen(true)}
         />
 
-        {/* ══════════════════════════════════════════════
-            SEÇÃO 6 — See what the future holds
-                       (Coleção de Tênis)
-        ══════════════════════════════════════════════ */}
-        <Collection onNotifyMe={openPix} />
 
       </main>
 
