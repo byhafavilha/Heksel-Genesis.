@@ -1,0 +1,45 @@
+Replit, vamos construir o site oficial de alta costura digital da HEKSEL GENESIS do absoluto zero. Exijo foco máximo em cyber-luxury, engenharia avançada e código limpo. Siga estas regras rigorosamente, sem cometer erros de sessões anteriores:
+
+### 1️⃣ OCULTAR A MARCA DO REPLIT E BUG DE TEXTO 
+- Adicione isto no CSS global para esconder a marca d'água:
+`iframe[src*="replit"], #replit-badge, .replit-watermark { display: none !important; }`
+- **REGRA DE OURO DAS CORES:** O título "MEO-NAI SWEATSHIRT?" e os textos que ficam sobre áreas pretas do layout devem usar `text-white` fixo. Eles NUNCA podem ficar pretos.
+
+### 2️⃣ BOTÃO DE TEMA "🎨" (Cosmic Dark vs. Cyber-Clean White/Cyan)
+- Crie um botão "🎨" alternador de tema.
+- **Tema Escuro (Padrão):** Fundo espacial, degradês preto/roxo-nebula.
+- **Tema Claro:** Fundo Branco Radiante com degradês Azul Ciano Neon (`#00f2fe`). Textos gerais viram Preto/Cinza Escuro (`text-slate-900`) para leitura.
+- Os planos Freemio e Preemio ganham sombra forte (`shadow-2xl`) no Tema Claro para não sumirem no fundo branco.
+
+### 3️⃣ ESTRUTURA EXATA (SEM DUPLICATAS DE SEÇÕES!)
+Siga esta ordem exata no `App.tsx` e **NÃO crie clones ou textos duplicados**:
+1. **Topo:** `HoodieSimulator` seguido pelo manifesto `SafeSpace`.
+2. **Introdução:** UMA ÚNICA SEÇÃO contendo o texto "From beginning to infinity" (fonte gigante, brutalista). *NÃO escreva "NEO-NAI Collection" aqui e não repita esta seção.*
+3. **Diretiva:** `Genesis Directive`.
+4. **Simulador:** "See an interactive example" (4 áreas de estampa, trava de eixo Y na frente).
+5. **Planos:** `Cognitive Infrastructure`. O título "✦ COGNITIVE INFRASTRUCTURE — ARCHITECT YOUR EMPIRE ✦" deve ter o MESMO ESTILO visual do topo, porém menor e responsivo (`text-2xl md:text-3xl lg:text-5xl` com `text-center break-words`) para não cortar na tela.
+6. **Footer:** Calçados NEO'S.
+
+### 4️⃣ GLOBO "🌐" COM 4 IDIOMAS E INGLÊS NATIVO NO CHECKOUT
+- O globo altera todo o site entre: **🇺🇸 English, 🇫🇷 Français, 🇨🇳 中文 (Chinês) e 🇧🇷 Português**.
+- O título do Checkout deve puxar o i18n nativo:
+  - 🇺🇸 "🔐 Guaranteed Secure Checkout — Heksel Genesis"
+  - 🇫🇷 "🔐 Paiement 100% Sécurisé — Heksel Genesis"
+  - 🇨🇳 "🔐 官方安全加密结账 — Heksel Genesis"
+  - 🇧🇷 "🔐 Checkout 100% Seguro — Heksel Genesis"
+
+### 5️⃣ NOVO FLUXO DO BOTÃO "TRY IT NOW" (Estratégia Freemium)
+- O botão "Try It Now" do plano FREEMIO deve abrir um Modal de criação idêntico ao do Preemio.
+- **Obrigatório no Modal Freemio:** Adicione um banner fixo no topo com o aviso (traduza via i18n): 
+  > "✦ FREEMIO INITIATED ✦ Your free digital universe will include a minimal 'Cognitive Infrastructure by Heksel Genesis' banner at the top. Upgrade to PREEMIO at any time to remove this and unlock absolute brand sovereignty."
+### 6️⃣ ENGENHARIA ULTRA-MOBILE (Estilo Web App Nativo)
+Replit, aplique uma arquitetura baseada em Mobile-First com estilo visual de Aplicativo Nativo (App-like UI). O site precisa ficar perfeito, compacto e extremamente profissional em telas de celulares:
+
+- **Contêineres e Margens Otimizadas:**
+  Substitua espaçamentos exagerados (`py-24` ou `my-20`) por paddings compactos e elegantes adequados para mobile (`py-8` a `py-12`), garantindo que o usuário visualize o conteúdo sem precisar rolar a tela infinitamente.
+- **Botões e Componentes Touch-Friendly:**
+  Todos os botões interativos (como "🎨", "🌐", "?" e os seletores dos simuladores) devem ter um tamanho mínimo confortável para cliques com o dedão (mínimo de 44px de altura), com cantos arredondados premium e feedback visual instantâneo ao toque (`active:scale-95`).
+- **Cards e Tabelas Responsivos (Seção 5):**
+  Os planos Freemio e Preemio devem se organizar em um carrossel horizontal suave ou empilhar de forma limpa no celular, usando 100% da largura útil da tela com pequenas margens laterais (`px-4`), eliminando qualquer tipo de rolagem lateral indesejada do site.
+- **Tipografia Escalonada:**
+  Nenhum texto pode estourar as bordas. Use o sistema de responsividade do Tailwind à risca (ex: `text-xl md:text-3xl lg:text-5xl`) para que as fontes encolham perfeitamente no celular, mantendo a leitura imponente, limpa e brutalista.

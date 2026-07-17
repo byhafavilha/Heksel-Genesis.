@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, MessageSquare, Instagram } from 'lucide-react';
 import { FaDiscord, FaTiktok } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
 
 // Shared Modal Wrapper
 function ModalWrapper({ isOpen, onClose, title, children }: { isOpen: boolean, onClose: () => void, title: string, children: React.ReactNode }) {
@@ -139,7 +140,103 @@ export function CreateBrandModal({ isOpen, onClose }: { isOpen: boolean, onClose
   );
 }
 
-// 3. Create In Advance Modal
+// 3b. Freemio Modal — identical to CreateBrandModal with a freemio banner
+export function FreemioModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
+  const { t } = useLanguage();
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState({ name: '', type: 'build', contactMethod: 'WhatsApp', contactInfo: '', plan: 'Freemio' });
+
+  const methods = ['WhatsApp', 'Discord', 'Instagram', 'TikTok', 'Gmail'];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (step < 4) {
+      setStep(step + 1);
+      return;
+    }
+    const text = `Hello Heksel, I want to ${data.type} my brand "${data.name}" with the FREEMIO plan. My contact is ${data.contactMethod}: ${data.contactInfo}`;
+    window.open(`https://wa.me/5553991855262?text=${encodeURIComponent(text)}`);
+    onClose();
+    setTimeout(() => setStep(1), 500);
+  };
+
+  return (
+    <ModalWrapper isOpen={isOpen} onClose={onClose} title="Freemio — Try It Now">
+      {/* Freemio banner */}
+      <div style={{
+        marginBottom: 20,
+        padding: '12px 14px',
+        borderRadius: 10,
+        background: 'linear-gradient(135deg, rgba(0,240,255,0.08), rgba(180,94,255,0.08))',
+        border: '1px solid rgba(0,240,255,0.3)',
+        fontFamily: "'Space Mono', monospace",
+        fontSize: '0.52rem',
+        letterSpacing: '0.1em',
+        color: 'rgba(0,240,255,0.9)',
+        lineHeight: 1.65,
+      }}>
+        {t.freemioBanner}
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {step === 1 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+            <label className="block text-sm font-mono text-white/60 mb-2">Brand / App Name</label>
+            <input required type="text" value={data.name} onChange={e => setData({...data, name: e.target.value})} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-purple outline-none" autoFocus />
+          </motion.div>
+        )}
+
+        {step === 2 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-3">
+            <label className="block text-sm font-mono text-white/60 mb-2">Operation Type</label>
+            {['Build from Zero', 'Upgrade Site', 'Upgrade App'].map(t => (
+              <label key={t} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${data.type === t ? 'border-cyan bg-cyan/10' : 'border-white/10 bg-white/5'}`}>
+                <input type="radio" name="type" checked={data.type === t} onChange={() => setData({...data, type: t})} className="accent-cyan" />
+                <span className="text-white text-sm">{t}</span>
+              </label>
+            ))}
+          </motion.div>
+        )}
+
+        {step === 3 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
+            <div>
+              <label className="block text-sm font-mono text-white/60 mb-2">Contact Method</label>
+              <select value={data.contactMethod} onChange={e => setData({...data, contactMethod: e.target.value})} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-cyan outline-none appearance-none">
+                {methods.map(m => <option key={m} value={m}>{m}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-mono text-white/60 mb-2">Your {data.contactMethod} ID/Number</label>
+              <input required type="text" value={data.contactInfo} onChange={e => setData({...data, contactInfo: e.target.value})} className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-cyan outline-none" />
+            </div>
+          </motion.div>
+        )}
+
+        {step === 4 && (
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-3">
+            <div className="p-4 rounded-lg border border-cyan/30 bg-cyan/5 text-center">
+              <div className="font-display font-bold text-cyan text-lg">Freemio</div>
+              <div className="text-xs text-white/50 mt-1">Free — Basic Digital Presence</div>
+            </div>
+            <p className="text-xs text-white/40 font-mono text-center">Your brand will be created under the Freemio tier.</p>
+          </motion.div>
+        )}
+
+        <div className="flex justify-between mt-8 pt-4 border-t border-white/10">
+          {step > 1 ? (
+            <button type="button" onClick={() => setStep(step - 1)} className="px-4 py-2 text-white/50 hover:text-white text-sm font-mono">Back</button>
+          ) : <div/>}
+          <button type="submit" className="cyber-btn cyber-outline px-6 py-2 rounded-lg text-sm">
+            {step === 4 ? 'Start Conversation' : 'Next'}
+          </button>
+        </div>
+      </form>
+    </ModalWrapper>
+  );
+}
+
+// 4. Create In Advance Modal
 export function CreateAdvanceModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const [method, setMethod] = useState('WhatsApp');
   const [lang, setLang] = useState('English');

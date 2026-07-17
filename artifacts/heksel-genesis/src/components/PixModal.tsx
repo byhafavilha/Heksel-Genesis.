@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, X, ExternalLink, ChevronRight, User, CreditCard, Mail, Phone } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface PixModalProps {
   isOpen: boolean;
@@ -115,6 +116,7 @@ const labelStyle: React.CSSProperties = {
 };
 
 export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) {
+  const { t } = useLanguage();
   const [step, setStep] = useState<ModalStep>('form');
   const [form, setForm] = useState<FormData>({ nome: '', doc: '', email: '', phone: '' });
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -242,7 +244,7 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
                 color: 'rgba(180,94,255,0.8)', letterSpacing: '0.22em',
                 textTransform: 'uppercase', marginBottom: 10,
               }}>
-                🔐 Checkout Seguro — Heksel Genesis
+                {t.checkoutTitle}
               </div>
               <div style={{
                 fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '1.6rem',

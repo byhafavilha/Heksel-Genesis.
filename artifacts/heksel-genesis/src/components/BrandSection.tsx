@@ -4,14 +4,15 @@ import { useLanguage } from '../context/LanguageContext';
 interface BrandSectionProps {
   onCreateAdvance: () => void;
   onHirePremium: () => void;
+  onTryFreemio?: () => void;
 }
 
-export function BrandSection({ onCreateAdvance, onHirePremium }: BrandSectionProps) {
+export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: BrandSectionProps) {
   const { t } = useLanguage();
   const { brand } = t;
 
   return (
-    <section id="brand" className="py-32 relative bg-[linear-gradient(to_bottom,#08080d,#1a0b2e)]">
+    <section id="brand" className="py-12 md:py-20 relative bg-[linear-gradient(to_bottom,#08080d,#1a0b2e)]">
       <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
 
       <div className="container mx-auto px-4 relative z-10">
@@ -53,7 +54,7 @@ export function BrandSection({ onCreateAdvance, onHirePremium }: BrandSectionPro
         </div>
 
         {/* Pricing Cards */}
-        <div id="plans" className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-24">
+        <div id="plans" className="grid md:grid-cols-2 gap-6 px-4 max-w-5xl mx-auto mt-16">
 
           {/* Freemium Card */}
           <div className="bg-card/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex flex-col relative overflow-hidden group hover:border-cyan/50 transition-colors">
@@ -79,7 +80,10 @@ export function BrandSection({ onCreateAdvance, onHirePremium }: BrandSectionPro
               ))}
             </ul>
 
-            <button className="w-full py-4 rounded-xl border border-white/20 text-white font-display uppercase hover:bg-white/5 transition-colors relative z-10">
+            <button
+              onClick={onTryFreemio}
+              className="w-full py-4 rounded-xl border border-white/20 text-white font-display uppercase hover:bg-white/5 active:scale-95 transition-all relative z-10 min-h-[44px]"
+            >
               {brand.freemium.cta}
             </button>
           </div>

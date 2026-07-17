@@ -5,12 +5,16 @@ import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/Navbar';
 import { CustomCursor } from './components/CustomCursor';
 import { ThemeToggleFAB } from './components/ThemeToggleFAB';
+import { CosmosCanvas } from './components/CosmosCanvas';
 import { Footer } from './components/Footer';
 
 // ── SEÇÕES (ordem sagrada do spec) ──────────────────────────
 // 1. Hero (Simulador Principal — produto visual) + SafeSpace
 import { Hero } from './components/Hero';
 import { SafeSpace } from './components/SafeSpace';
+
+// 2. "From beginning to infinity" — declaração brutalista
+import { BeginningToInfinity } from './components/BeginningToInfinity';
 
 // 3. A Diretiva Gênesis (Genesis Directive — Manifesto)
 import { Manifesto } from './components/Manifesto';
@@ -25,7 +29,7 @@ import { BrandSection } from './components/BrandSection';
 import { Collection } from './components/Collection';
 
 // Modais
-import { NotifyModal, CreateBrandModal, CreateAdvanceModal } from './components/Modals';
+import { NotifyModal, CreateBrandModal, CreateAdvanceModal, FreemioModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
 
 export default function App() {
@@ -33,6 +37,7 @@ export default function App() {
   const [notifyOpen, setNotifyOpen]               = useState(false);
   const [createBrandOpen, setCreateBrandOpen]     = useState(false);
   const [createAdvanceOpen, setCreateAdvanceOpen] = useState(false);
+  const [freemioOpen, setFreemioOpen]             = useState(false);
   const [pixOpen, setPixOpen]                     = useState(false);
   const [paymentSuccess, setPaymentSuccess]       = useState(false);
 
@@ -42,8 +47,11 @@ export default function App() {
   return (
     <LanguageProvider>
     <>
-      {/* Fundo animado global */}
+      {/* Fundo animado global (CSS base) */}
       <div className="animated-bg" aria-hidden="true" />
+
+      {/* Canvas cósmico animado — dark: estrelas brancas / light: nebulosa ciano */}
+      <CosmosCanvas />
 
       {/* Cursor customizado */}
       <CustomCursor />
@@ -61,7 +69,13 @@ export default function App() {
         <SafeSpace />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 2 — A Diretiva Gênesis (Genesis Directive)
+            SEÇÃO 2 — "From beginning to infinity"
+                       Declaração brutalista autônoma
+        ══════════════════════════════════════════════ */}
+        <BeginningToInfinity />
+
+        {/* ══════════════════════════════════════════════
+            SEÇÃO 3 — A Diretiva Gênesis (Genesis Directive)
         ══════════════════════════════════════════════ */}
         <Manifesto />
 
@@ -79,6 +93,7 @@ export default function App() {
         <BrandSection
           onCreateAdvance={() => setCreateAdvanceOpen(true)}
           onHirePremium={() => setCreateBrandOpen(true)}
+          onTryFreemio={() => setFreemioOpen(true)}
         />
 
         {/* ══════════════════════════════════════════════
@@ -98,6 +113,7 @@ export default function App() {
       <NotifyModal         isOpen={notifyOpen}        onClose={() => setNotifyOpen(false)} />
       <CreateBrandModal    isOpen={createBrandOpen}   onClose={() => setCreateBrandOpen(false)} />
       <CreateAdvanceModal  isOpen={createAdvanceOpen} onClose={() => setCreateAdvanceOpen(false)} />
+      <FreemioModal        isOpen={freemioOpen}       onClose={() => setFreemioOpen(false)} />
 
       <PixModal
         isOpen={pixOpen}

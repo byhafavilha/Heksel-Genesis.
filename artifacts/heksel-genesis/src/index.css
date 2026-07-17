@@ -130,6 +130,13 @@
   --muted-foreground: 120 100% 60%;
 }
 
+/* ── Ocultar marca d'água do Replit ── */
+iframe[src*="replit"],
+#replit-badge,
+.replit-watermark {
+  display: none !important;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -671,9 +678,10 @@ html.light {
   --holo-amber:   #fbbf24;
 }
 
-/* ── Deep space background → pure white in light mode ── */
+/* ── CosmosCanvas handles the full background in light mode ── */
+/* animated-bg goes transparent so the canvas nebula shows through */
 html.light .animated-bg {
-  background: #ffffff !important;
+  background: transparent !important;
 }
 html.light .animated-bg::before,
 html.light .animated-bg::after {
@@ -741,16 +749,18 @@ html.light .notify-btn-card:hover {
   color: #fff !important;
 }
 
-/* ── HoodieSimulator in light mode ── */
+/* ── HoodieSimulator in light mode — frosted glass over nebula ── */
 html.light #create,
 html.light #interactive-example > section {
-  background: linear-gradient(180deg, #f8f7ff 0%, #f0ecff 100%) !important;
-  border-top-color: rgba(124,58,237,0.12) !important;
+  background: rgba(220,243,255,0.50) !important;
+  backdrop-filter: blur(5px) !important;
+  border-top-color: rgba(0,150,210,0.18) !important;
 }
 
-/* ── Manifesto in light mode ── */
+/* ── Manifesto in light mode — frosted glass over nebula ── */
 html.light #manifesto {
-  background: #f8f7ff !important;
+  background: rgba(220,243,255,0.45) !important;
+  backdrop-filter: blur(6px) !important;
 }
 html.light #manifesto .glow-text {
   background: linear-gradient(120deg, var(--purple), var(--holo-rose), var(--holo-sky)) !important;
@@ -758,14 +768,14 @@ html.light #manifesto .glow-text {
   background-clip: text !important;
 }
 
-/* ── SafeSpace in light mode ── */
+/* ── SafeSpace section in light mode — semi-transparent so nebula shows through ── */
 html.light .bg-black {
-  background: #ffffff !important;
+  background: rgba(225,245,255,0.55) !important;
+  backdrop-filter: blur(4px) !important;
 }
 
-/* ── Section backgrounds in light mode ── */
-html.light section,
-html.light #brand {
+/* ── Section backgrounds in light mode — transparent, let canvas breathe ── */
+html.light section {
   background: transparent !important;
 }
 
@@ -796,15 +806,8 @@ html.light .custom-cursor {
   box-shadow: 0 0 10px var(--purple), 0 0 20px var(--purple) !important;
 }
 
-/* ── ThemeToggleFAB — show correct flag ── */
-html.light .animated-bg {
-  /* subtle holographic shimmer in white mode */
-  background:
-    radial-gradient(ellipse 70% 40% at 15% 10%, rgba(167,139,250,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 85% 15%, rgba(56,189,248,0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 45% at 50% 90%, rgba(244,63,94,0.04) 0%, transparent 60%),
-    #ffffff !important;
-}
+/* ── ThemeToggleFAB — no duplicate animated-bg override needed ── */
+/* (CosmosCanvas fills the background in light mode) */
 
 /* =======================================================
    🎨 LIGHT MODE — COMPONENT DEEP OVERRIDES
@@ -864,26 +867,28 @@ html.light section button[class*="bg-white\/5"]:hover {
    SAFE SPACE — fundo, glows, card e textos
    ────────────────────────────────────────── */
 
-/* Blobs de glow neon: quase invisíveis no branco */
-html.light .min-h-screen .bg-cyan-500.blur-3xl   { opacity: 0.06 !important; }
-html.light .min-h-screen .bg-purple-600.blur-3xl { opacity: 0.06 !important; }
-html.light .min-h-screen .bg-pink-500.blur-3xl   { opacity: 0.06 !important; }
+/* Blobs de glow — reajustados para tema ciano (aparecem sobre nebulosa branca) */
+html.light .min-h-screen .bg-cyan-500.blur-3xl   { opacity: 0.18 !important; }
+html.light .min-h-screen .bg-purple-600.blur-3xl { opacity: 0.10 !important; }
+html.light .min-h-screen .bg-pink-500.blur-3xl   { opacity: 0.08 !important; }
 
-/* Fundo geral do SafeSpace */
+/* Fundo geral do SafeSpace — translúcido para nebulosa aparecer */
 html.light .min-h-screen.bg-black {
-  background: #f5f3ff !important;  /* violeta muito suave */
+  background: rgba(210,242,255,0.45) !important;
+  backdrop-filter: blur(4px) !important;
 }
-html.light .min-h-screen .from-black { --tw-gradient-from: #f5f3ff !important; }
-html.light .min-h-screen .via-black  { --tw-gradient-via: #f5f3ff !important; }
-html.light .min-h-screen .to-slate-950 { --tw-gradient-to: #ede9fe !important; }
+html.light .min-h-screen .from-black { --tw-gradient-from: rgba(210,242,255,0.5) !important; }
+html.light .min-h-screen .via-black  { --tw-gradient-via: rgba(220,245,255,0.45) !important; }
+html.light .min-h-screen .to-slate-950 { --tw-gradient-to: rgba(200,238,255,0.4) !important; }
 
-/* Card principal do SafeSpace */
+/* Card principal do SafeSpace — branco elevado com sombra ciano */
 html.light .min-h-screen .backdrop-blur-xl.bg-black\/60 {
-  background: rgba(255,255,255,0.92) !important;
-  border-color: rgba(124,58,237,0.35) !important;
+  background: rgba(255,255,255,0.88) !important;
+  border-color: rgba(0,150,210,0.4) !important;
   box-shadow:
-    0 20px 60px rgba(124,58,237,0.12),
-    0 4px 16px rgba(0,0,0,0.08) !important;
+    0 24px 64px rgba(0,130,190,0.18),
+    0 4px 16px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.95) !important;
 }
 
 /* Corner accents: visíveis no branco */
@@ -918,8 +923,9 @@ html.light .min-h-screen .via-pink-500\/30  { --tw-gradient-via: rgba(236,72,153
    ────────────────────────────────────────── */
 
 html.light #manifesto {
-  background: #f5f3ff !important;
-  border-top: 1px solid rgba(124,58,237,0.1) !important;
+  background: rgba(210,243,255,0.45) !important;
+  backdrop-filter: blur(6px) !important;
+  border-top: 1px solid rgba(0,150,210,0.18) !important;
 }
 
 /* Label "The Genesis Directive" */
@@ -945,7 +951,8 @@ html.light #manifesto .glow-text {
    ────────────────────────────────────────── */
 
 html.light #brand {
-  background: linear-gradient(to bottom, #f5f3ff, #ede9fe) !important;
+  background: rgba(210,240,255,0.50) !important;
+  backdrop-filter: blur(6px) !important;
 }
 
 /* Título h2: span branca → escura */
@@ -979,20 +986,22 @@ html.light #brand button.bg-black:hover {
    PLANOS FREEMIO & PREEMIO — cards elevados
    ────────────────────────────────────────── */
 
-/* ── FREEMIO card ── */
+/* ── FREEMIO card — elevação forte sobre a nebulosa ── */
 html.light #plans .bg-card\/50 {
-  background: #ffffff !important;
-  border-color: rgba(14,165,233,0.3) !important;
+  background: rgba(255,255,255,0.95) !important;
+  border-color: rgba(0,150,210,0.45) !important;
   box-shadow:
-    0 20px 50px rgba(0,0,0,0.10),
-    0 4px 16px rgba(14,165,233,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.9) !important;
+    0 24px 60px rgba(0,100,170,0.18),
+    0 4px 16px rgba(0,150,210,0.12),
+    0 0 0 1px rgba(0,150,210,0.1),
+    inset 0 1px 0 rgba(255,255,255,1) !important;
 }
 html.light #plans .bg-card\/50:hover {
-  border-color: rgba(14,165,233,0.55) !important;
+  border-color: rgba(0,150,210,0.65) !important;
   box-shadow:
-    0 28px 60px rgba(0,0,0,0.14),
-    0 0 30px rgba(14,165,233,0.12) !important;
+    0 32px 72px rgba(0,100,170,0.24),
+    0 0 40px rgba(0,180,220,0.18),
+    inset 0 1px 0 rgba(255,255,255,1) !important;
 }
 
 /* Nome do plano, preço, desc, features — Freemio */
@@ -1012,21 +1021,22 @@ html.light #plans .bg-card\/50 button:hover {
   border-color: rgba(14,165,233,0.6) !important;
 }
 
-/* ── PREEMIO card ── */
+/* ── PREEMIO card — elevação forte com acento dourado ── */
 html.light #plans .bg-black\/60 {
-  background: #ffffff !important;
-  border-color: rgba(180,83,9,0.45) !important;
+  background: rgba(255,255,255,0.95) !important;
+  border-color: rgba(180,83,9,0.5) !important;
   box-shadow:
-    0 20px 50px rgba(0,0,0,0.12),
-    0 4px 20px rgba(180,83,9,0.10),
-    0 0 0 1px rgba(180,83,9,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.9) !important;
+    0 24px 60px rgba(100,50,0,0.18),
+    0 4px 20px rgba(180,83,9,0.14),
+    0 0 0 1px rgba(180,83,9,0.15),
+    inset 0 1px 0 rgba(255,255,255,1) !important;
 }
 html.light #plans .bg-black\/60:hover {
-  border-color: rgba(180,83,9,0.7) !important;
+  border-color: rgba(180,83,9,0.75) !important;
   box-shadow:
-    0 28px 60px rgba(0,0,0,0.16),
-    0 0 40px rgba(180,83,9,0.14) !important;
+    0 32px 72px rgba(100,50,0,0.24),
+    0 0 50px rgba(180,83,9,0.18),
+    inset 0 1px 0 rgba(255,255,255,1) !important;
 }
 
 /* Nome, período, desc, features — Preemio */
@@ -1046,3 +1056,98 @@ html.light #plans .bg-black\/60 .from-gold\/5 {
 
 /* Ping/pulse do indicador ao vivo */
 html.light #plans .bg-gold { background-color: #b45309 !important; }
+
+/* ──────────────────────────────────────────
+   COLLECTION — nebulosa aparece por trás dos cards
+   ────────────────────────────────────────── */
+html.light .collection {
+  background: rgba(210,242,255,0.42) !important;
+  backdrop-filter: blur(4px) !important;
+}
+html.light .section-title { color: #0a1628 !important; }
+html.light .section-sub   { color: rgba(10,22,40,0.55) !important; }
+html.light .prod-info { border-top-color: rgba(0,150,210,0.15) !important; }
+html.light .shortly-badge {
+  color: #0077b6 !important;
+  background: rgba(0,150,210,0.1) !important;
+  border-color: rgba(0,150,210,0.3) !important;
+}
+
+/* ──────────────────────────────────────────
+   FOOTER — toque ciano sobre nebulosa
+   ────────────────────────────────────────── */
+html.light footer {
+  background: rgba(200,238,255,0.65) !important;
+  backdrop-filter: blur(8px) !important;
+  border-top-color: rgba(0,150,210,0.2) !important;
+}
+html.light footer .text-white\/50 { color: rgba(5,30,60,0.5) !important; }
+html.light footer .text-white\/30 { color: rgba(5,30,60,0.38) !important; }
+html.light footer .text-white      { color: #05111e !important; }
+
+/* ──────────────────────────────────────────
+   MANIFESTO — label e divisor em ciano
+   ────────────────────────────────────────── */
+html.light #manifesto .text-cyan\/70 {
+  color: rgba(0,110,175,0.75) !important;
+}
+html.light #manifesto [class*="text-cyan"] {
+  color: rgba(0,130,190,0.8) !important;
+}
+html.light #manifesto .glow-text {
+  background: linear-gradient(120deg, #0077b6, #00b4d8, #7c3aed) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+html.light .manifesto-section {
+  border-top-color: rgba(0,150,210,0.18) !important;
+}
+
+/* ──────────────────────────────────────────
+   HERO — ajustes finais para nebulosa ciano
+   ────────────────────────────────────────── */
+html.light .badge {
+  color: #0077b6 !important;
+  background: rgba(0,150,210,0.08) !important;
+  border-color: rgba(0,150,210,0.25) !important;
+}
+html.light .badge-dot {
+  background: #00b4d8 !important;
+  box-shadow: 0 0 8px #00b4d8 !important;
+}
+html.light .stat-label { color: rgba(5,30,60,0.4) !important; }
+html.light .stat-divider { background: rgba(0,150,210,0.2) !important; }
+html.light .product-viewer {
+  background: rgba(255,255,255,0.88) !important;
+  border-color: rgba(0,120,190,0.3) !important;
+  box-shadow: 0 0 40px rgba(0,150,210,0.15) !important;
+  backdrop-filter: blur(16px) !important;
+}
+html.light .viewer-nav {
+  background: rgba(240,252,255,0.85) !important;
+  backdrop-filter: blur(8px) !important;
+}
+html.light .viewer-nav button {
+  color: #0a1628 !important;
+  border-color: rgba(0,120,190,0.35) !important;
+  background: rgba(255,255,255,0.6) !important;
+}
+html.light .viewer-nav button:hover,
+html.light .viewer-nav button.active-view {
+  background: rgba(0,150,210,0.12) !important;
+  border-color: #00b4d8 !important;
+  color: #0077b6 !important;
+  box-shadow: 0 0 16px rgba(0,180,216,0.25) !important;
+}
+html.light .viewer-title-overlay {
+  background: rgba(255,255,255,0.88) !important;
+  color: #0a1628 !important;
+}
+html.light .viewer-badge-bottom {
+  color: #0077b6 !important;
+  background: rgba(0,150,210,0.12) !important;
+  border-color: rgba(0,150,210,0.3) !important;
+}

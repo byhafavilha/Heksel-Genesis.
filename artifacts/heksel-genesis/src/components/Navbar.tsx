@@ -10,6 +10,7 @@ interface NavbarProps {
 const LANGUAGES: { code: Lang; flag: string; label: string }[] = [
   { code: 'English',   flag: '🇺🇸', label: 'English'   },
   { code: 'Français',  flag: '🇫🇷', label: 'Français'  },
+  { code: '中文',      flag: '🇨🇳', label: '中文'      },
   { code: 'Português', flag: '🇧🇷', label: 'Português' },
 ];
 

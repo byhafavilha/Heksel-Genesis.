@@ -4,7 +4,7 @@ import { createContext, useContext, useState, ReactNode } from "react";
 // Tipos
 // ---------------------------------------------------------------------------
 
-export type Lang = "English" | "Português" | "Français";
+export type Lang = "English" | "Português" | "Français" | "中文";
 
 // ---------------------------------------------------------------------------
 // Collector Pack
@@ -44,6 +44,8 @@ export interface UIText {
     areaFront: string; areaBack: string; areaLeftSleeve: string; areaRightSleeve: string;
     colorApplied: string; configure: string; areaCount: string;
   };
+  checkoutTitle: string;
+  freemioBanner: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -87,10 +89,24 @@ const collectorPack: Record<Lang, CollectorPackT> = {
     ],
     badge: "🔒 ÉDITION LIMITÉE · SÉRIE UNIQUE · LIVRAISON PREMIUM",
   },
+  "中文": {
+    header: "✦ 收藏包 — 包含内容",
+    price: "R$ 300.00",
+    includes: "包含：个性化信件 🃏 + Heksel 独家贴纸 + 特别 Imperium 香水 🧪",
+    items: [
+      { icon: "🟪", title: "高级定制卫衣", desc: "双面印花（正面 Bone / 背面 Furry）高端重磅棉质工艺。" },
+      { icon: "🔑", title: "Heksel Genesis 钥匙扣", desc: "专为背包、手提包或车内后视镜打造的完美配饰。" },
+      { icon: "💎", title: "官方 Genesis 贴纸套装", desc: "高保真乙烯基贴纸，用于定制您的笔记本电脑或装备。" },
+      { icon: "✉️", title: "手工制作序列号信件", desc: "带有您唯一序列号的定制感谢卡（例如：'您是第 #10 位顾客'），锁定您的收藏家位置。" },
+    ],
+    badge: "🔒 限量版 · 唯一序列号 · 高级配送",
+  },
 };
 
 const uiText: Record<Lang, UIText> = {
   English: {
+    checkoutTitle: "🔐 Guaranteed Secure Checkout — Heksel Genesis",
+    freemioBanner: "✦ FREEMIO INITIATED ✦ Your free digital universe will include a minimal 'Cognitive Infrastructure by Heksel Genesis' banner at the top. Upgrade to PREEMIO at any time to remove this and unlock absolute brand sovereignty.",
     safeSpace: {
       systemBar: "🛰️ HEKSEL_GENESIS_SYSTEM_v2.0",
       status: "✨ ACTIVE",
@@ -113,16 +129,16 @@ const uiText: Record<Lang, UIText> = {
       btnAdvance: "Create in Advance ⚡",
       btnBrand: "✦ Create My Brand ✦",
       freemium: {
-        badge: "ENTRY LEVEL", name: "Freemium", price: "Free",
+        badge: "ENTRY LEVEL", name: "Freemio", price: "Free",
         desc: "Basic digital presence for upcoming builders.",
         features: ["Standard Notion/Linktree setup", "Basic color palette selection", "Community Discord access", "Standard support (48h)"],
         cta: "Try It Now",
       },
       premium: {
-        badge: "ELITE LEVEL", name: "Premium", price: "$4,996.32", period: "/ one-time",
+        badge: "ELITE LEVEL", name: "Preemio", price: "$4,996.32", period: "/ one-time",
         desc: "Full bespoke cyberpunk digital identity & web platform.",
-        features: ["Full React/Vite web application", "Bespoke visual identity & logo design", "Advanced animations & interactions", "Advanced animations & interactions", "Priority VIP support line", "Custom hardware welcome package"],
-        cta: "Hire Premium",
+        features: ["Full React/Vite web application", "Bespoke visual identity & logo design", "Advanced animations & interactions", "Priority VIP support line", "Custom hardware welcome package"],
+        cta: "Hire Preemio",
       },
     },
     hoodie: {
@@ -157,6 +173,8 @@ const uiText: Record<Lang, UIText> = {
     },
   },
   Português: {
+    checkoutTitle: "🔐 Checkout 100% Seguro — Heksel Genesis",
+    freemioBanner: "✦ FREEMIO INICIADO ✦ Seu universo digital gratuito incluirá um banner mínimo de 'Cognitive Infrastructure by Heksel Genesis' no topo. Faça upgrade para PREEMIO a qualquer momento para removê-lo e desbloquear soberania absoluta de marca.",
     safeSpace: {
       systemBar: "🛰️ SISTEMA_HEKSEL_GENESIS_v2.0",
       status: "✨ ATIVO",
@@ -179,16 +197,16 @@ const uiText: Record<Lang, UIText> = {
       btnAdvance: "Criar em Avanço ⚡",
       btnBrand: "✦ Criar Minha Marca ✦",
       freemium: {
-        badge: "NÍVEL INICIAL", name: "Freemium", price: "Grátis",
+        badge: "NÍVEL INICIAL", name: "Freemio", price: "Grátis",
         desc: "Presença digital básica para construtores emergentes.",
         features: ["Configuração Notion/Linktree padrão", "Seleção básica de paleta de cores", "Acesso à Discord da comunidade", "Suporte padrão (48h)"],
         cta: "Experimente Agora",
       },
       premium: {
-        badge: "NÍVEL ELITE", name: "Premium", price: "$4,996.32", period: "/ pagamento único",
+        badge: "NÍVEL ELITE", name: "Preemio", price: "$4,996.32", period: "/ pagamento único",
         desc: "Identidade digital cyberpunk sob medida & plataforma web completa.",
-        features: ["Aplicação web React/Vite completa", "Identidade visual & logo sob medida", "Animações & interações avançadas", "Animações & interações avançadas", "Linha de suporte VIP prioritário", "Kit de boas-vindas hardware personalizado"],
-        cta: "Contratar Premium",
+        features: ["Aplicação web React/Vite completa", "Identidade visual & logo sob medida", "Animações & interações avançadas", "Linha de suporte VIP prioritário", "Kit de boas-vindas hardware personalizado"],
+        cta: "Contratar Preemio",
       },
     },
     hoodie: {
@@ -223,6 +241,8 @@ const uiText: Record<Lang, UIText> = {
     },
   },
   Français: {
+    checkoutTitle: "🔐 Paiement 100% Sécurisé — Heksel Genesis",
+    freemioBanner: "✦ FREEMIO INITIÉ ✦ Votre univers numérique gratuit inclura une bannière minimale 'Cognitive Infrastructure by Heksel Genesis' en haut. Passez au PREEMIO à tout moment pour la supprimer et débloquer une souveraineté de marque absolue.",
     safeSpace: {
       systemBar: "🛰️ SYSTÈME_HEKSEL_GENESIS_v2.0",
       status: "✨ ACTIF",
@@ -245,16 +265,16 @@ const uiText: Record<Lang, UIText> = {
       btnAdvance: "Créer en Avance ⚡",
       btnBrand: "✦ Créer Ma Marque ✦",
       freemium: {
-        badge: "NIVEAU ENTRÉE", name: "Freemium", price: "Gratuit",
+        badge: "NIVEAU ENTRÉE", name: "Freemio", price: "Gratuit",
         desc: "Présence numérique de base pour les créateurs émergents.",
         features: ["Configuration Notion/Linktree standard", "Sélection de palette de base", "Accès Discord communautaire", "Support standard (48h)"],
         cta: "Essayer Maintenant",
       },
       premium: {
-        badge: "NIVEAU ÉLITE", name: "Premium", price: "$4,996.32", period: "/ paiement unique",
+        badge: "NIVEAU ÉLITE", name: "Preemio", price: "$4,996.32", period: "/ paiement unique",
         desc: "Identité numérique cyberpunk sur mesure & plateforme web complète.",
-        features: ["Application web React/Vite complète", "Identité visuelle & logo sur mesure", "Animations & interactions avancées", "Animations & interactions avancées", "Ligne de support VIP prioritaire", "Pack d'accueil hardware personnalisé"],
-        cta: "Embaucher Premium",
+        features: ["Application web React/Vite complète", "Identité visuelle & logo sur mesure", "Animations & interactions avancées", "Ligne de support VIP prioritaire", "Pack d'accueil hardware personnalisé"],
+        cta: "Embaucher Preemio",
       },
     },
     hoodie: {
@@ -286,6 +306,74 @@ const uiText: Record<Lang, UIText> = {
       colorApplied: "✦ COULEUR APPLIQUÉE",
       configure: "← CONFIGUREZ VOTRE PIÈCE",
       areaCount: "ZONE",
+    },
+  },
+  "中文": {
+    checkoutTitle: "🔐 官方安全加密结账 — Heksel Genesis",
+    freemioBanner: "✦ FREEMIO 已启动 ✦ 您的免费数字宇宙将在顶部包含一个最小的 'Cognitive Infrastructure by Heksel Genesis' 横幅。随时升级到 PREEMIO 以移除该横幅并解锁绝对品牌主权。",
+    safeSpace: {
+      systemBar: "🛰️ HEKSEL_GENESIS_系统_v2.0",
+      status: "✨ 运行中",
+      directive: "[ 🔓 系统指令 — 访问已授权 🔓 ]",
+      para1Lead: "在这里，未来属于所有人。 🌌✨",
+      para1Body: "> Heksel Genesis 被构建为一个绝对的安全空间，欢迎且完全无评判。无论您认同为女同、男同、跨性别、非二元、兽迷，或任何壮丽的自我表达方式 — 您都属于这里。 🫂",
+      para2Body: "我们相信每个人从根本上都是正常而美丽的人类，仅仅由其独特非凡的品味所定义。这种对所有身份的绝对接纳，是为何进入我们宇宙的人都深深爱上 Heksel 的原因。",
+      pride: "骄傲地展现你的身份。 🌈🦄💜",
+      security: "🔒 最高安全",
+      inclusion: "❤️ 100% 包容",
+      btnIdle: "📡 调频指令",
+      btnActive: "调频中... 🌌",
+      statusOnline: "✨ 在线",
+      statusSyncing: "💫 同步中",
+    },
+    brand: {
+      badge: "Heksel 服务",
+      title1: "✦ 认知基础设施",
+      title2: "构建你的帝国 ✦",
+      btnAdvance: "提前创建 ⚡",
+      btnBrand: "✦ 创建我的品牌 ✦",
+      freemium: {
+        badge: "入门级别", name: "Freemio", price: "免费",
+        desc: "为新兴创造者提供的基础数字存在。",
+        features: ["标准 Notion/Linktree 设置", "基础配色方案选择", "社区 Discord 访问", "标准支持（48小时）"],
+        cta: "立即尝试",
+      },
+      premium: {
+        badge: "精英级别", name: "Preemio", price: "$4,996.32", period: "/ 一次性付款",
+        desc: "全套定制赛博朋克数字身份与网络平台。",
+        features: ["完整 React/Vite 网络应用", "定制视觉识别与标志设计", "高级动画与交互", "优先 VIP 支持热线", "定制硬件欢迎套装"],
+        cta: "聘请 Preemio",
+      },
+    },
+    hoodie: {
+      stepModel: "01 — 选择基础款式",
+      stepColor: "02 — 身份颜色",
+      stepArea: "03 — 选择印花区域",
+      stepUpload: "04 — 上传",
+      stepYAxis: "05 — 垂直位置（Y轴）",
+      clearColor: "✕ 清除颜色",
+      removeStamp: "✕ 移除",
+      stampOk: "✓ 印花确认",
+      editing: "编辑中",
+      empty: "空",
+      backAreaNote: "ℹ️ 背面区域 — 在预览中由下方标记指示",
+      dragOrClick: "拖拽或点击",
+      dragHint: "以上传印花至",
+      stampLoaded: "✓ 已加载 — 点击替换",
+      stampPlaceholder: "你的\n印花",
+      loading: "加载中...",
+      xLocked: "🔒 X轴锁定 — 始终居中",
+      top: "⬆ 顶部",
+      base: "⬇ 底部",
+      stampsAdded: "已添加印花",
+      identityPreview: "身份预览",
+      areaFront: "正面",
+      areaBack: "背面",
+      areaLeftSleeve: "左袖",
+      areaRightSleeve: "右袖",
+      colorApplied: "✦ 颜色已应用",
+      configure: "← 配置你的作品",
+      areaCount: "区域",
     },
   },
 };
