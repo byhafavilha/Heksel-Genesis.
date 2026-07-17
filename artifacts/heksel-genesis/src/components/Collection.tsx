@@ -95,7 +95,7 @@ const PRODUCTS: Product[] = [
   {
     id: 9,
     name: 'NEO-YAI 01 MULTIPURPOSE BOOTS',
-    img: '1000027653-removebg-preview.png',
+    img: '1000027648-removebg-preview.png',
     price: '$310',
     reserved: 91,
     badge: '🔥 GRAIL PIECE'
