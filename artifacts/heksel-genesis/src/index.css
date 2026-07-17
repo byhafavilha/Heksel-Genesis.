@@ -805,3 +805,244 @@ html.light .animated-bg {
     radial-gradient(ellipse 60% 45% at 50% 90%, rgba(244,63,94,0.04) 0%, transparent 60%),
     #ffffff !important;
 }
+
+/* =======================================================
+   🎨 LIGHT MODE — COMPONENT DEEP OVERRIDES
+   Garantia de 100% de leitura em todos os componentes
+   ======================================================= */
+
+/* ──────────────────────────────────────────
+   HERO — inversão de texto e botões
+   ────────────────────────────────────────── */
+
+/* h1 "From beginning" parte branca → gradiente escuro */
+html.light section h1.text-white,
+html.light section h1[class*="text-white"] {
+  color: #1a1a2e !important;
+  /* background-clip gradient sobrescreve via span abaixo */
+}
+
+/* Subtítulo branco translúcido → cinza escuro legível */
+html.light section p.text-white\/50,
+html.light section p[class*="text-white"] {
+  color: rgba(26,26,46,0.65) !important;
+}
+
+/* Stat labels (text-white/30) → escuro legível */
+html.light [class*="text-white\/30"] {
+  color: rgba(26,26,46,0.45) !important;
+}
+html.light [class*="text-white\/40"] {
+  color: rgba(26,26,46,0.5) !important;
+}
+html.light [class*="text-white\/50"] {
+  color: rgba(26,26,46,0.6) !important;
+}
+html.light [class*="text-white\/70"] {
+  color: rgba(26,26,46,0.75) !important;
+}
+html.light [class*="text-white\/90"],
+html.light [class*="text-white\/95"] {
+  color: rgba(26,26,46,0.92) !important;
+}
+html.light [class*="text-white"]:not([class*="text-white\/"]):not(nav *):not(button[class*="cyber"]) {
+  color: #1a1a2e !important;
+}
+
+/* Botões hero secundários (bg-white/5, border-cyan-400/40) */
+html.light section button[class*="bg-white\/5"] {
+  background: rgba(124,58,237,0.05) !important;
+  border-color: rgba(124,58,237,0.3) !important;
+  color: #1a1a2e !important;
+}
+html.light section button[class*="bg-white\/5"]:hover {
+  background: rgba(124,58,237,0.12) !important;
+  color: #7c3aed !important;
+}
+
+/* ──────────────────────────────────────────
+   SAFE SPACE — fundo, glows, card e textos
+   ────────────────────────────────────────── */
+
+/* Blobs de glow neon: quase invisíveis no branco */
+html.light .min-h-screen .bg-cyan-500.blur-3xl   { opacity: 0.06 !important; }
+html.light .min-h-screen .bg-purple-600.blur-3xl { opacity: 0.06 !important; }
+html.light .min-h-screen .bg-pink-500.blur-3xl   { opacity: 0.06 !important; }
+
+/* Fundo geral do SafeSpace */
+html.light .min-h-screen.bg-black {
+  background: #f5f3ff !important;  /* violeta muito suave */
+}
+html.light .min-h-screen .from-black { --tw-gradient-from: #f5f3ff !important; }
+html.light .min-h-screen .via-black  { --tw-gradient-via: #f5f3ff !important; }
+html.light .min-h-screen .to-slate-950 { --tw-gradient-to: #ede9fe !important; }
+
+/* Card principal do SafeSpace */
+html.light .min-h-screen .backdrop-blur-xl.bg-black\/60 {
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(124,58,237,0.35) !important;
+  box-shadow:
+    0 20px 60px rgba(124,58,237,0.12),
+    0 4px 16px rgba(0,0,0,0.08) !important;
+}
+
+/* Corner accents: visíveis no branco */
+html.light .min-h-screen .border-cyan-500\/80  { border-color: rgba(14,165,233,0.5) !important; }
+html.light .min-h-screen .border-pink-500\/80  { border-color: rgba(236,72,153,0.5) !important; }
+html.light .min-h-screen .border-purple-500\/80 { border-color: rgba(124,58,237,0.5) !important; }
+
+/* Título "SAFE SPACE" */
+html.light .min-h-screen h1 {
+  color: #1a1a2e !important;
+  text-shadow: 0 0 20px rgba(124,58,237,0.2), 0 0 40px rgba(236,72,153,0.12) !important;
+}
+
+/* Botão "📡 SINTONIZAR DIRETRIZ" */
+html.light .min-h-screen button[class*="bg-black\/40"] {
+  background: rgba(124,58,237,0.06) !important;
+  border-color: rgba(124,58,237,0.4) !important;
+  color: #7c3aed !important;
+}
+html.light .min-h-screen button[class*="border-purple-500"][class*="bg-purple-500\/30"] {
+  background: rgba(124,58,237,0.15) !important;
+  color: #6d28d9 !important;
+}
+
+/* Status bar separators */
+html.light .min-h-screen .via-cyan-500\/40  { --tw-gradient-via: rgba(14,165,233,0.25) !important; }
+html.light .min-h-screen .via-purple-500\/40 { --tw-gradient-via: rgba(124,58,237,0.2) !important; }
+html.light .min-h-screen .via-pink-500\/30  { --tw-gradient-via: rgba(236,72,153,0.18) !important; }
+
+/* ──────────────────────────────────────────
+   MANIFESTO — fundo e texto giratório
+   ────────────────────────────────────────── */
+
+html.light #manifesto {
+  background: #f5f3ff !important;
+  border-top: 1px solid rgba(124,58,237,0.1) !important;
+}
+
+/* Label "The Genesis Directive" */
+html.light #manifesto .text-cyan\/70 {
+  color: rgba(109,40,217,0.7) !important;
+}
+html.light #manifesto [class*="text-cyan"] {
+  color: rgba(109,40,217,0.7) !important;
+}
+
+/* Frase giratória (glow-text gradient) */
+html.light #manifesto .glow-text {
+  background: linear-gradient(120deg, #7c3aed, #f43f5e, #0284c7) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  animation: none !important;
+}
+
+/* ──────────────────────────────────────────
+   BRAND SECTION — seção, títulos e botões CTA
+   ────────────────────────────────────────── */
+
+html.light #brand {
+  background: linear-gradient(to bottom, #f5f3ff, #ede9fe) !important;
+}
+
+/* Título h2: span branca → escura */
+html.light #brand h2 span.bg-gradient-to-br,
+html.light #brand h2 .from-white {
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Badge */
+html.light #brand .border-purple\/30 {
+  border-color: rgba(124,58,237,0.35) !important;
+  background: rgba(124,58,237,0.08) !important;
+}
+
+/* Botão CTA "Advance" (bg-black border-white/10) */
+html.light #brand button.bg-black {
+  background: #ffffff !important;
+  border-color: rgba(124,58,237,0.25) !important;
+  color: #1a1a2e !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
+}
+html.light #brand button.bg-black:hover {
+  border-color: rgba(124,58,237,0.5) !important;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.15) !important;
+}
+
+/* ──────────────────────────────────────────
+   PLANOS FREEMIO & PREEMIO — cards elevados
+   ────────────────────────────────────────── */
+
+/* ── FREEMIO card ── */
+html.light #plans .bg-card\/50 {
+  background: #ffffff !important;
+  border-color: rgba(14,165,233,0.3) !important;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.10),
+    0 4px 16px rgba(14,165,233,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+html.light #plans .bg-card\/50:hover {
+  border-color: rgba(14,165,233,0.55) !important;
+  box-shadow:
+    0 28px 60px rgba(0,0,0,0.14),
+    0 0 30px rgba(14,165,233,0.12) !important;
+}
+
+/* Nome do plano, preço, desc, features — Freemio */
+html.light #plans .bg-card\/50 h3 { color: #1a1a2e !important; }
+html.light #plans .bg-card\/50 .text-4xl.font-mono { color: #1a1a2e !important; }
+html.light #plans .bg-card\/50 .text-white\/50 { color: rgba(26,26,46,0.6) !important; }
+html.light #plans .bg-card\/50 .text-white\/70 { color: rgba(26,26,46,0.75) !important; }
+
+/* Botão Freemio (border-white/20 text-white) */
+html.light #plans .bg-card\/50 button {
+  border-color: rgba(14,165,233,0.4) !important;
+  color: #0369a1 !important;
+  background: rgba(14,165,233,0.04) !important;
+}
+html.light #plans .bg-card\/50 button:hover {
+  background: rgba(14,165,233,0.1) !important;
+  border-color: rgba(14,165,233,0.6) !important;
+}
+
+/* ── PREEMIO card ── */
+html.light #plans .bg-black\/60 {
+  background: #ffffff !important;
+  border-color: rgba(180,83,9,0.45) !important;
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.12),
+    0 4px 20px rgba(180,83,9,0.10),
+    0 0 0 1px rgba(180,83,9,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+html.light #plans .bg-black\/60:hover {
+  border-color: rgba(180,83,9,0.7) !important;
+  box-shadow:
+    0 28px 60px rgba(0,0,0,0.16),
+    0 0 40px rgba(180,83,9,0.14) !important;
+}
+
+/* Nome, período, desc, features — Preemio */
+html.light #plans .bg-black\/60 h3 { color: #1a1a2e !important; }
+html.light #plans .bg-black\/60 .text-white\/40 { color: rgba(26,26,46,0.5) !important; }
+html.light #plans .bg-black\/60 .text-white\/50 { color: rgba(26,26,46,0.6) !important; }
+html.light #plans .bg-black\/60 .text-white\/90 { color: rgba(26,26,46,0.88) !important; }
+
+/* Gold (preço, ícones) — mantém a cor, funciona no branco */
+html.light #plans .text-gold,
+html.light #plans .glow-gold { color: #92400e !important; }
+
+/* Gradient do ícone de fundo (Cpu) */
+html.light #plans .bg-black\/60 .from-gold\/5 {
+  --tw-gradient-from: rgba(180,83,9,0.04) !important;
+}
+
+/* Ping/pulse do indicador ao vivo */
+html.light #plans .bg-gold { background-color: #b45309 !important; }
