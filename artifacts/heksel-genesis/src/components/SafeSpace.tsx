@@ -210,7 +210,7 @@ export const SafeSpace: React.FC = () => {
 
             {/* Main Manifesto - INTERATIVO */}
             <div className="space-y-6 font-light">
-              {/* Seção 1 - O Futuro */}
+              {/* Seção 1 - Acolhimento */}
               <div 
                 className={`text-center space-y-4 p-4 transition-all duration-300 cursor-pointer ${
                   activeSection === 'future' 
@@ -229,40 +229,15 @@ export const SafeSpace: React.FC = () => {
                     ? 'text-cyan-300 glow-text' 
                     : 'text-cyan-300/80'
                 }`}>
-                  &gt; Heksel Genesis was conceived as an absolute safe space, welcoming and completely free of judgment. 🫂
+                  &gt; Heksel Genesis was conceived as an absolute safe space, welcoming and completely free of judgment. Whether you identify as lesbian, gay, trans, non-binary, furry, or any magnificent expression of self — you belong here. 🫂
                 </p>
               </div>
 
               <div className="h-px bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"></div>
 
-              {/* Seção 2 - Diversidade */}
+              {/* Seção 2 - Identidade & Orgulho */}
               <div 
                 className={`text-center space-y-3 p-4 transition-all duration-300 cursor-pointer ${
-                  activeSection === 'diversity' 
-                    ? 'bg-pink-500/20 border border-pink-500/40' 
-                    : 'hover:bg-pink-500/10 border border-transparent'
-                }`}
-                onMouseEnter={() => handleSectionHover('diversity')}
-                onMouseLeave={() => setActiveSection(null)}
-                style={{ borderRadius: '2px' }}
-              >
-                <p className="text-base md:text-lg text-white/95 leading-relaxed">
-                  No matter who you are, who you love, or how you choose to express yourself. 🏳️‍🌈🏳️‍⚧️
-                </p>
-                <p className={`text-sm md:text-base font-mono tracking-wider transition-all duration-300 ${
-                  activeSection === 'diversity' 
-                    ? 'text-pink-300 glow-text' 
-                    : 'text-pink-300/80'
-                }`}>
-                  Our community celebrates diversity in all its vibrant colors. 🦄💜
-                </p>
-              </div>
-
-              <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
-
-              {/* Seção 3 - Unicidade */}
-              <div 
-                className={`text-center pt-4 p-4 transition-all duration-300 cursor-pointer ${
                   activeSection === 'unique' 
                     ? 'bg-purple-500/20 border border-purple-500/40' 
                     : 'hover:bg-purple-500/10 border border-transparent'
@@ -272,12 +247,12 @@ export const SafeSpace: React.FC = () => {
                 style={{ borderRadius: '2px' }}
               >
                 <p className="text-base md:text-lg text-white/95 leading-relaxed">
-                  Because in the end, we are all unique entities with extraordinary tastes. 💎✨
+                  We believe everyone is fundamentally a normal, beautiful human being, simply defined by their unique, extraordinary tastes. This absolute acceptance of all identities is why anyone who enters our universe falls deeply in love with Heksel.
                 </p>
                 <p className={`text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 font-bold tracking-widest pt-6 transition-transform duration-300 ${
                   activeSection === 'unique' ? 'animate-pulse scale-110' : ''
                 }`}>
-                  WEAR YOUR IDENTITY WITH PRIDE. 🌈💪
+                  WEAR YOUR IDENTITY WITH PRIDE. 🌈🦄💜
                 </p>
               </div>
             </div>

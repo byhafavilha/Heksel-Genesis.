@@ -1,0 +1,41 @@
+Replit, preste muita atenção! O site está fora de ordem e o exemplo interativo de moletons da Seção 4 (com imagens e botões de troca de cores) sumiu ou parou de renderizar. 
+
+Precisamos organizar a estrutura do site no `src/App.tsx` e atualizar o `SafeSpace.tsx` de forma cirúrgica. Siga a ordem exata das seções abaixo:
+
+---
+
+### 🗺️ ORDEM EXATA E OBRIGATÓRIA DAS SEÇÕES (De cima para baixo):
+
+#### 1️⃣ SEÇÃO 1 (Hero Fold / Topo):
+* **Simulador de Moletons Principal** (`HoodieSimulator`) + Componente **`SafeSpace`** renderizado logo abaixo dele.
+* No `SafeSpace.tsx`, o título principal DEVE ser "SAFE SPACE" e o texto do manifesto deve ser em inglês avançado e sofisticado de alta costura, contendo a seguinte mensagem de acolhimento total (gays, trans, furries, etc.) de forma elegante:
+  
+  *Traduza a Seção 1 do Manifesto no código para:*
+  > "Here, the future belongs to everyone. 🌌✨ Heksel Genesis was conceived as an absolute safe space, welcoming and completely free of judgment. Whether you identify as lesbian, gay, trans, non-binary, furry, or any magnificent expression of self—you belong here. 🫂"
+  
+  *Traduza a Seção 2 do Manifesto no código para:*
+  > "We believe everyone is fundamentally a normal, beautiful human being, simply defined by their unique, extraordinary tastes. This absolute acceptance of all identities is why anyone who enters our universe falls deeply in love with Heksel. Wear your identity with pride. 🌈🦄💜"
+
+#### 2️⃣ SEÇÃO 2:
+* Seção com o texto **"From beginning to infinity"**.
+
+#### 3️⃣ SEÇÃO 3:
+* Seção **"A Diretiva Gênesis"** (Genesis Directive), com aqueles textos de marketing matadores mostrando que a Heksel Genesis é a porta de entrada para o futuro.
+
+#### 4️⃣ SEÇÃO 4:
+* Seção **"See an interactive example"**. 
+* **ATENÇÃO:** Restaure o exemplo interativo de moletons aqui! Devem aparecer as imagens dos moletons de demonstração e os botões de troca de cores para que o usuário possa escolher a cor do moletom que quiser no preview! Não oculte ou quebre este componente.
+
+#### 5️⃣ SEÇÃO 5:
+* Seção **"Want a website like this? Build your brand."**, contendo os planos **Freemio** e **Preemio**.
+
+#### 6️⃣ SEÇÃO 6 (Rodapé):
+* Coleção de tênis/calçados, com a seção **"See what the future holds."**
+
+---
+
+### 🛠️ Ações Requeridas:
+1. Reordene o `src/App.tsx` para seguir exatamente esta sequência de 1 a 6.
+2. Atualize o `src/components/SafeSpace.tsx` com o texto em inglês sofisticado fornecido acima.
+3. Certifique-se de que o componente interativo de moletons de exemplo na Seção 4 está com os botões de cores e imagens 100% ativos e visíveis.
+4. Rode um build de teste para garantir que tudo está compilando perfeitamente e sem erros no TypeScript.
