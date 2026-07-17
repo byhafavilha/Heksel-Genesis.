@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
 /* ─────────────────────────────────────────────────────
-   SEE AN INTERACTIVE EXAMPLE — Hoodie Color Simulator
+   SEE AN INTERACTIVE EXAMPLE — Hoodie Color + Stamp Simulator
    Layout: modelo-cards grandes em cima (scroll horizontal
-   no mobile) + preview central com sobreposição de cor
+   no mobile) + preview central com sobreposição de cor e estampa
 ───────────────────────────────────────────────────── */
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -55,6 +55,38 @@ const COLORS = [
   { id: 'pink',   label: 'Neo Rose',     hex: '#ff6ec7', glow: 'rgba(255,110,199,0.55)', border: 'rgba(255,110,199,0.9)', blend: 'rgba(255,100,180,0.42)'},
 ];
 
+type StampArea = 'front' | 'left-sleeve' | 'right-sleeve';
+
+const STAMP_AREAS: { id: StampArea; label: string; icon: string; style: React.CSSProperties }[] = [
+  {
+    id: 'front',
+    label: 'Front / Peito',
+    icon: '⬛',
+    style: {
+      top: '28%', left: '50%', transform: 'translate(-50%, 0)',
+      width: '26%', height: '22%',
+    },
+  },
+  {
+    id: 'left-sleeve',
+    label: 'Left Sleeve',
+    icon: '◀',
+    style: {
+      top: '35%', left: '12%', transform: 'translate(0, 0)',
+      width: '18%', height: '18%',
+    },
+  },
+  {
+    id: 'right-sleeve',
+    label: 'Right Sleeve',
+    icon: '▶',
+    style: {
+      top: '35%', right: '12%', left: 'auto', transform: 'translate(0, 0)',
+      width: '18%', height: '18%',
+    },
+  },
+];
+
 interface HoodieSimulatorProps {
   onOrder?: (model: string, color: string, colorHex: string) => void;
 }
@@ -64,10 +96,35 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
   const [activeColor, setActiveColor] = useState<typeof COLORS[0] | null>(null);
   const [imgLoaded, setImgLoaded] = useState(false);
 
+  // Stamp upload
+  const [stampImage, setStampImage] = useState<string | null>(null);
+  const [stampArea, setStampArea] = useState<StampArea>('front');
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleModelChange = (model: typeof MODELS[0]) => {
     setActiveModel(model);
     setImgLoaded(false);
   };
+
+  const handleFileChange = useCallback((file: File | null) => {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (e) => setStampImage(e.target?.result as string);
+    reader.readAsDataURL(file);
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleFileChange(e.target.files?.[0] ?? null);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    handleFileChange(e.dataTransfer.files?.[0] ?? null);
+  };
+
+  const activeAreaStyle = STAMP_AREAS.find(a => a.id === stampArea)?.style ?? {};
 
   return (
     <section id="create" style={{
@@ -85,7 +142,7 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
 
       <div className="section-inner" style={{ position: 'relative', zIndex: 1 }}>
 
-        {/* Header (Texto alterado e com degradê neon pulsante!) */}
+        {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <span className="section-tag">⚡ Simulador de Identidade</span>
           <h2 className="section-title" style={{ lineHeight: '1.1', textTransform: 'none' }}>
@@ -96,7 +153,7 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
             </span>
           </h2>
           <p className="section-sub" style={{ maxWidth: 540, margin: '0 auto' }}>
-            Escolha o modelo base, selecione a cor da sua identidade e veja como vai ficar.
+            Escolha o modelo, a cor e faça upload da sua estampa — veja como vai ficar no moletom em tempo real.
           </p>
         </div>
 
@@ -110,12 +167,10 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
             01 — Escolha o Modelo Base
           </p>
 
-          {/* Horizontal scroll strip */}
           <div className="sim-model-strip" style={{
             display: 'flex', gap: 16,
             overflowX: 'auto', paddingBottom: 8,
             scrollSnapType: 'x mandatory',
-            /* hide scrollbar */
             msOverflowStyle: 'none', scrollbarWidth: 'none',
           }}>
             {MODELS.map(model => {
@@ -140,7 +195,6 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                     transform: active ? 'translateY(-6px)' : 'translateY(0)',
                   }}
                 >
-                  {/* Image area */}
                   <div style={{
                     width: '100%', height: 190,
                     background: 'rgba(0,0,0,0.25)',
@@ -173,7 +227,6 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                       }}>✓</div>
                     )}
                   </div>
-                  {/* Label */}
                   <div style={{ padding: '12px 14px', textAlign: 'left' }}>
                     <div style={{
                       fontFamily: "'Syne',sans-serif", fontWeight: 800, fontSize: '0.82rem',
@@ -195,56 +248,32 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
             })}
           </div>
 
-          {/* hide scrollbar + mobile overrides */}
           <style>{`
             #create div::-webkit-scrollbar { display: none; }
 
             @media (max-width: 800px) {
-              /* Section spacing */
               #create { padding: 72px 0 56px !important; }
-
-              /* Model strip: padding so first/last card aren't clipped */
               .sim-model-strip {
                 padding: 0 16px 12px !important;
                 scroll-padding-left: 16px;
               }
-
-              /* Step labels: center on mobile */
-              .sim-step-label {
-                text-align: center !important;
-              }
-
-              /* Bottom grid: single column, preview on top */
+              .sim-step-label { text-align: center !important; }
               .sim-bottom {
                 grid-template-columns: 1fr !important;
                 gap: 24px !important;
               }
-
-              /* Preview (right) appears first on mobile */
               .sim-right {
                 order: -1 !important;
                 position: static !important;
               }
-
-              /* Color swatches: center */
-              .sim-colors {
-                justify-content: center !important;
-              }
-
-              /* Left column: center step label, clear button */
+              .sim-colors { justify-content: center !important; }
               .sim-left { align-items: center; }
               .sim-left > div:first-child { width: 100%; }
-
-              /* Preview image area shorter on mobile */
               .sim-right [style*='minHeight: 420'] {
                 min-height: 260px !important;
                 padding: 20px 16px !important;
               }
-
-              /* Feedback card full width */
-              .sim-left > div:nth-child(2) {
-                width: 100%;
-              }
+              .sim-left > div:nth-child(2) { width: 100%; }
             }
           `}</style>
         </div>
@@ -256,8 +285,10 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
           gap: 40, alignItems: 'start',
         }}>
 
-          {/* Left: color picker + feedback */}
+          {/* Left: color picker + stamp upload + feedback */}
           <div className="sim-left" style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+
+            {/* 02 — Color */}
             <div>
               <p className="sim-step-label" style={{
                 fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
@@ -315,6 +346,170 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
               )}
             </div>
 
+            {/* 03 — Stamp Upload */}
+            <div>
+              <p className="sim-step-label" style={{
+                fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
+                letterSpacing: '0.22em', color: 'rgba(255,255,255,0.35)',
+                textTransform: 'uppercase', marginBottom: 16,
+              }}>
+                03 — Sua Estampa (Upload)
+              </p>
+
+              {/* Drop zone */}
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={handleDrop}
+                style={{
+                  border: isDragging
+                    ? '2px dashed rgba(180,94,255,0.8)'
+                    : stampImage
+                    ? '2px dashed rgba(0,240,255,0.5)'
+                    : '2px dashed rgba(255,255,255,0.12)',
+                  borderRadius: 16,
+                  padding: '20px 16px',
+                  cursor: 'pointer',
+                  background: isDragging
+                    ? 'rgba(180,94,255,0.06)'
+                    : stampImage
+                    ? 'rgba(0,240,255,0.04)'
+                    : 'rgba(14,14,22,0.6)',
+                  transition: 'all 0.3s ease',
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', gap: 10,
+                  textAlign: 'center',
+                }}
+              >
+                {stampImage ? (
+                  <>
+                    <img
+                      src={stampImage}
+                      alt="Sua estampa"
+                      style={{
+                        maxHeight: 72, maxWidth: '100%',
+                        objectFit: 'contain', borderRadius: 8,
+                        filter: 'drop-shadow(0 0 12px rgba(0,240,255,0.4))',
+                      }}
+                    />
+                    <span style={{
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                      color: '#00f0ff', letterSpacing: '0.1em',
+                    }}>
+                      ✓ ESTAMPA CARREGADA — Clique para trocar
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div style={{
+                      fontSize: '2rem',
+                      filter: 'drop-shadow(0 0 8px rgba(180,94,255,0.5))',
+                    }}>
+                      📁
+                    </div>
+                    <div style={{
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.55rem',
+                      color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em',
+                      lineHeight: 1.8,
+                    }}>
+                      ARRASTE UMA IMAGEM AQUI<br />
+                      <span style={{ color: 'rgba(180,94,255,0.7)' }}>ou clique para escolher do dispositivo</span>
+                    </div>
+                    <span style={{
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.46rem',
+                      color: 'rgba(255,255,255,0.2)', letterSpacing: '0.08em',
+                    }}>
+                      PNG · JPG · SVG · WEBP
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* Hidden file input */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleInputChange}
+                style={{ display: 'none' }}
+              />
+
+              {stampImage && (
+                <button
+                  onClick={() => { setStampImage(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+                  style={{
+                    marginTop: 10, background: 'none',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    color: 'rgba(255,255,255,0.35)', fontSize: '0.6rem',
+                    fontFamily: "'Space Mono',monospace", letterSpacing: '0.1em',
+                    padding: '6px 14px', borderRadius: 50, cursor: 'pointer',
+                  }}
+                >
+                  ✕ Remover estampa
+                </button>
+              )}
+            </div>
+
+            {/* 04 — Area selector */}
+            {stampImage && (
+              <div>
+                <p className="sim-step-label" style={{
+                  fontFamily: "'Space Mono',monospace", fontSize: '0.6rem',
+                  letterSpacing: '0.22em', color: 'rgba(255,255,255,0.35)',
+                  textTransform: 'uppercase', marginBottom: 16,
+                }}>
+                  04 — Onde Aplicar a Estampa
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {STAMP_AREAS.map(area => {
+                    const active = stampArea === area.id;
+                    return (
+                      <button
+                        key={area.id}
+                        onClick={() => setStampArea(area.id)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 12,
+                          padding: '12px 18px', borderRadius: 12, cursor: 'pointer',
+                          background: active ? 'rgba(180,94,255,0.12)' : 'rgba(14,14,22,0.7)',
+                          border: active
+                            ? '1.5px solid rgba(180,94,255,0.7)'
+                            : '1px solid rgba(255,255,255,0.08)',
+                          transition: 'all 0.25s ease',
+                          boxShadow: active ? '0 0 18px rgba(180,94,255,0.2)' : 'none',
+                        }}
+                      >
+                        <div style={{
+                          width: 32, height: 32, borderRadius: 8, display: 'flex',
+                          alignItems: 'center', justifyContent: 'center',
+                          background: active ? 'rgba(180,94,255,0.25)' : 'rgba(255,255,255,0.05)',
+                          fontSize: '1rem',
+                          transition: 'all 0.25s',
+                        }}>
+                          {area.icon}
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                          <div style={{
+                            fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: '0.8rem',
+                            color: active ? '#fff' : 'rgba(255,255,255,0.55)',
+                          }}>
+                            {area.label}
+                          </div>
+                          <div style={{
+                            fontFamily: "'Space Mono',monospace", fontSize: '0.46rem',
+                            color: active ? 'rgba(180,94,255,0.8)' : 'rgba(255,255,255,0.2)',
+                            letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 2,
+                          }}>
+                            {active ? '✓ SELECIONADO' : 'TOQUE PARA SELECIONAR'}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Feedback card */}
             <div style={{
               padding: '22px 24px', borderRadius: 18,
@@ -350,6 +545,17 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                   }}>
                     {activeModel.desc}
                   </div>
+                  {stampImage && (
+                    <div style={{
+                      marginBottom: 10, padding: '6px 12px', borderRadius: 8,
+                      background: 'rgba(0,240,255,0.08)',
+                      border: '1px solid rgba(0,240,255,0.25)',
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                      color: '#00f0ff', letterSpacing: '0.08em',
+                    }}>
+                      🎨 Estampa: {STAMP_AREAS.find(a => a.id === stampArea)?.label}
+                    </div>
+                  )}
                   <div style={{
                     padding: '8px 14px', borderRadius: 8,
                     background: `${activeColor.hex}15`,
@@ -422,29 +628,42 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                     MEO-NAI · {activeModel.sub}
                   </div>
                 </div>
-                {activeColor && (
-                  <div style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '5px 12px', borderRadius: 50,
-                    background: `${activeColor.hex}18`,
-                    border: `1px solid ${activeColor.hex}44`,
-                  }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {stampImage && (
                     <div style={{
-                      width: 10, height: 10, borderRadius: '50%',
-                      background: activeColor.hex,
-                      boxShadow: `0 0 8px ${activeColor.glow}`,
-                    }} />
-                    <span style={{
-                      fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
-                      color: activeColor.hex, letterSpacing: '0.1em',
+                      padding: '5px 10px', borderRadius: 50,
+                      background: 'rgba(0,240,255,0.1)',
+                      border: '1px solid rgba(0,240,255,0.3)',
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.46rem',
+                      color: '#00f0ff', letterSpacing: '0.1em',
                     }}>
-                      {activeColor.label}
-                    </span>
-                  </div>
-                )}
+                      🎨 {STAMP_AREAS.find(a => a.id === stampArea)?.label.toUpperCase()}
+                    </div>
+                  )}
+                  {activeColor && (
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: 8,
+                      padding: '5px 12px', borderRadius: 50,
+                      background: `${activeColor.hex}18`,
+                      border: `1px solid ${activeColor.hex}44`,
+                    }}>
+                      <div style={{
+                        width: 10, height: 10, borderRadius: '50%',
+                        background: activeColor.hex,
+                        boxShadow: `0 0 8px ${activeColor.glow}`,
+                      }} />
+                      <span style={{
+                        fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
+                        color: activeColor.hex, letterSpacing: '0.1em',
+                      }}>
+                        {activeColor.label}
+                      </span>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Image + overlay */}
+              {/* Image + overlay + stamp */}
               <div style={{
                 position: 'relative',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -454,6 +673,7 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                   : 'transparent',
                 transition: 'background 0.5s ease',
               }}>
+                {/* Hoodie base image */}
                 <img
                   key={activeModel.id}
                   src={activeModel.img}
@@ -468,6 +688,7 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                     transition: 'filter 0.5s ease',
                     opacity: imgLoaded ? 1 : 0,
                     position: 'relative', zIndex: 1,
+                    width: '86%',
                   }}
                 />
 
@@ -481,6 +702,57 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                     borderRadius: 12, pointerEvents: 'none', zIndex: 2,
                     transition: 'background 0.4s ease',
                   }} />
+                )}
+
+                {/* Stamp overlay */}
+                {stampImage && imgLoaded && (
+                  <div style={{
+                    position: 'absolute',
+                    ...activeAreaStyle,
+                    zIndex: 3,
+                    pointerEvents: 'none',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    transition: 'all 0.4s ease',
+                  }}>
+                    <img
+                      src={stampImage}
+                      alt="Estampa personalizada"
+                      style={{
+                        width: '100%', height: '100%',
+                        objectFit: 'contain',
+                        borderRadius: 4,
+                        filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))',
+                        mixBlendMode: 'normal',
+                      }}
+                    />
+                    {/* Subtle border to show stamp placement */}
+                    <div style={{
+                      position: 'absolute', inset: -2,
+                      border: '1.5px dashed rgba(0,240,255,0.4)',
+                      borderRadius: 6, pointerEvents: 'none',
+                    }} />
+                  </div>
+                )}
+
+                {/* Area indicator when no stamp yet */}
+                {!stampImage && imgLoaded && (
+                  <div style={{
+                    position: 'absolute',
+                    ...STAMP_AREAS.find(a => a.id === 'front')!.style,
+                    zIndex: 3,
+                    pointerEvents: 'none',
+                    border: '1.5px dashed rgba(255,255,255,0.1)',
+                    borderRadius: 6,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <span style={{
+                      fontFamily: "'Space Mono',monospace", fontSize: '0.42rem',
+                      color: 'rgba(255,255,255,0.2)', letterSpacing: '0.1em',
+                      textAlign: 'center', lineHeight: 1.6,
+                    }}>
+                      ESTAMPA<br />AQUI
+                    </span>
+                  </div>
                 )}
 
                 {!imgLoaded && (
@@ -504,7 +776,11 @@ export function HoodieSimulator({ onOrder }: HoodieSimulatorProps) {
                   fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',
                   color: 'rgba(255,255,255,0.18)', letterSpacing: '0.12em',
                 }}>
-                  {activeColor ? '✦ IDENTIDADE APLICADA' : '← SELECIONE UMA COR'}
+                  {stampImage
+                    ? `🎨 ${STAMP_AREAS.find(a => a.id === stampArea)?.label ?? ''}`
+                    : activeColor
+                    ? '✦ IDENTIDADE APLICADA'
+                    : '← SELECIONE UMA COR'}
                 </span>
                 <span style={{
                   fontFamily: "'Space Mono',monospace", fontSize: '0.52rem',

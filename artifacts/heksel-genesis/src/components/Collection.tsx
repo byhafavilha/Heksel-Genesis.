@@ -70,11 +70,11 @@ const PRODUCTS: Product[] = [
   },
   {
     id: 6,
-    name: 'NEO-WAI 02 SPORTS FLIP-FLOPS',
+    name: 'NEO-HAI 01 CYBER LUXURY HEEL',
     img: '1000031699-removebg-preview.png',
-    price: '$165',
-    reserved: 88,
-    badge: '🔥 DESIGN EXCLUSIVE'
+    price: '$390',
+    reserved: 97,
+    badge: '👠 ULTRA RARE DROP'
   },
   {
     id: 7,
