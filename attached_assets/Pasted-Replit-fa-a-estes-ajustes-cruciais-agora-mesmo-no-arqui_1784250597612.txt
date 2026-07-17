@@ -1,0 +1,36 @@
+Replit, faça estes ajustes cruciais agora mesmo no arquivo `src/components/SafeSpace.tsx` e na organização do `src/App.tsx`:
+
+1. **Alterar o Título do Card:**
+   No componente `SafeSpace.tsx`, substitua o texto do título principal `HEKSEL GENESIS` por `SAFE SPACE` (mantenha o efeito neon e o estilo cyberpunk intocados!).
+
+2. **Traduzir todo o Manifesto para Inglês Avançado/Profissional:**
+   Substitua o texto em português pelo manifesto oficial em inglês de alta costura digital. Cole este texto exato dentro do componente:
+
+   - Onde está "Aqui, o futuro é de todos. 🌌✨":
+     -> "Here, the future belongs to everyone. 🌌✨"
+   
+   - Onde está "> A Heksel Genesis nasceu para ser um espaço absolutamente seguro... 🫂":
+     -> "> Heksel Genesis was conceived as an absolute safe space, welcoming and completely free of judgment. 🫂"
+   
+   - Onde está "Seja você quem for, ame quem você amar, expresse-se como quiser. 🏳️‍🌈🏳️‍⚧️":
+     -> "No matter who you are, who you love, or how you choose to express yourself. 🏳️‍🌈🏳️‍⚧️"
+   
+   - Onde está "Nossa comunidade celebra a diversidade em todas as suas cores. 🦄💜":
+     -> "Our community celebrates diversity in all its vibrant colors. 🦄💜"
+   
+   - Onde está "Porque no final das contas, somos todos seres únicos com gostos extraordinários. 💎✨":
+     -> "Because in the end, we are all unique entities with extraordinary tastes. 💎✨"
+   
+   - Onde está "VISTA SUA IDENTIDADE COM ORGULHO. 🌈💪":
+     -> "WEAR YOUR IDENTITY WITH PRIDE. 🌈💪"
+
+3. **Garantir a Ordem Exata das Seções no App.tsx:**
+   Certifique-se de que a estrutura de cima para baixo no site siga RIGIDAMENTE esta ordem:
+   - Seção 1: Simulador de Moletons (`HoodieSimulator`) + O nosso componente atualizado do `SafeSpace` (logo abaixo dos moletons).
+   - Seção 2: "From beginning to infinity"
+   - Seção 3: "A Diretiva Gênesis"
+   - Seção 4: "See an interactive example"
+   - Seção 5: Planos "Freemio" e "Preemio" ("Want a website like this? Build your brand")
+   - Seção 6: Coleção de Tênis (`Collection`) ("See what the future holds")
+
+Ajuste os arquivos agora para podermos fazer o deploy final na Vercel!

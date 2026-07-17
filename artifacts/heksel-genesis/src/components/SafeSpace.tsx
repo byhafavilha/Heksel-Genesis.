@@ -189,9 +189,9 @@ export const SafeSpace: React.FC = () => {
                   textShadow: `0 0 20px rgba(0, 255, 255, ${0.6 * glowIntensity}), 0 0 40px rgba(236, 72, 153, ${0.4 * glowIntensity})` 
                 }}
               >
-                HEKSEL
+                SAFE
                 <br />
-                GENESIS
+                SPACE
               </h1>
               
               <div className="flex items-center justify-center gap-3">
@@ -222,14 +222,14 @@ export const SafeSpace: React.FC = () => {
                 style={{ borderRadius: '2px' }}
               >
                 <p className="text-base md:text-lg text-white/95 leading-relaxed">
-                  Aqui, o futuro é de todos. 🌌✨
+                  Here, the future belongs to everyone. 🌌✨
                 </p>
                 <p className={`text-sm md:text-base font-mono tracking-wider transition-all duration-300 ${
                   activeSection === 'future' 
                     ? 'text-cyan-300 glow-text' 
                     : 'text-cyan-300/80'
                 }`}>
-                  &gt; A Heksel Genesis nasceu para ser um espaço absolutamente seguro, acolhedor e livre de julgamentos. 🫂
+                  &gt; Heksel Genesis was conceived as an absolute safe space, welcoming and completely free of judgment. 🫂
                 </p>
               </div>
 
@@ -247,14 +247,14 @@ export const SafeSpace: React.FC = () => {
                 style={{ borderRadius: '2px' }}
               >
                 <p className="text-base md:text-lg text-white/95 leading-relaxed">
-                  Seja você quem for, ame quem você amar, expresse-se como quiser. 🏳️‍🌈🏳️‍⚧️
+                  No matter who you are, who you love, or how you choose to express yourself. 🏳️‍🌈🏳️‍⚧️
                 </p>
                 <p className={`text-sm md:text-base font-mono tracking-wider transition-all duration-300 ${
                   activeSection === 'diversity' 
                     ? 'text-pink-300 glow-text' 
                     : 'text-pink-300/80'
                 }`}>
-                  Nossa comunidade celebra a diversidade em todas as suas cores. 🦄💜
+                  Our community celebrates diversity in all its vibrant colors. 🦄💜
                 </p>
               </div>
 
@@ -272,12 +272,12 @@ export const SafeSpace: React.FC = () => {
                 style={{ borderRadius: '2px' }}
               >
                 <p className="text-base md:text-lg text-white/95 leading-relaxed">
-                  Porque no final das contas, somos todos seres únicos com gostos extraordinários. 💎✨
+                  Because in the end, we are all unique entities with extraordinary tastes. 💎✨
                 </p>
                 <p className={`text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 font-bold tracking-widest pt-6 transition-transform duration-300 ${
                   activeSection === 'unique' ? 'animate-pulse scale-110' : ''
                 }`}>
-                  VISTA SUA IDENTIDADE COM ORGULHO. 🌈💪
+                  WEAR YOUR IDENTITY WITH PRIDE. 🌈💪
                 </p>
               </div>
             </div>
