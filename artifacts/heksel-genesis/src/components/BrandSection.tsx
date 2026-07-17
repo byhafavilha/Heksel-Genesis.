@@ -23,43 +23,12 @@ export function BrandSection({ onCreateAdvance, onHirePremium }: BrandSectionPro
             <span className="text-xs font-mono text-purple uppercase tracking-widest">{brand.badge}</span>
           </div>
 
-          {/* ── Title — EXACT same visual DNA as "From beginning to infinity" (Seção 2):
-               · font-family: Syne, font-weight 900
-               · text-transform: uppercase
-               · letter-spacing: -0.02em
-               · size: clamp(3.2rem, 8vw, 7.5rem)
-               · line-height: 0.92
-          ── */}
-          <h2 style={{
-            fontFamily: "'Syne', sans-serif",
-            fontWeight: 900,
-            fontSize: 'clamp(2.25rem, 6.5vw, 6rem)',
-            lineHeight: 0.9,
-            letterSpacing: '-0.02em',
-            textTransform: 'uppercase',
-            margin: '0 0 24px',
-          }}>
-            <span style={{
-              display: 'block',
-              background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              color: 'transparent',
-            }}>
+          {/* Mesmas classes do Hero h1 "From beginning to infinity" */}
+          <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black font-['Syne',sans-serif] leading-[0.9] tracking-tight uppercase mb-6">
+            <span className="block bg-gradient-to-br from-white to-white/85 bg-clip-text text-transparent">
               {brand.title1}
             </span>
-            <span style={{
-              display: 'block',
-              background: 'linear-gradient(90deg, #00f0ff 0%, #b45eff 50%, #ff6ec7 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              color: 'transparent',
-              backgroundSize: '200% auto',
-              animation: 'btiGradientShift 4s ease infinite',
-              marginTop: '0.15em',
-            }}>
+            <span className="block bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse mt-[0.1em]">
               {brand.title2}
             </span>
           </h2>
