@@ -33,9 +33,9 @@ export function BrandSection({ onCreateAdvance, onHirePremium }: BrandSectionPro
           <h2 style={{
             fontFamily: "'Syne', sans-serif",
             fontWeight: 900,
-            fontSize: 'clamp(2.6rem, 7vw, 6.5rem)',
-            lineHeight: 0.92,
-            letterSpacing: '-0.02em',
+            fontSize: 'clamp(1.5rem, 3.2vw, 2.6rem)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.01em',
             textTransform: 'uppercase',
             margin: '0 0 24px',
           }}>

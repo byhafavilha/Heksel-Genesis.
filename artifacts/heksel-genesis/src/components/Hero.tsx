@@ -330,10 +330,10 @@ export function Hero() {
 
           {/* Título principal */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black font-['Syne',sans-serif] leading-[0.9] tracking-tight text-white mb-6">
-            From beginning
+            MEO-NAI
             <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
-              to infinity
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Collection
             </span>
           </h1>
 
