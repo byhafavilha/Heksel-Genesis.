@@ -62,12 +62,12 @@ export default function App() {
       <main>
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 0 — The MEO 2026 Collection (PRIMEIRO)
+            SEÇÃO 1 — "From beginning to infinity" (PRIMEIRA)
         ══════════════════════════════════════════════ */}
-        <Collection onNotifyMe={openPix} />
+        <Hero />
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 1 — Simulador de Moletons
+            SEÇÃO 2 — Simulador de Moletons
                       depois Safe Space abaixo
         ══════════════════════════════════════════════ */}
         <section style={{ position: 'relative' }}>
@@ -88,19 +88,12 @@ export default function App() {
         </section>
 
         {/* ══════════════════════════════════════════════
-            SEÇÃO 2 — "From beginning to infinity"
-        ══════════════════════════════════════════════ */}
-        <Hero />
-
-        {/* ══════════════════════════════════════════════
             SEÇÃO 3 — A Diretiva Gênesis (Manifesto)
         ══════════════════════════════════════════════ */}
         <Manifesto />
 
         {/* ══════════════════════════════════════════════
             SEÇÃO 4 — See an interactive example
-            Segundo HoodieSimulator (estado independente)
-            com id diferente para não colidir com #create
         ══════════════════════════════════════════════ */}
         <div id="interactive-example">
           <HoodieSimulator />
@@ -115,6 +108,10 @@ export default function App() {
           onHirePremium={() => setCreateBrandOpen(true)}
         />
 
+        {/* ══════════════════════════════════════════════
+            SEÇÃO 6 — See what the future holds (Tênis)
+        ══════════════════════════════════════════════ */}
+        <Collection onNotifyMe={openPix} />
 
       </main>
 
