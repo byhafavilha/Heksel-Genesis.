@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, MessageSquare, Instagram } from 'lucide-react';
+import { X, Mail, MessageSquare, Instagram, Copy, Check, Heart, ExternalLink } from 'lucide-react';
 import { FaDiscord, FaTiktok } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -232,6 +232,124 @@ export function FreemioModal({ isOpen, onClose }: { isOpen: boolean, onClose: ()
           </button>
         </div>
       </form>
+    </ModalWrapper>
+  );
+}
+
+// 3c. Help Us Modal — Pix + PayPal support
+export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [copied, setCopied] = useState(false);
+  const PIX_KEY = '3d1b7fde-f1fd-406d-9d36-140751f1af91';
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(PIX_KEY).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    });
+  };
+
+  return (
+    <ModalWrapper isOpen={isOpen} onClose={onClose} title="">
+      {/* Header com gradiente */}
+      <div className="text-center mb-6 -mt-2">
+        <div className="text-3xl mb-2">💜</div>
+        <h3 className="font-display font-black text-xl text-white tracking-tight">
+          Apoie a Heksel Genesis
+        </h3>
+        <p className="text-xs font-mono text-white/40 tracking-widest uppercase mt-1">
+          Support an independent brand
+        </p>
+      </div>
+
+      {/* Mensagem */}
+      <div
+        className="rounded-xl p-4 mb-5 text-xs leading-relaxed font-sans text-white/70"
+        style={{
+          background: 'rgba(180,94,255,0.07)',
+          border: '1px solid rgba(180,94,255,0.2)',
+        }}
+      >
+        <Heart className="w-3.5 h-3.5 inline text-purple-400 mr-1.5 -mt-0.5" />
+        A Heksel é uma marca autoral 100% independente, construída do zero com amor,
+        arte e tecnologia. Cada contribuição ajuda diretamente na produção de novas
+        peças, no desenvolvimento da plataforma e na manutenção do ecossistema digital.
+        <span className="block mt-2 text-purple-400/80 font-mono">
+          Obrigado por fazer parte desta jornada. 🚀
+        </span>
+      </div>
+
+      {/* Pix */}
+      <div className="mb-4">
+        <p
+          className="text-[0.6rem] font-mono text-white/40 uppercase tracking-widest mb-2"
+        >
+          🇧🇷 Pix — Apoio Nacional
+        </p>
+        <div
+          className="flex items-center gap-2 rounded-xl p-3"
+          style={{ background: 'rgba(0,240,255,0.05)', border: '1px solid rgba(0,240,255,0.2)' }}
+        >
+          <code className="flex-1 text-[0.65rem] text-cyan-300/90 font-mono break-all leading-relaxed">
+            {PIX_KEY}
+          </code>
+          <button
+            onClick={handleCopy}
+            className="shrink-0 p-2 rounded-lg transition-all active:scale-90 min-h-[36px] min-w-[36px] flex items-center justify-center"
+            style={{
+              background: copied ? 'rgba(0,200,100,0.15)' : 'rgba(0,240,255,0.1)',
+              border: copied ? '1px solid rgba(0,200,100,0.4)' : '1px solid rgba(0,240,255,0.25)',
+            }}
+            title="Copiar chave Pix"
+          >
+            {copied
+              ? <Check className="w-4 h-4 text-green-400" />
+              : <Copy className="w-4 h-4 text-cyan-400" />
+            }
+          </button>
+        </div>
+        {copied && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-[0.6rem] text-green-400 font-mono mt-1.5 text-center"
+          >
+            ✓ Chave copiada! Abra o app do banco e cole no Pix.
+          </motion.p>
+        )}
+      </div>
+
+      {/* Divider */}
+      <div className="flex items-center gap-3 my-5">
+        <div className="flex-1 h-px bg-white/10" />
+        <span className="text-[0.58rem] font-mono text-white/30 uppercase tracking-widest">ou</span>
+        <div className="flex-1 h-px bg-white/10" />
+      </div>
+
+      {/* PayPal */}
+      <div className="mb-2">
+        <p className="text-[0.6rem] font-mono text-white/40 uppercase tracking-widest mb-2">
+          🌍 PayPal — International Support
+        </p>
+        <a
+          href="https://www.paypal.com/donate/?hosted_button_id=HEKSELGENESIS"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center justify-center gap-2.5 w-full py-3 rounded-xl font-display uppercase text-sm tracking-wider transition-all hover:scale-[1.02] active:scale-95 min-h-[44px]"
+          style={{
+            background: 'linear-gradient(135deg, #003087 0%, #009cde 100%)',
+            color: '#fff',
+            boxShadow: '0 4px 20px rgba(0,156,222,0.3)',
+          }}
+        >
+          <span style={{ fontSize: '1rem' }}>🅿</span>
+          Support via PayPal
+          <ExternalLink className="w-3.5 h-3.5 opacity-70" />
+        </a>
+      </div>
+
+      <p className="text-center text-[0.55rem] text-white/25 font-mono mt-4 tracking-widest uppercase">
+        Heksel Genesis · Made with 💜 in Brazil
+      </p>
     </ModalWrapper>
   );
 }

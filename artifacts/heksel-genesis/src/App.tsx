@@ -26,7 +26,7 @@ import { BrandSection } from './components/BrandSection';
 import { Collection } from './components/Collection';
 
 // Modais
-import { NotifyModal, CreateBrandModal, CreateAdvanceModal, FreemioModal } from './components/Modals';
+import { NotifyModal, CreateBrandModal, CreateAdvanceModal, FreemioModal, HelpUsModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
 
 export default function App() {
@@ -35,6 +35,7 @@ export default function App() {
   const [createBrandOpen, setCreateBrandOpen]     = useState(false);
   const [createAdvanceOpen, setCreateAdvanceOpen] = useState(false);
   const [freemioOpen, setFreemioOpen]             = useState(false);
+  const [helpOpen, setHelpOpen]                   = useState(false);
   const [pixOpen, setPixOpen]                     = useState(false);
   const [paymentSuccess, setPaymentSuccess]       = useState(false);
 
@@ -54,7 +55,7 @@ export default function App() {
       <CustomCursor />
 
       {/* ── NAVBAR ── */}
-      <Navbar onNotifyMe={() => setNotifyOpen(true)} />
+      <Navbar onNotifyMe={() => setNotifyOpen(true)} onHelpUs={() => setHelpOpen(true)} />
 
       <main>
 
@@ -105,6 +106,7 @@ export default function App() {
       <CreateBrandModal    isOpen={createBrandOpen}   onClose={() => setCreateBrandOpen(false)} />
       <CreateAdvanceModal  isOpen={createAdvanceOpen} onClose={() => setCreateAdvanceOpen(false)} />
       <FreemioModal        isOpen={freemioOpen}       onClose={() => setFreemioOpen(false)} />
+      <HelpUsModal         isOpen={helpOpen}          onClose={() => setHelpOpen(false)} />
 
       <PixModal
         isOpen={pixOpen}

@@ -5,6 +5,7 @@ import { useLanguage, Lang } from '../context/LanguageContext';
 
 interface NavbarProps {
   onNotifyMe: () => void;
+  onHelpUs: () => void;
 }
 
 const LANGUAGES: { code: Lang; flag: string; label: string }[] = [
@@ -14,7 +15,7 @@ const LANGUAGES: { code: Lang; flag: string; label: string }[] = [
   { code: 'Português', flag: '🇧🇷', label: 'Português' },
 ];
 
-export function Navbar({ onNotifyMe }: NavbarProps) {
+export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
   const [isScrolled, setIsScrolled]     = useState(false);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const [langOpen, setLangOpen]         = useState(false);
@@ -184,6 +185,29 @@ export function Navbar({ onNotifyMe }: NavbarProps) {
             </AnimatePresence>
           </div>
 
+          {/* 💜 Help Us button */}
+          <button
+            onClick={onHelpUs}
+            className="px-4 py-2 rounded-full text-sm font-display uppercase transition-all hover:scale-105 active:scale-95"
+            style={{
+              border: '1px solid rgba(180,94,255,0.55)',
+              background: 'rgba(180,94,255,0.08)',
+              color: 'rgba(180,94,255,0.95)',
+              boxShadow: '0 0 10px rgba(180,94,255,0.18), inset 0 0 8px rgba(180,94,255,0.06)',
+              letterSpacing: '0.1em',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 0 18px rgba(180,94,255,0.45), inset 0 0 12px rgba(180,94,255,0.12)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(180,94,255,0.9)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.boxShadow = '0 0 10px rgba(180,94,255,0.18), inset 0 0 8px rgba(180,94,255,0.06)';
+              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(180,94,255,0.55)';
+            }}
+          >
+            💜 Help Us
+          </button>
+
           <button
             onClick={onNotifyMe}
             className="px-4 py-2 rounded-full border border-white/20 text-sm font-display uppercase hover:border-white transition-colors"
@@ -270,6 +294,19 @@ export function Navbar({ onNotifyMe }: NavbarProps) {
               </div>
 
               <div className="h-px bg-white/10" />
+              {/* 💜 Help Us — mobile */}
+              <button
+                onClick={() => { setMobileMenu(false); onHelpUs(); }}
+                className="w-full py-3 rounded-lg font-display uppercase tracking-wider text-sm min-h-[44px]"
+                style={{
+                  border: '1px solid rgba(180,94,255,0.55)',
+                  background: 'rgba(180,94,255,0.08)',
+                  color: 'rgba(180,94,255,0.95)',
+                  boxShadow: '0 0 10px rgba(180,94,255,0.18)',
+                }}
+              >
+                💜 Help Us
+              </button>
               <button
                 onClick={() => { setMobileMenu(false); onNotifyMe(); }}
                 className="w-full py-3 border border-white/20 rounded-lg font-display uppercase tracking-wider text-sm"
