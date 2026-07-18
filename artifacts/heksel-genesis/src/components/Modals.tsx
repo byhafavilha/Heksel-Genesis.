@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, MessageSquare, Instagram, Copy, Check, Heart, ExternalLink } from 'lucide-react';
+import { X, Mail, MessageSquare, Instagram } from 'lucide-react';
 import { FaDiscord, FaTiktok } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -236,194 +236,442 @@ export function FreemioModal({ isOpen, onClose }: { isOpen: boolean, onClose: ()
   );
 }
 
-// 3c. Help Us Modal — Pix + PayPal support
-export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const [copied, setCopied] = useState(false);
-  const PIX_KEY = '3d1b7fde-f1fd-406d-9d36-140751f1af91';
+// ─── 3c. Help Us Modal — Sovereign Support Panel ─────────────────────────────
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(PIX_KEY).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    });
+interface SovereignEntry {
+  id:      string;
+  amount:  string;
+  name:    string;
+  message: string;
+  ts:      number;
+}
+
+const ASAAS_LINK = 'COLE_AQUI_O_SEU_LINK_DO_ASAAS'; // ← paste your Asaas URL here
+const LS_KEY     = 'heksel_sovereign_echoes';
+
+const SEED_ENTRIES: SovereignEntry[] = [
+  {
+    id:      'seed-1',
+    amount:  '$5',
+    name:    'NeonPilgrim',
+    message: 'First stitch of the revolution. Wear the future! ✨',
+    ts:      Date.now() - 86400000 * 3,
+  },
+  {
+    id:      'seed-2',
+    amount:  '€10',
+    name:    'Merly',
+    message: 'I support LGBT! 🏳️‍🌈',
+    ts:      Date.now() - 86400000 * 2,
+  },
+  {
+    id:      'seed-3',
+    amount:  '$100',
+    name:    'CyberSam',
+    message: 'Heksel to the moon! 🚀',
+    ts:      Date.now() - 86400000,
+  },
+];
+
+/** Strip HTML tags, collapse whitespace, trim. */
+function sanitize(raw: string): string {
+  return raw
+    .replace(/<[^>]*>/g, '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+const PRESETS = [
+  { value: '5',   label: '$5',   sub: 'Cyber Coffee'   },
+  { value: '25',  label: '$25',  sub: 'Digital Thread' },
+  { value: '100', label: '$100', sub: 'Manto Fuel'      },
+  { value: '500', label: '$500', sub: 'Sovereign Tier'  },
+];
+
+export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const [amount,   setAmount]   = useState('');
+  const [amtError, setAmtError] = useState('');
+  const [name,     setName]     = useState('');
+  const [message,  setMessage]  = useState('');
+  const [entries,  setEntries]  = useState<SovereignEntry[]>([]);
+
+  // Load from localStorage once on mount; seed if empty.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (raw) {
+        const parsed: SovereignEntry[] = JSON.parse(raw);
+        setEntries(parsed.length ? parsed : SEED_ENTRIES);
+      } else {
+        setEntries(SEED_ENTRIES);
+        localStorage.setItem(LS_KEY, JSON.stringify(SEED_ENTRIES));
+      }
+    } catch {
+      setEntries(SEED_ENTRIES);
+    }
+  }, []);
+
+  const validate = (val: string): boolean => {
+    const num = parseFloat(val);
+    if (!val.trim() || isNaN(num)) {
+      setAmtError('Please enter a valid amount.');
+      return false;
+    }
+    if (num < 0.5) {
+      setAmtError('Minimum contribution is $0.50.');
+      return false;
+    }
+    if (num > 10000) {
+      setAmtError('Maximum contribution is $10,000.');
+      return false;
+    }
+    setAmtError('');
+    return true;
   };
 
-  return (
-    <ModalWrapper isOpen={isOpen} onClose={onClose} title="">
-      {/* Header com gradiente */}
-      <div className="text-center mb-6 -mt-2">
-        <div className="text-3xl mb-2">💜</div>
-        <h3 className="font-display font-black text-xl text-white tracking-tight">
-          Apoie a Heksel Genesis
-        </h3>
-        <p className="text-xs font-mono text-white/40 tracking-widest uppercase mt-1">
-          Support an independent brand
-        </p>
-      </div>
+  const handleFuel = () => {
+    if (!validate(amount)) return;
 
-      {/* Mensagem */}
-      <div
-        className="rounded-xl p-4 mb-5 text-xs leading-relaxed font-sans text-white/70"
+    const num       = parseFloat(amount);
+    const amtLabel  = `${num % 1 === 0 ? num.toString() : num.toFixed(2)}`;
+    const cleanName = sanitize(name).slice(0, 20)    || 'Anonymous';
+    const cleanMsg  = sanitize(message).slice(0, 80) || 'Fueling the future of fashion';
+
+    const entry: SovereignEntry = {
+      id:      `e-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      amount:  amtLabel,
+      name:    cleanName,
+      message: cleanMsg,
+      ts:      Date.now(),
+    };
+
+    const updated = [entry, ...entries];
+    setEntries(updated);
+    try { localStorage.setItem(LS_KEY, JSON.stringify(updated)); } catch { /* quota */ }
+
+    // Open Asaas link in new tab
+    const ready = ASAAS_LINK !== 'COLE_AQUI_O_SEU_LINK_DO_ASAAS' && ASAAS_LINK.startsWith('http');
+    if (ready) window.open(ASAAS_LINK, '_blank', 'noopener,noreferrer');
+
+    // Reset form fields
+    setAmount('');
+    setName('');
+    setMessage('');
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/85 backdrop-blur-md p-0 sm:p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 48 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 48 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+        className="w-full sm:max-w-md flex flex-col relative"
         style={{
-          background: 'rgba(180,94,255,0.07)',
-          border: '1px solid rgba(180,94,255,0.2)',
+          background:    '#07070f',
+          border:        '1px solid rgba(180,94,255,0.28)',
+          boxShadow:     '0 0 70px rgba(180,94,255,0.14), 0 0 0 0.5px rgba(180,94,255,0.18)',
+          borderRadius:  '24px 24px 0 0',
+          maxHeight:     '92dvh',
         }}
       >
-        <Heart className="w-3.5 h-3.5 inline text-purple-400 mr-1.5 -mt-0.5" />
-        A Heksel é uma marca autoral 100% independente, construída do zero com amor,
-        arte e tecnologia. Cada contribuição ajuda diretamente na produção de novas
-        peças, no desenvolvimento da plataforma e na manutenção do ecossistema digital.
-        <span className="block mt-2 text-purple-400/80 font-mono">
-          Obrigado por fazer parte desta jornada. 🚀
-        </span>
-      </div>
-
-      {/* Pix */}
-      <div className="mb-4">
-        <p
-          className="text-[0.6rem] font-mono text-white/40 uppercase tracking-widest mb-2"
-        >
-          🇧🇷 Pix — Apoio Nacional
-        </p>
-        <div
-          className="flex items-center gap-2 rounded-xl p-3"
-          style={{ background: 'rgba(0,240,255,0.05)', border: '1px solid rgba(0,240,255,0.2)' }}
-        >
-          <code className="flex-1 text-[0.65rem] text-cyan-300/90 font-mono break-all leading-relaxed">
-            {PIX_KEY}
-          </code>
-          <button
-            onClick={handleCopy}
-            className="shrink-0 p-2 rounded-lg transition-all active:scale-90 min-h-[36px] min-w-[36px] flex items-center justify-center"
-            style={{
-              background: copied ? 'rgba(0,200,100,0.15)' : 'rgba(0,240,255,0.1)',
-              border: copied ? '1px solid rgba(0,200,100,0.4)' : '1px solid rgba(0,240,255,0.25)',
-            }}
-            title="Copiar chave Pix"
-          >
-            {copied
-              ? <Check className="w-4 h-4 text-green-400" />
-              : <Copy className="w-4 h-4 text-cyan-400" />
-            }
-          </button>
-        </div>
-        {copied && (
-          <motion.p
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-[0.6rem] text-green-400 font-mono mt-1.5 text-center"
-          >
-            ✓ Chave copiada! Abra o app do banco e cole no Pix.
-          </motion.p>
-        )}
-      </div>
-
-      {/* Divider */}
-      <div className="flex items-center gap-3 my-4">
-        <div className="flex-1 h-px bg-white/10" />
-        <span className="text-[0.58rem] font-mono text-white/30 uppercase tracking-widest">ou</span>
-        <div className="flex-1 h-px bg-white/10" />
-      </div>
-
-      {/* Stripe — International */}
-      <div className="mb-2">
-        {/* Label */}
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-[0.6rem] font-mono text-white/40 uppercase tracking-widest">
-            🌍 Stripe — Global Checkout
-          </p>
-          {/* Accepted methods badges */}
-          <div className="flex items-center gap-1">
-            {['💳', '🍎', '支付宝'].map(badge => (
-              <span
-                key={badge}
-                className="text-[0.6rem] px-1.5 py-0.5 rounded font-mono"
-                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
-              >
-                {badge}
-              </span>
-            ))}
-          </div>
+        {/* Handle bar (mobile) */}
+        <div className="sm:hidden flex justify-center pt-3 pb-1">
+          <div className="w-10 h-1 rounded-full" style={{ background: 'rgba(180,94,255,0.35)' }} />
         </div>
 
-        {/* Stripe button */}
-        {/* ⚙️  To activate: replace STRIPE_PAYMENT_LINK below with your real Stripe Payment Link URL */}
-        {/* e.g. "https://buy.stripe.com/xxxxxxxxxxxxxxxx"                                          */}
-        {(() => {
-          const STRIPE_PAYMENT_LINK = ''; // TODO: paste your Stripe Payment Link here
-          const isReady = STRIPE_PAYMENT_LINK.startsWith('https://');
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-20 p-2 transition-colors"
+          style={{ color: 'rgba(255,255,255,0.4)' }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+          onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
+        >
+          <X className="w-5 h-5" />
+        </button>
 
-          return (
-            <a
-              href={isReady ? STRIPE_PAYMENT_LINK : undefined}
-              onClick={!isReady ? (e) => e.preventDefault() : undefined}
-              target="_blank"
-              rel="noreferrer"
-              aria-disabled={!isReady}
-              className="group relative flex items-center justify-between w-full px-4 py-3.5 rounded-xl min-h-[52px] overflow-hidden transition-all active:scale-[0.98]"
-              style={{
-                background: 'linear-gradient(135deg, #0a0a14 0%, #12102a 100%)',
-                border: '1px solid rgba(99,91,255,0.45)',
-                boxShadow: '0 0 18px rgba(99,91,255,0.15), inset 0 1px 0 rgba(255,255,255,0.04)',
-                cursor: isReady ? 'pointer' : 'default',
-                textDecoration: 'none',
-              }}
-              onMouseEnter={e => {
-                if (!isReady) return;
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(99,91,255,0.8)';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(99,91,255,0.35), inset 0 1px 0 rgba(255,255,255,0.06)';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(99,91,255,0.45)';
-                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 18px rgba(99,91,255,0.15), inset 0 1px 0 rgba(255,255,255,0.04)';
-              }}
+        {/* ── Scrollable body ── */}
+        <div className="overflow-y-auto flex-1 px-5 pb-8 pt-5 space-y-5">
+
+          {/* Header */}
+          <div className="text-center pt-1">
+            <div className="text-4xl mb-2">🌌</div>
+            <h3
+              className="font-display font-black text-2xl tracking-tight text-white"
+              style={{ textShadow: '0 0 24px rgba(180,94,255,0.55)' }}
             >
-              {/* Glow sweep on hover */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(99,91,255,0.08), transparent)' }}
+              Fuel the Empire
+            </h3>
+            <p
+              className="text-[0.6rem] font-mono uppercase tracking-[0.22em] mt-1"
+              style={{ color: 'rgba(180,94,255,0.65)' }}
+            >
+              Independent · Sovereign · Forever
+            </p>
+          </div>
+
+          {/* Manifesto */}
+          <div
+            className="rounded-2xl p-4 text-[0.72rem] leading-[1.8] font-sans"
+            style={{
+              background: 'linear-gradient(135deg, rgba(180,94,255,0.07), rgba(0,240,255,0.03))',
+              border:     '1px solid rgba(180,94,255,0.18)',
+              color:      'rgba(255,255,255,0.72)',
+            }}
+          >
+            <p>
+              Heksel wasn't born in a corporate boardroom. It was forged during sleepless
+              nights, bleeding lines of code, and chasing the raw dream of weaving technology
+              into physical art.
+            </p>
+            <p className="mt-3">
+              Building an independent, sovereign brand from scratch is a heavy, lonely
+              path—but every thread becomes lighter when we don't walk alone. When you back
+              us, you aren't just buying clothes.{' '}
+              <span style={{ color: 'rgba(180,94,255,0.95)', fontWeight: 600 }}>
+                You are funding a resistance against fast fashion.
+              </span>{' '}
+              You are keeping our neon lights burning in the dark.
+            </p>
+            <p className="mt-3">
+              Whether it's the price of a coffee or a statement of absolute belief, your
+              fuel goes straight into purchasing premium fabrics and stitching our very first
+              physical garments. Even{' '}
+              <em style={{ color: 'rgba(0,240,255,0.85)' }}>Sappho μ</em> watches over this
+              digital loom, weeping for the sheer beauty of the future we are building
+              together.
+            </p>
+            <p className="mt-3 font-bold" style={{ color: 'rgba(180,94,255,1)' }}>
+              Be our spark. True sovereignty starts here.
+            </p>
+          </div>
+
+          {/* ── Amount Input ── */}
+          <div>
+            <label
+              className="block text-[0.6rem] font-mono uppercase tracking-[0.18em] mb-2"
+              style={{ color: 'rgba(180,94,255,0.7)' }}
+            >
+              Choose Your Fuel Amount
+            </label>
+            <div className="relative">
+              <span
+                className="absolute left-4 top-1/2 -translate-y-1/2 font-display font-bold text-xl select-none"
+                style={{ color: 'rgba(180,94,255,0.75)' }}
+              >
+                $
+              </span>
+              <input
+                type="number"
+                min="0.50"
+                max="10000"
+                step="0.01"
+                value={amount}
+                onChange={e => { setAmount(e.target.value); if (amtError) validate(e.target.value); }}
+                onBlur={e => { if (e.target.value) validate(e.target.value); }}
+                placeholder="0.00"
+                className="w-full rounded-xl pl-9 pr-4 py-4 font-display font-bold text-xl outline-none transition-all"
+                style={{
+                  background:  'rgba(180,94,255,0.07)',
+                  border:      amtError ? '1.5px solid rgba(255,55,95,0.85)' : '1.5px solid rgba(180,94,255,0.4)',
+                  boxShadow:   amtError ? '0 0 14px rgba(255,55,95,0.2)'     : '0 0 14px rgba(180,94,255,0.1)',
+                  color:       '#ffffff',
+                }}
               />
+            </div>
+            <AnimatePresence>
+              {amtError && (
+                <motion.p
+                  key="err"
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="text-[0.62rem] font-mono mt-1.5"
+                  style={{ color: 'rgba(255,70,100,0.95)' }}
+                >
+                  ⚠ {amtError}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
 
-              {/* Left: Stripe wordmark + description */}
-              <div className="flex items-center gap-3 relative z-10">
-                {/* Stripe "S" icon — inline SVG matches Stripe's official mark */}
-                <svg width="20" height="20" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
-                  <rect width="28" height="28" rx="6" fill="#635BFF"/>
-                  <path d="M13.26 10.8c0-.78.64-1.08 1.7-1.08 1.52 0 3.44.46 4.96 1.28V7.06A13.18 13.18 0 0 0 14.96 6C11.3 6 8.8 7.88 8.8 11.04c0 4.84 6.66 4.06 6.66 6.14 0 .92-.8 1.22-1.92 1.22-1.66 0-3.78-.68-5.46-1.6V20.9c1.86.8 3.74 1.14 5.46 1.14C17.3 22 20 20.2 20 16.98c-.02-5.22-6.74-4.3-6.74-6.18Z" fill="white"/>
-                </svg>
-                <div>
-                  <div className="text-xs font-display font-bold text-white tracking-wider leading-none mb-0.5">
-                    {isReady ? 'Support via Stripe' : 'Stripe Checkout'}
-                  </div>
-                  <div className="text-[0.55rem] font-mono tracking-wide leading-none" style={{ color: 'rgba(99,91,255,0.85)' }}>
-                    {isReady
-                      ? 'Credit card · Apple Pay · Alipay · Global'
-                      : 'Link coming soon — Pix disponível acima'}
-                  </div>
-                </div>
-              </div>
+          {/* ── Presets ── */}
+          <div className="grid grid-cols-4 gap-2">
+            {PRESETS.map(p => {
+              const active = amount === p.value;
+              return (
+                <button
+                  key={p.value}
+                  onClick={() => { setAmount(p.value); setAmtError(''); }}
+                  className="flex flex-col items-center py-2.5 px-1 rounded-xl transition-all active:scale-95 min-h-[52px]"
+                  style={{
+                    background: active ? 'rgba(180,94,255,0.2)'  : 'rgba(180,94,255,0.07)',
+                    border:     active ? '1.5px solid rgba(180,94,255,0.7)' : '1px solid rgba(180,94,255,0.22)',
+                    boxShadow:  active ? '0 0 12px rgba(180,94,255,0.25)' : 'none',
+                  }}
+                >
+                  <span className="font-display font-bold text-sm text-white leading-none">{p.label}</span>
+                  <span
+                    className="font-mono text-[0.5rem] mt-0.5 text-center leading-tight"
+                    style={{ color: active ? 'rgba(180,94,255,0.9)' : 'rgba(180,94,255,0.55)' }}
+                  >
+                    {p.sub}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-              {/* Right: arrow or lock */}
-              <div className="relative z-10 shrink-0">
-                {isReady
-                  ? <ExternalLink className="w-4 h-4" style={{ color: 'rgba(99,91,255,0.8)' }} />
-                  : <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>🔒</span>
-                }
-              </div>
-            </a>
-          );
-        })()}
+          {/* ── Name + Message ── */}
+          <div className="space-y-3">
+            <div>
+              <label
+                className="block text-[0.6rem] font-mono uppercase tracking-[0.18em] mb-1.5"
+                style={{ color: 'rgba(180,94,255,0.65)' }}
+              >
+                Your Name / Handle
+                <span className="ml-1 normal-case tracking-normal" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                  — 20 chars max
+                </span>
+              </label>
+              <input
+                type="text"
+                maxLength={20}
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="CyberPilgrim"
+                className="w-full rounded-xl px-4 py-3 text-sm font-mono outline-none transition-all"
+                style={{
+                  background: 'rgba(180,94,255,0.06)',
+                  border:     '1px solid rgba(180,94,255,0.22)',
+                  color:      '#ffffff',
+                }}
+                onFocus={e  => (e.currentTarget.style.borderColor = 'rgba(180,94,255,0.55)')}
+                onBlur={e   => (e.currentTarget.style.borderColor = 'rgba(180,94,255,0.22)')}
+              />
+            </div>
+            <div>
+              <label
+                className="block text-[0.6rem] font-mono uppercase tracking-[0.18em] mb-1.5"
+                style={{ color: 'rgba(180,94,255,0.65)' }}
+              >
+                Your Message of Fuel
+                <span className="ml-1 normal-case tracking-normal" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                  — 80 chars max
+                </span>
+              </label>
+              <input
+                type="text"
+                maxLength={80}
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                placeholder="Fueling the future of fashion"
+                className="w-full rounded-xl px-4 py-3 text-sm font-mono outline-none transition-all"
+                style={{
+                  background: 'rgba(180,94,255,0.06)',
+                  border:     '1px solid rgba(180,94,255,0.22)',
+                  color:      '#ffffff',
+                }}
+                onFocus={e  => (e.currentTarget.style.borderColor = 'rgba(180,94,255,0.55)')}
+                onBlur={e   => (e.currentTarget.style.borderColor = 'rgba(180,94,255,0.22)')}
+              />
+            </div>
+          </div>
 
-        {/* Accepted methods — fine print */}
-        <p className="text-[0.55rem] font-mono text-white/25 mt-2 text-center tracking-wide">
-          Visa · Mastercard · Amex · Apple Pay · Google Pay · Alipay · WeChat Pay
-        </p>
-      </div>
+          {/* ── CTA Button ── */}
+          <button
+            onClick={handleFuel}
+            className="w-full py-4 rounded-2xl font-display font-black text-base tracking-wide transition-all active:scale-[0.97] min-h-[54px] relative overflow-hidden group"
+            style={{
+              background: 'linear-gradient(135deg, rgba(180,94,255,0.28) 0%, rgba(120,40,220,0.38) 100%)',
+              border:     '1.5px solid rgba(180,94,255,0.65)',
+              boxShadow:  '0 0 28px rgba(180,94,255,0.22)',
+              color:      '#ffffff',
+            }}
+          >
+            {/* Hover sweep */}
+            <div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, rgba(180,94,255,0.18), rgba(0,240,255,0.08))' }}
+            />
+            <span className="relative z-10">Fuel the Empire 🌌</span>
+          </button>
 
-      <p className="text-center text-[0.55rem] text-white/20 font-mono mt-4 tracking-widest uppercase">
-        Heksel Genesis · Made with 💜 in Brazil
-      </p>
-    </ModalWrapper>
+          {/* ── Sovereign Echoes header ── */}
+          <div className="flex items-center gap-3 pt-1">
+            <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
+            <span
+              className="text-[0.58rem] font-mono uppercase tracking-[0.2em] whitespace-nowrap"
+              style={{ color: 'rgba(180,94,255,0.55)' }}
+            >
+              ✦ Sovereign Echoes ✦
+            </span>
+            <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
+          </div>
+
+          {/* ── Wall of Believers feed ── */}
+          <div
+            className="rounded-2xl overflow-hidden"
+            style={{ border: '1px solid rgba(180,94,255,0.18)', background: 'rgba(0,0,0,0.35)' }}
+          >
+            {/* Feed header */}
+            <div
+              className="px-4 py-2.5 flex items-center justify-between"
+              style={{ borderBottom: '1px solid rgba(180,94,255,0.12)', background: 'rgba(180,94,255,0.06)' }}
+            >
+              <span className="text-[0.58rem] font-mono uppercase tracking-[0.18em]" style={{ color: 'rgba(180,94,255,0.65)' }}>
+                🌌 Wall of Believers
+              </span>
+              <span className="text-[0.55rem] font-mono" style={{ color: 'rgba(180,94,255,0.35)' }}>
+                {entries.length} sparks
+              </span>
+            </div>
+
+            {/* Scrollable list */}
+            <div className="overflow-y-auto" style={{ maxHeight: '210px' }}>
+              <AnimatePresence initial={false}>
+                {entries.map(e => (
+                  <motion.div
+                    key={e.id}
+                    initial={{ opacity: 0, x: -12, backgroundColor: 'rgba(180,94,255,0.1)' }}
+                    animate={{ opacity: 1, x: 0,   backgroundColor: 'rgba(0,0,0,0)'        }}
+                    transition={{ duration: 0.35 }}
+                    className="flex items-baseline gap-2.5 px-4 py-2.5"
+                    style={{ borderBottom: '1px solid rgba(180,94,255,0.07)' }}
+                  >
+                    {/* Amount badge */}
+                    <span
+                      className="shrink-0 font-display font-black text-[0.72rem]"
+                      style={{ color: 'rgba(180,94,255,0.9)', minWidth: '2.5rem' }}
+                    >
+                      {e.amount}
+                    </span>
+                    {/* Message */}
+                    <span
+                      className="text-[0.67rem] font-mono leading-relaxed flex-1 min-w-0"
+                      style={{ color: 'rgba(255,255,255,0.62)' }}
+                    >
+                      — {e.message}{' '}
+                      <span style={{ color: 'rgba(180,94,255,0.6)' }}>:{e.name}</span>
+                      {' '}👤
+                    </span>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <p className="text-center text-[0.5rem] font-mono tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.12)' }}>
+            Heksel Genesis · Built with 💜 in Brazil
+          </p>
+        </div>
+      </motion.div>
+    </div>
   );
 }
 
