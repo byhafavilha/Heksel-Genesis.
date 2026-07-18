@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, MessageSquare, Instagram } from 'lucide-react';
 import { FaDiscord, FaTiktok } from 'react-icons/fa';
@@ -248,6 +248,20 @@ interface SovereignEntry {
 
 const ASAAS_LINK = 'COLE_AQUI_O_SEU_LINK_DO_ASAAS'; // ← paste your Asaas URL here
 const LS_KEY     = 'heksel_sovereign_echoes';
+const LB_KEY     = 'heksel_sovereign_leaderboard';
+
+interface LeaderEntry { name: string; total: number; lastTs: number; }
+
+const LB_SEEDS: LeaderEntry[] = [
+  { name: 'Valentyna', total: 50, lastTs: 0 },
+  { name: 'CyberSam',  total: 25, lastTs: 0 },
+  { name: 'Merly',     total: 10, lastTs: 0 },
+  { name: 'Billy',     total: 5,  lastTs: 0 },
+];
+
+/** Format a dollar total cleanly: $50, $12.50 */
+const fmtTotal = (n: number) =>
+  `${n % 1 === 0 ? n.toString() : n.toFixed(2)}`;
 
 
 /** Strip HTML tags, collapse whitespace, trim. */
@@ -268,10 +282,27 @@ const PRESETS = [
 ];
 
 export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const [amount,   setAmount]   = useState('');
-  const [amtError, setAmtError] = useState('');
-  const [name,     setName]     = useState('');
-  const [message,  setMessage]  = useState('');
+  const [amount,      setAmount]      = useState('');
+  const [amtError,    setAmtError]    = useState('');
+  const [name,        setName]        = useState('');
+  const [message,     setMessage]     = useState('');
+  const [leaderboard, setLeaderboard] = useState<LeaderEntry[]>([]);
+
+  // Load leaderboard from localStorage; seed with competition data if empty.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(LB_KEY);
+      if (raw) {
+        const parsed: LeaderEntry[] = JSON.parse(raw);
+        setLeaderboard(parsed.length ? parsed : LB_SEEDS);
+      } else {
+        setLeaderboard(LB_SEEDS);
+        localStorage.setItem(LB_KEY, JSON.stringify(LB_SEEDS));
+      }
+    } catch {
+      setLeaderboard(LB_SEEDS);
+    }
+  }, []);
 
   const validate = (val: string): boolean => {
     const num = parseFloat(val);
@@ -307,17 +338,32 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       ts:      Date.now(),
     };
 
-    // Persist to localStorage so ImpulseToasts can pick it up
+    // ── 1. Persist echo feed so ImpulseToasts picks it up ────
     try {
       const existing: SovereignEntry[] = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
       localStorage.setItem(LS_KEY, JSON.stringify([entry, ...existing]));
-    } catch { /* storage quota */ }
+    } catch { /* quota */ }
 
-    // Open Asaas link in new tab
+    // ── 2. Update Sovereign Leaderboard ──────────────────────
+    const nameKey = cleanName.toLowerCase();
+    const draft   = leaderboard.map(e => ({ ...e }));
+    const lbIdx   = draft.findIndex(e => e.name.toLowerCase() === nameKey);
+    if (lbIdx >= 0) {
+      draft[lbIdx].total  += num;
+      draft[lbIdx].lastTs  = Date.now();
+    } else {
+      draft.push({ name: cleanName, total: num, lastTs: Date.now() });
+    }
+    // Sort: highest total first; ties broken by who donated earlier
+    const sorted = draft.sort((a, b) => b.total - a.total || a.lastTs - b.lastTs);
+    setLeaderboard([...sorted]);
+    try { localStorage.setItem(LB_KEY, JSON.stringify(sorted)); } catch { /* quota */ }
+
+    // ── 3. Open Asaas link in new tab ─────────────────────────
     const ready = ASAAS_LINK !== 'COLE_AQUI_O_SEU_LINK_DO_ASAAS' && ASAAS_LINK.startsWith('http');
     if (ready) window.open(ASAAS_LINK, '_blank', 'noopener,noreferrer');
 
-    // Reset form fields
+    // ── 4. Reset form ─────────────────────────────────────────
     setAmount('');
     setName('');
     setMessage('');
@@ -563,6 +609,125 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             />
             <span className="relative z-10">Fuel the Empire 🌌</span>
           </button>
+
+          {/* ── Sovereign Leaderboard ─────────────────────────────── */}
+          <div>
+            {/* Section divider */}
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
+              <span
+                className="text-[0.58rem] font-mono uppercase tracking-[0.2em] whitespace-nowrap"
+                style={{ color: 'rgba(180,94,255,0.55)' }}
+              >
+                👑 Sovereign Leaderboard
+              </span>
+              <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
+            </div>
+
+            {/* Board */}
+            <div
+              className="rounded-2xl overflow-hidden mt-3"
+              style={{ border: '1px solid rgba(180,94,255,0.22)', background: 'rgba(0,0,0,0.45)' }}
+            >
+              {/* Column headers */}
+              <div
+                className="grid items-center px-4 py-2"
+                style={{
+                  gridTemplateColumns: '36px 1fr auto',
+                  gap: '8px',
+                  borderBottom: '1px solid rgba(180,94,255,0.12)',
+                  background:   'rgba(180,94,255,0.06)',
+                }}
+              >
+                <span className="text-[0.52rem] font-mono uppercase tracking-[0.2em] text-center" style={{ color: 'rgba(180,94,255,0.45)' }}>#</span>
+                <span className="text-[0.52rem] font-mono uppercase tracking-[0.2em]"              style={{ color: 'rgba(180,94,255,0.45)' }}>Believer</span>
+                <span className="text-[0.52rem] font-mono uppercase tracking-[0.2em]"              style={{ color: 'rgba(180,94,255,0.45)' }}>Total Fuel</span>
+              </div>
+
+              {/* Animated rows */}
+              <div>
+                <AnimatePresence initial={false}>
+                  {leaderboard.map((lb, idx) => {
+                    const MEDALS   = ['👑', '🥈', '🥉'] as const;
+                    const isPodium = idx < 3;
+
+                    const rowBg   = idx === 0 ? 'rgba(255,195,0,0.07)'
+                                  : idx === 1 ? 'rgba(192,210,230,0.05)'
+                                  : idx === 2 ? 'rgba(200,120,40,0.05)'
+                                  : 'transparent';
+                    const rowBdr  = idx === 0 ? 'rgba(255,195,0,0.15)'
+                                  : idx === 1 ? 'rgba(192,210,230,0.1)'
+                                  : idx === 2 ? 'rgba(200,130,50,0.1)'
+                                  : 'rgba(180,94,255,0.07)';
+                    const nameClr = idx === 0 ? '#FFD700'
+                                  : idx === 1 ? 'rgba(208,220,235,1)'
+                                  : idx === 2 ? 'rgba(210,145,70,1)'
+                                  : 'rgba(255,255,255,0.72)';
+                    const amtClr  = idx === 0 ? 'rgba(255,215,0,0.95)'
+                                  : idx === 1 ? 'rgba(180,200,220,0.9)'
+                                  : idx === 2 ? 'rgba(205,140,65,0.9)'
+                                  : 'rgba(180,94,255,0.75)';
+
+                    return (
+                      <motion.div
+                        key={lb.name}
+                        layout
+                        initial={{ opacity: 0, scale: 0.97 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{
+                          layout:   { type: 'spring', damping: 30, stiffness: 320 },
+                          duration: 0.25,
+                        }}
+                        className="grid items-center px-4 py-2.5"
+                        style={{
+                          gridTemplateColumns: '36px 1fr auto',
+                          gap:          '8px',
+                          background:   rowBg,
+                          borderBottom: `1px solid ${rowBdr}`,
+                        }}
+                      >
+                        {/* Rank badge */}
+                        <div className="flex justify-center">
+                          {isPodium
+                            ? <span className="text-base leading-none">{MEDALS[idx]}</span>
+                            : <span className="font-mono text-[0.6rem]" style={{ color: 'rgba(180,94,255,0.38)' }}>{idx + 1}</span>
+                          }
+                        </div>
+
+                        {/* Name */}
+                        <span
+                          className="font-display font-bold text-sm truncate"
+                          style={{
+                            color:      nameClr,
+                            textShadow: idx === 0 ? '0 0 12px rgba(255,200,0,0.45)' : 'none',
+                          }}
+                        >
+                          {lb.name}
+                        </span>
+
+                        {/* Total */}
+                        <span
+                          className="font-display font-black text-sm tabular-nums"
+                          style={{ color: amtClr }}
+                        >
+                          {fmtTotal(lb.total)}
+                        </span>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* Competitive hint */}
+            <p
+              className="text-center text-[0.58rem] font-mono mt-2 tracking-wider"
+              style={{ color: 'rgba(180,94,255,0.42)' }}
+            >
+              ✦ Fuel more to climb the ranks ✦
+            </p>
+          </div>
 
           <p className="text-center text-[0.5rem] font-mono tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.12)' }}>
             Heksel Genesis · Built with 💜 in Brazil
