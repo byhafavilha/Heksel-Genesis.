@@ -28,6 +28,7 @@ import { Collection } from './components/Collection';
 // Modais
 import { NotifyModal, CreateBrandModal, CreateAdvanceModal, FreemioModal, HelpUsModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
+import { ImpulseToasts } from './components/ImpulseToasts';
 
 export default function App() {
   // ── Estado dos modais ────────────────────────────────────
@@ -116,6 +117,9 @@ export default function App() {
           setPaymentSuccess(true);
         }}
       />
+
+      {/* ── Impulse Toasts — Live social proof notifications ── */}
+      <ImpulseToasts onOpenHelpUs={() => setHelpOpen(true)} />
 
       {/* Toast de pagamento confirmado */}
       {paymentSuccess && (

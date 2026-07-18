@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, MessageSquare, Instagram } from 'lucide-react';
 import { FaDiscord, FaTiktok } from 'react-icons/fa';
@@ -249,29 +249,6 @@ interface SovereignEntry {
 const ASAAS_LINK = 'COLE_AQUI_O_SEU_LINK_DO_ASAAS'; // ← paste your Asaas URL here
 const LS_KEY     = 'heksel_sovereign_echoes';
 
-const SEED_ENTRIES: SovereignEntry[] = [
-  {
-    id:      'seed-1',
-    amount:  '$5',
-    name:    'NeonPilgrim',
-    message: 'First stitch of the revolution. Wear the future! ✨',
-    ts:      Date.now() - 86400000 * 3,
-  },
-  {
-    id:      'seed-2',
-    amount:  '€10',
-    name:    'Merly',
-    message: 'I support LGBT! 🏳️‍🌈',
-    ts:      Date.now() - 86400000 * 2,
-  },
-  {
-    id:      'seed-3',
-    amount:  '$100',
-    name:    'CyberSam',
-    message: 'Heksel to the moon! 🚀',
-    ts:      Date.now() - 86400000,
-  },
-];
 
 /** Strip HTML tags, collapse whitespace, trim. */
 function sanitize(raw: string): string {
@@ -295,23 +272,6 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   const [amtError, setAmtError] = useState('');
   const [name,     setName]     = useState('');
   const [message,  setMessage]  = useState('');
-  const [entries,  setEntries]  = useState<SovereignEntry[]>([]);
-
-  // Load from localStorage once on mount; seed if empty.
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (raw) {
-        const parsed: SovereignEntry[] = JSON.parse(raw);
-        setEntries(parsed.length ? parsed : SEED_ENTRIES);
-      } else {
-        setEntries(SEED_ENTRIES);
-        localStorage.setItem(LS_KEY, JSON.stringify(SEED_ENTRIES));
-      }
-    } catch {
-      setEntries(SEED_ENTRIES);
-    }
-  }, []);
 
   const validate = (val: string): boolean => {
     const num = parseFloat(val);
@@ -347,9 +307,11 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       ts:      Date.now(),
     };
 
-    const updated = [entry, ...entries];
-    setEntries(updated);
-    try { localStorage.setItem(LS_KEY, JSON.stringify(updated)); } catch { /* quota */ }
+    // Persist to localStorage so ImpulseToasts can pick it up
+    try {
+      const existing: SovereignEntry[] = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+      localStorage.setItem(LS_KEY, JSON.stringify([entry, ...existing]));
+    } catch { /* storage quota */ }
 
     // Open Asaas link in new tab
     const ready = ASAAS_LINK !== 'COLE_AQUI_O_SEU_LINK_DO_ASAAS' && ASAAS_LINK.startsWith('http');
@@ -601,70 +563,6 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
             />
             <span className="relative z-10">Fuel the Empire 🌌</span>
           </button>
-
-          {/* ── Sovereign Echoes header ── */}
-          <div className="flex items-center gap-3 pt-1">
-            <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
-            <span
-              className="text-[0.58rem] font-mono uppercase tracking-[0.2em] whitespace-nowrap"
-              style={{ color: 'rgba(180,94,255,0.55)' }}
-            >
-              ✦ Sovereign Echoes ✦
-            </span>
-            <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
-          </div>
-
-          {/* ── Wall of Believers feed ── */}
-          <div
-            className="rounded-2xl overflow-hidden"
-            style={{ border: '1px solid rgba(180,94,255,0.18)', background: 'rgba(0,0,0,0.35)' }}
-          >
-            {/* Feed header */}
-            <div
-              className="px-4 py-2.5 flex items-center justify-between"
-              style={{ borderBottom: '1px solid rgba(180,94,255,0.12)', background: 'rgba(180,94,255,0.06)' }}
-            >
-              <span className="text-[0.58rem] font-mono uppercase tracking-[0.18em]" style={{ color: 'rgba(180,94,255,0.65)' }}>
-                🌌 Wall of Believers
-              </span>
-              <span className="text-[0.55rem] font-mono" style={{ color: 'rgba(180,94,255,0.35)' }}>
-                {entries.length} sparks
-              </span>
-            </div>
-
-            {/* Scrollable list */}
-            <div className="overflow-y-auto" style={{ maxHeight: '210px' }}>
-              <AnimatePresence initial={false}>
-                {entries.map(e => (
-                  <motion.div
-                    key={e.id}
-                    initial={{ opacity: 0, x: -12, backgroundColor: 'rgba(180,94,255,0.1)' }}
-                    animate={{ opacity: 1, x: 0,   backgroundColor: 'rgba(0,0,0,0)'        }}
-                    transition={{ duration: 0.35 }}
-                    className="flex items-baseline gap-2.5 px-4 py-2.5"
-                    style={{ borderBottom: '1px solid rgba(180,94,255,0.07)' }}
-                  >
-                    {/* Amount badge */}
-                    <span
-                      className="shrink-0 font-display font-black text-[0.72rem]"
-                      style={{ color: 'rgba(180,94,255,0.9)', minWidth: '2.5rem' }}
-                    >
-                      {e.amount}
-                    </span>
-                    {/* Message */}
-                    <span
-                      className="text-[0.67rem] font-mono leading-relaxed flex-1 min-w-0"
-                      style={{ color: 'rgba(255,255,255,0.62)' }}
-                    >
-                      — {e.message}{' '}
-                      <span style={{ color: 'rgba(180,94,255,0.6)' }}>:{e.name}</span>
-                      {' '}👤
-                    </span>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
-          </div>
 
           <p className="text-center text-[0.5rem] font-mono tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.12)' }}>
             Heksel Genesis · Built with 💜 in Brazil

@@ -1,0 +1,27 @@
+Replit, vamos mudar a estratégia do "Wall of Believers" para aplicar uma técnica avançada de CRO (Otimização de Conversão por Impulso) e Prova Social! 
+
+Em vez de uma lista estática dentro do modal, quero que as mensagens de doação apareçam diretamente na PÁGINA PRINCIPAL do site, logo abaixo ou ao lado do botão "Help us", como se fossem NOTIFICAÇÕES AO VIVO (estilo pop-up de atividade recente).
+
+Por favor, aplique as seguintes alterações no código:
+
+1. O SISTEMA DE NOTIFICAÇÃO (Impulse Toasts):
+- Crie um container de notificações flutuantes posicionado estrategicamente perto do botão "Help us".
+- As mensagens devem aparecer uma por uma, com uma animação linda e suave de "Slide-in" (deslizar para dentro) vindo de baixo, permanecer por 5 segundos na tela e depois dar "Fade-out" (sumir suavemente).
+- Deve haver um loop que fica alternando entre as mensagens do LocalStorage (as reais que eu enviar para testar) e as mensagens falsas iniciais a cada 8 segundos. Isso vai criar um efeito de que o site está recebendo doações o tempo todo em tempo real!
+
+2. VISUAL CYBERPUNK DAS NOTIFICAÇÕES:
+- O layout de cada notificação na tela principal deve ser ultra limpo e seguir estritamente o padrão que combinamos:
+  [Emoji Moeda e Valor] - [Mensagem do Usuário] :[Nome do Usuário] 👤
+- Exemplo visual idêntico: "€10 - I support LGBT! 🏳️‍🌈 :Merly 👤"
+- O fundo do balão da notificação deve ser um preto translúcido (glassmorphism) com uma borda fina em neon violeta brilhante para combinar com a Heksel.
+
+3. GATILHO DO CLIQUE:
+- Se o usuário ficar curioso e CLICAR em cima de qualquer uma dessas notificações flutuantes, o modal "Help us" deve se abrir IMEDIATAMENTE na tela dele com o formulário de doação pronto, aproveitando o impulso do clique!
+
+4. DADOS INICIAIS (Para o feed nunca ficar vazio):
+- Mantenha os 3 exemplos iniciais em inglês nativo rodando nesse sistema de notificações, incluindo o exemplo da Merly:
+  * "€10 - I support LGBT! 🏳️‍🌈 :Merly 👤"
+  * "$25 - Heksel to the moon! 🚀 :CyberSam 👤"
+  * "$100 - Long live independent fashion! 🌌 :Vixen_X 👤"
+
+Deixe essa mecânica extremamente fluida, leve e viciante visualmente. Os gringos vão pirar!
