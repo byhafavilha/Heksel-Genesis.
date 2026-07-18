@@ -319,35 +319,108 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
       </div>
 
       {/* Divider */}
-      <div className="flex items-center gap-3 my-5">
+      <div className="flex items-center gap-3 my-4">
         <div className="flex-1 h-px bg-white/10" />
         <span className="text-[0.58rem] font-mono text-white/30 uppercase tracking-widest">ou</span>
         <div className="flex-1 h-px bg-white/10" />
       </div>
 
-      {/* PayPal */}
+      {/* Stripe — International */}
       <div className="mb-2">
-        <p className="text-[0.6rem] font-mono text-white/40 uppercase tracking-widest mb-2">
-          🌍 PayPal — International Support
+        {/* Label */}
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[0.6rem] font-mono text-white/40 uppercase tracking-widest">
+            🌍 Stripe — Global Checkout
+          </p>
+          {/* Accepted methods badges */}
+          <div className="flex items-center gap-1">
+            {['💳', '🍎', '支付宝'].map(badge => (
+              <span
+                key={badge}
+                className="text-[0.6rem] px-1.5 py-0.5 rounded font-mono"
+                style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Stripe button */}
+        {/* ⚙️  To activate: replace STRIPE_PAYMENT_LINK below with your real Stripe Payment Link URL */}
+        {/* e.g. "https://buy.stripe.com/xxxxxxxxxxxxxxxx"                                          */}
+        {(() => {
+          const STRIPE_PAYMENT_LINK = ''; // TODO: paste your Stripe Payment Link here
+          const isReady = STRIPE_PAYMENT_LINK.startsWith('https://');
+
+          return (
+            <a
+              href={isReady ? STRIPE_PAYMENT_LINK : undefined}
+              onClick={!isReady ? (e) => e.preventDefault() : undefined}
+              target="_blank"
+              rel="noreferrer"
+              aria-disabled={!isReady}
+              className="group relative flex items-center justify-between w-full px-4 py-3.5 rounded-xl min-h-[52px] overflow-hidden transition-all active:scale-[0.98]"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a14 0%, #12102a 100%)',
+                border: '1px solid rgba(99,91,255,0.45)',
+                boxShadow: '0 0 18px rgba(99,91,255,0.15), inset 0 1px 0 rgba(255,255,255,0.04)',
+                cursor: isReady ? 'pointer' : 'default',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={e => {
+                if (!isReady) return;
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(99,91,255,0.8)';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(99,91,255,0.35), inset 0 1px 0 rgba(255,255,255,0.06)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(99,91,255,0.45)';
+                (e.currentTarget as HTMLElement).style.boxShadow = '0 0 18px rgba(99,91,255,0.15), inset 0 1px 0 rgba(255,255,255,0.04)';
+              }}
+            >
+              {/* Glow sweep on hover */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(99,91,255,0.08), transparent)' }}
+              />
+
+              {/* Left: Stripe wordmark + description */}
+              <div className="flex items-center gap-3 relative z-10">
+                {/* Stripe "S" icon — inline SVG matches Stripe's official mark */}
+                <svg width="20" height="20" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0">
+                  <rect width="28" height="28" rx="6" fill="#635BFF"/>
+                  <path d="M13.26 10.8c0-.78.64-1.08 1.7-1.08 1.52 0 3.44.46 4.96 1.28V7.06A13.18 13.18 0 0 0 14.96 6C11.3 6 8.8 7.88 8.8 11.04c0 4.84 6.66 4.06 6.66 6.14 0 .92-.8 1.22-1.92 1.22-1.66 0-3.78-.68-5.46-1.6V20.9c1.86.8 3.74 1.14 5.46 1.14C17.3 22 20 20.2 20 16.98c-.02-5.22-6.74-4.3-6.74-6.18Z" fill="white"/>
+                </svg>
+                <div>
+                  <div className="text-xs font-display font-bold text-white tracking-wider leading-none mb-0.5">
+                    {isReady ? 'Support via Stripe' : 'Stripe Checkout'}
+                  </div>
+                  <div className="text-[0.55rem] font-mono tracking-wide leading-none" style={{ color: 'rgba(99,91,255,0.85)' }}>
+                    {isReady
+                      ? 'Credit card · Apple Pay · Alipay · Global'
+                      : 'Link coming soon — Pix disponível acima'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: arrow or lock */}
+              <div className="relative z-10 shrink-0">
+                {isReady
+                  ? <ExternalLink className="w-4 h-4" style={{ color: 'rgba(99,91,255,0.8)' }} />
+                  : <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>🔒</span>
+                }
+              </div>
+            </a>
+          );
+        })()}
+
+        {/* Accepted methods — fine print */}
+        <p className="text-[0.55rem] font-mono text-white/25 mt-2 text-center tracking-wide">
+          Visa · Mastercard · Amex · Apple Pay · Google Pay · Alipay · WeChat Pay
         </p>
-        <a
-          href="https://www.paypal.com/donate/?hosted_button_id=HEKSELGENESIS"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-center gap-2.5 w-full py-3 rounded-xl font-display uppercase text-sm tracking-wider transition-all hover:scale-[1.02] active:scale-95 min-h-[44px]"
-          style={{
-            background: 'linear-gradient(135deg, #003087 0%, #009cde 100%)',
-            color: '#fff',
-            boxShadow: '0 4px 20px rgba(0,156,222,0.3)',
-          }}
-        >
-          <span style={{ fontSize: '1rem' }}>🅿</span>
-          Support via PayPal
-          <ExternalLink className="w-3.5 h-3.5 opacity-70" />
-        </a>
       </div>
 
-      <p className="text-center text-[0.55rem] text-white/25 font-mono mt-4 tracking-widest uppercase">
+      <p className="text-center text-[0.55rem] text-white/20 font-mono mt-4 tracking-widest uppercase">
         Heksel Genesis · Made with 💜 in Brazil
       </p>
     </ModalWrapper>
