@@ -126,9 +126,10 @@ export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: B
 
             <button
               onClick={onHirePremium}
-              className="cyber-btn cyber-gold w-full py-3 rounded-xl text-base relative z-10 min-h-[44px] active:scale-95 transition-all"
+              className="btn-gold-premium w-full py-3 rounded-xl text-sm font-display font-black uppercase tracking-wider relative z-10 min-h-[44px] active:scale-[0.97] transition-all duration-200"
             >
-              {brand.premium.cta}
+              <div className="gold-shine" />
+              <span className="relative z-10">{brand.premium.cta}</span>
             </button>
           </div>
 

@@ -217,9 +217,10 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
 
           <button
             onClick={() => document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth' })}
-            className="cyber-btn cyber-gold px-5 py-2 rounded-full text-sm"
+            className="btn-gold-premium px-5 py-2 rounded-full text-xs font-display font-black uppercase tracking-wider active:scale-[0.97] transition-all duration-200"
           >
-            VIP Access
+            <div className="gold-shine" />
+            <span className="relative z-10">VIP Access</span>
           </button>
         </div>
 
@@ -315,9 +316,10 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
               </button>
               <button
                 onClick={() => { setMobileMenu(false); document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="w-full py-3 cyber-btn cyber-gold rounded-lg font-display uppercase tracking-wider text-sm"
+                className="btn-gold-premium w-full py-3 rounded-lg font-display font-black uppercase tracking-wider text-sm active:scale-[0.97] transition-all duration-200"
               >
-                VIP Access
+                <div className="gold-shine" />
+                <span className="relative z-10">VIP Access</span>
               </button>
             </div>
           </motion.div>
