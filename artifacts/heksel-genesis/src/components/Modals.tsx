@@ -246,7 +246,7 @@ interface SovereignEntry {
   ts:      number;
 }
 
-const ASAAS_LINK = 'COLE_AQUI_O_SEU_LINK_DO_ASAAS'; // ← paste your Asaas URL here
+const ASAAS_LINK = 'https://www.asaas.com/c/fiz1h1txwm6dwdlg';
 const LS_KEY     = 'heksel_sovereign_echoes';
 const LB_KEY     = 'heksel_sovereign_leaderboard';
 
@@ -281,7 +281,23 @@ const PRESETS = [
   { value: '500', label: '$500', sub: 'Sovereign Tier'  },
 ];
 
-export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+interface SovereignFueledEntry {
+  id: string;
+  amount: string;
+  name: string;
+  message: string;
+  ts: number;
+}
+
+export function HelpUsModal({
+  isOpen,
+  onClose,
+  onFueled,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onFueled?: (entry: SovereignFueledEntry) => void;
+}) {
   const [amount,      setAmount]      = useState('');
   const [amtError,    setAmtError]    = useState('');
   const [name,        setName]        = useState('');
@@ -359,9 +375,11 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
     setLeaderboard([...sorted]);
     try { localStorage.setItem(LB_KEY, JSON.stringify(sorted)); } catch { /* quota */ }
 
-    // ── 3. Open Asaas link in new tab ─────────────────────────
-    const ready = ASAAS_LINK !== 'COLE_AQUI_O_SEU_LINK_DO_ASAAS' && ASAAS_LINK.startsWith('http');
-    if (ready) window.open(ASAAS_LINK, '_blank', 'noopener,noreferrer');
+    // ── 3. Dispatch fueled callback (triggers toast in parent) ──
+    onFueled?.({ id: entry.id, amount: amtLabel, name: cleanName, message: cleanMsg, ts: entry.ts });
+
+    // ── 4. Open Asaas link in new tab ─────────────────────────
+    window.open(ASAAS_LINK, '_blank', 'noopener,noreferrer');
 
     // ── 4. Reset form ─────────────────────────────────────────
     setAmount('');
@@ -405,6 +423,41 @@ export function HelpUsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
         {/* ── Scrollable body ── */}
         <div className="overflow-y-auto flex-1 px-5 pb-8 pt-5 space-y-5">
+
+          {/* Header image placeholder */}
+          <div
+            className="relative w-full rounded-2xl overflow-hidden flex items-center justify-center"
+            style={{
+              minHeight: 140,
+              background: 'linear-gradient(135deg, rgba(180,94,255,0.12), rgba(0,240,255,0.06))',
+              border: '1px solid rgba(180,94,255,0.28)',
+            }}
+          >
+            {/* Decorative neon lines */}
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0, height: 1,
+              background: 'linear-gradient(90deg, transparent, rgba(180,94,255,0.6), transparent)',
+            }} />
+            <div style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0, height: 1,
+              background: 'linear-gradient(90deg, transparent, rgba(0,240,255,0.4), transparent)',
+            }} />
+            <div className="text-center px-6 py-8">
+              <div className="text-3xl mb-3">🧵✦🌌</div>
+              <p
+                className="font-display font-black text-sm tracking-[0.08em] leading-snug uppercase"
+                style={{ color: 'rgba(255,255,255,0.9)', textShadow: '0 0 20px rgba(180,94,255,0.6)' }}
+              >
+                FROM PIXELS TO FABRIC
+              </p>
+              <p
+                className="font-mono text-[0.6rem] tracking-[0.18em] mt-1"
+                style={{ color: 'rgba(180,94,255,0.7)' }}
+              >
+                Fueling the first physical drop.
+              </p>
+            </div>
+          </div>
 
           {/* Header */}
           <div className="text-center pt-1">

@@ -99,7 +99,11 @@ const AnimatedBackground = ({ satelliteCount = 40 }: { satelliteCount?: number }
 // Componente principal: Hero (Imagens corrigidas e ordem mobile no topo!)
 // ---------------------------------------------------------------------------
 
-export function Hero() {
+interface HeroProps {
+  onHelpUs?: () => void;
+}
+
+export function Hero({ onHelpUs }: HeroProps) {
   const [activeTab, setActiveTab] = useState<TabKey>("customize");
   const [infoOpen, setInfoOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -363,6 +367,29 @@ export function Hero() {
             >
               ✦ ORDER MY CUSTOMIZED SWEATSHIRT ✦
             </motion.button>
+
+            {/* Botão "Help us" — neon pulsante */}
+            {onHelpUs && (
+              <motion.button
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={onHelpUs}
+                className="w-full relative px-6 py-4 rounded-xl font-black font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.15em] uppercase overflow-hidden"
+                style={{
+                  background: 'rgba(138,43,226,0.12)',
+                  border: '1.5px solid rgba(138,43,226,0.8)',
+                  color: '#d580ff',
+                }}
+              >
+                {/* Pulsing glow ring */}
+                <motion.span
+                  className="absolute inset-0 rounded-xl pointer-events-none"
+                  animate={{ boxShadow: ['0 0 10px rgba(138,43,226,0.4), 0 0 0px rgba(138,43,226,0)', '0 0 30px rgba(138,43,226,0.9), 0 0 60px rgba(138,43,226,0.35)', '0 0 10px rgba(138,43,226,0.4), 0 0 0px rgba(138,43,226,0)'] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                <span className="relative z-10">⚡ Help us</span>
+              </motion.button>
+            )}
 
             {/* Botões secundários */}
             <div className="flex flex-col sm:flex-row gap-3 w-full">

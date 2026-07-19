@@ -28,7 +28,7 @@ import { Collection } from './components/Collection';
 // Modais
 import { NotifyModal, CreateBrandModal, CreateAdvanceModal, FreemioModal, HelpUsModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
-import { ImpulseToasts } from './components/ImpulseToasts';
+import { ImpulseToasts, type SovereignEntry } from './components/ImpulseToasts';
 
 export default function App() {
   // ── Estado dos modais ────────────────────────────────────
@@ -39,6 +39,9 @@ export default function App() {
   const [helpOpen, setHelpOpen]                   = useState(false);
   const [pixOpen, setPixOpen]                     = useState(false);
   const [paymentSuccess, setPaymentSuccess]       = useState(false);
+
+  // Toast state — only triggered by real user action
+  const [toastEntry, setToastEntry] = useState<SovereignEntry | null>(null);
 
   // Abre o PixModal
   const openPix = () => setPixOpen(true);
@@ -64,7 +67,7 @@ export default function App() {
             SEÇÃO 1 — Hero (Simulador Principal de Moletons)
                        + SafeSpace logo abaixo
         ══════════════════════════════════════════════ */}
-        <Hero />
+        <Hero onHelpUs={() => setHelpOpen(true)} />
         <SafeSpace />
 
         {/* ══════════════════════════════════════════════
@@ -107,7 +110,11 @@ export default function App() {
       <CreateBrandModal    isOpen={createBrandOpen}   onClose={() => setCreateBrandOpen(false)} />
       <CreateAdvanceModal  isOpen={createAdvanceOpen} onClose={() => setCreateAdvanceOpen(false)} />
       <FreemioModal        isOpen={freemioOpen}       onClose={() => setFreemioOpen(false)} />
-      <HelpUsModal         isOpen={helpOpen}          onClose={() => setHelpOpen(false)} />
+      <HelpUsModal
+        isOpen={helpOpen}
+        onClose={() => setHelpOpen(false)}
+        onFueled={(entry) => setToastEntry({ ...entry })}
+      />
 
       <PixModal
         isOpen={pixOpen}
@@ -118,8 +125,8 @@ export default function App() {
         }}
       />
 
-      {/* ── Impulse Toasts — Live social proof notifications ── */}
-      <ImpulseToasts onOpenHelpUs={() => setHelpOpen(true)} />
+      {/* ── Impulse Toasts — only fires on real user action ── */}
+      <ImpulseToasts triggerEntry={toastEntry} onOpenHelpUs={() => setHelpOpen(true)} />
 
       {/* Toast de pagamento confirmado */}
       {paymentSuccess && (

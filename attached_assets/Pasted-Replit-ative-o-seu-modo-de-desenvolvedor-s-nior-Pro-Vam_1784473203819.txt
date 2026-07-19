@@ -1,0 +1,27 @@
+Replit, ative o seu modo de desenvolvedor sênior (Pro). Vamos construir uma Landing Page ultra profissional, responsiva (Mobile-First e Desktop impecável) e moderna para uma marca de roupas chamada "Heksel: Independent Fashion & Tech". 
+
+Use as melhores práticas de UI/UX, preferencialmente React com Tailwind CSS. O design deve ter fundo escuro (Dark Mode), elementos em glassmorphism (preto translúcido) e detalhes/bordas brilhantes em neon violeta (#8A2BE2 ou similar). Remova qualquer marca d'água do Replit do código.
+
+O site precisa ter os seguintes elementos principais:
+
+1. HERO SECTION (Página Principal):
+- Título chamativo e um botão neon pulsante escrito "Help us".
+- Quando o usuário clicar nesse botão, um Modal/Pop-up gamificado deve se abrir.
+- O site deve ter um sistema de Notificações Flutuantes (Toasts) na tela principal. Elas devem aparecer apenas quando o usuário fizer uma ação no modal. NUNCA gere notificações flutuantes automáticas com dados falsos.
+
+2. O MODAL "HELP US" (O Coração da Conversão):
+- Topo: Um espaço para uma imagem (placeholder) com o texto "FROM PIXELS TO FABRIC: Fueling the first physical drop."
+- Manifesto: "Heksel wasn’t born in a corporate boardroom. It was forged during sleepless nights, bleeding lines of code, and chasing the raw dream of weaving technology into physical art..." (Adicione um texto épico sobre apoiar a moda independente).
+- Inputs de Doação: Campo para Nome/Handle (máx 20 chars), Mensagem de Apoio (máx 80 chars) e Valor do Apoio (Input numérico de $0.50 a $10,000, e opções rápidas de $5, $25, $100).
+- Botão de Ação: "Fuel the Empire 🌌". Ao clicar, ele deve:
+  A) Salvar os dados do usuário no LocalStorage.
+  B) Abrir em nova aba este link: https://www.asaas.com/c/fiz1h1txwm6dwdlg
+  C) Disparar a notificação flutuante na tela principal com os dados reais recém-inseridos.
+
+3. O LEADERBOARD (Placar de Líderes Gamificado dentro do Modal):
+- Abaixo do formulário, exiba um ranking ordenado pelo maior valor doado.
+- 1º Lugar: 👑, 2º Lugar: 🥈, 3º Lugar: 🥉.
+- Pré-carregue o LocalStorage com estes usuários base para instigar competição: Valentyna ($50), CyberSam ($25), Merly ($10), Billy ($5).
+- Se o usuário real usar o formulário e "doar" mais que eles, o ranking deve se reordenar imediatamente, jogando os fictícios para baixo.
+
+Faça o código limpo, modular e pronto para eu exportar para o GitHub e hospedar no Vercel!
