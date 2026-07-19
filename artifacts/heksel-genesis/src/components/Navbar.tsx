@@ -19,7 +19,8 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
   const [isScrolled, setIsScrolled]     = useState(false);
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const [langOpen, setLangOpen]         = useState(false);
-  const { lang, setLang }               = useLanguage();
+  const [langSearch, setLangSearch]     = useState('');
+  const { lang, setLang, t }            = useLanguage();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
@@ -27,9 +28,9 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  /* Close lang dropdown when clicking outside */
+  /* Close lang dropdown when clicking outside; clear search on close */
   useEffect(() => {
-    if (!langOpen) return;
+    if (!langOpen) { setLangSearch(''); return; }
     const close = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (!target.closest('[data-lang-menu]')) setLangOpen(false);
@@ -39,11 +40,15 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
   }, [langOpen]);
 
   const links = [
-    { name: 'Home',       href: '#home'       },
-    { name: 'Collection', href: '#collection' },
-    { name: 'Create',     href: '#create'     },
-    { name: 'Manifesto',  href: '#manifesto'  },
+    { name: t.nav.home,       href: '#home'       },
+    { name: t.nav.collection, href: '#collection' },
+    { name: t.nav.create,     href: '#create'     },
+    { name: t.nav.manifesto,  href: '#manifesto'  },
   ];
+
+  const filteredLanguages = LANGUAGES.filter(l =>
+    l.label.toLowerCase().includes(langSearch.toLowerCase())
+  );
 
   const currentLang = LANGUAGES.find(l => l.code === lang)!;
 
@@ -124,8 +129,8 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
                     position: 'absolute',
                     top: 'calc(100% + 8px)',
                     right: 0,
-                    width: 180,
-                    background: 'rgba(10,10,22,0.95)',
+                    width: 210,
+                    background: 'rgba(10,10,22,0.97)',
                     border: '1px solid rgba(180,94,255,0.3)',
                     borderRadius: 14,
                     padding: '8px 6px',
@@ -134,7 +139,41 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
                     zIndex: 200,
                   }}
                 >
-                  {LANGUAGES.map(l => {
+                  {/* Search input */}
+                  <div style={{ padding: '2px 4px 8px 4px' }}>
+                    <input
+                      type="text"
+                      value={langSearch}
+                      onChange={e => setLangSearch(e.target.value)}
+                      placeholder="Search language…"
+                      autoFocus
+                      style={{
+                        width: '100%',
+                        padding: '7px 10px',
+                        borderRadius: 8,
+                        border: '1px solid rgba(180,94,255,0.2)',
+                        background: 'rgba(255,255,255,0.04)',
+                        color: 'rgba(255,255,255,0.85)',
+                        fontFamily: "'Space Mono', monospace",
+                        fontSize: '0.65rem',
+                        letterSpacing: '0.06em',
+                        outline: 'none',
+                        boxSizing: 'border-box',
+                        transition: 'border-color 0.15s',
+                      }}
+                      onFocus={e => { e.currentTarget.style.borderColor = 'rgba(180,94,255,0.55)'; }}
+                      onBlur={e  => { e.currentTarget.style.borderColor = 'rgba(180,94,255,0.2)';  }}
+                    />
+                  </div>
+                  {filteredLanguages.length === 0 && (
+                    <p style={{
+                      fontFamily: "'Space Mono', monospace",
+                      fontSize: '0.6rem', color: 'rgba(255,255,255,0.3)',
+                      textAlign: 'center', padding: '8px 0 4px',
+                      letterSpacing: '0.08em',
+                    }}>No results</p>
+                  )}
+                  {filteredLanguages.map(l => {
                     const active = lang === l.code;
                     return (
                       <button
@@ -205,14 +244,14 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
               (e.currentTarget as HTMLElement).style.borderColor = 'rgba(180,94,255,0.55)';
             }}
           >
-            💜 Help Us
+            {t.nav.helpUs}
           </button>
 
           <button
             onClick={onNotifyMe}
             className="px-4 py-2 rounded-full border border-white/20 text-sm font-display uppercase hover:border-white transition-colors"
           >
-            Notify Me
+            {t.nav.notifyMe}
           </button>
 
           <button
@@ -220,7 +259,7 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
             className="btn-gold-premium px-5 py-2 rounded-full text-xs font-display font-black uppercase tracking-wider active:scale-[0.97] transition-all duration-200"
           >
             <div className="gold-shine" />
-            <span className="relative z-10">VIP Access</span>
+            <span className="relative z-10">{t.nav.vipAccess}</span>
           </button>
         </div>
 
@@ -263,7 +302,7 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
                   textTransform: 'uppercase',
                   marginBottom: 6,
                 }}>
-                  🌐 Language
+                  {t.nav.langLabel}
                 </p>
                 {LANGUAGES.map(l => (
                   <button
@@ -312,14 +351,14 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
                 onClick={() => { setMobileMenu(false); onNotifyMe(); }}
                 className="w-full py-3 border border-white/20 rounded-lg font-display uppercase tracking-wider text-sm"
               >
-                Notify Me
+                {t.nav.notifyMe}
               </button>
               <button
                 onClick={() => { setMobileMenu(false); document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="btn-gold-premium w-full py-3 rounded-lg font-display font-black uppercase tracking-wider text-sm active:scale-[0.97] transition-all duration-200"
               >
                 <div className="gold-shine" />
-                <span className="relative z-10">VIP Access</span>
+                <span className="relative z-10">{t.nav.vipAccess}</span>
               </button>
             </div>
           </motion.div>

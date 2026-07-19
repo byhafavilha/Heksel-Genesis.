@@ -17,7 +17,7 @@ export interface CollectorPackT {
 }
 
 // ---------------------------------------------------------------------------
-// UI Text — SafeSpace, BrandSection, HoodieSimulator
+// UI Text — SafeSpace, BrandSection, HoodieSimulator, Hero, Navbar
 // ---------------------------------------------------------------------------
 
 export interface UIText {
@@ -46,6 +46,33 @@ export interface UIText {
   };
   checkoutTitle: string;
   freemioBanner: string;
+  hero: {
+    badge: string;
+    title1: string;
+    title2: string;
+    subtitle: string;
+    btnOrder: string;
+    btnBrand: string;
+    btnExplore: string;
+    btnManifesto: string;
+    statBuilders: string;
+    statLines: string;
+    statDrop: string;
+    tabCustomize: string;
+    tabExample: string;
+    productTitle: string;
+    imageBadge: string;
+  };
+  nav: {
+    home: string;
+    collection: string;
+    create: string;
+    manifesto: string;
+    helpUs: string;
+    notifyMe: string;
+    vipAccess: string;
+    langLabel: string;
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -107,6 +134,27 @@ const uiText: Record<Lang, UIText> = {
   English: {
     checkoutTitle: "🔐 Guaranteed Secure Checkout — Heksel Genesis",
     freemioBanner: "✦ FREEMIO INITIATED ✦ Your free digital universe will include a minimal 'Cognitive Infrastructure by Heksel Genesis' banner at the top. Upgrade to PREEMIO at any time to remove this and unlock absolute brand sovereignty.",
+    hero: {
+      badge: "The NEO Collection 2026",
+      title1: "From beginning",
+      title2: "to infinity",
+      subtitle: "Three lines. One empire. Performance, home wear and digital luxury — every step is a statement of power.",
+      btnOrder: "✦ ORDER MY CUSTOMIZED SWEATSHIRT ✦",
+      btnBrand: "💎 Create my brand",
+      btnExplore: "Explore All →",
+      btnManifesto: "Explore Our Genesis →",
+      statBuilders: "Builders",
+      statLines: "Lines",
+      statDrop: "Drop",
+      tabCustomize: "Customize Canvas",
+      tabExample: "Live Example",
+      productTitle: "MEO-NAI SWEATSHIRT?",
+      imageBadge: "YOUR SELECTED IMAGES WILL LOOK LIKE THIS",
+    },
+    nav: {
+      home: "Home", collection: "Collection", create: "Create", manifesto: "Manifesto",
+      helpUs: "💜 Help Us", notifyMe: "Notify Me", vipAccess: "VIP Access", langLabel: "🌐 Language",
+    },
     safeSpace: {
       systemBar: "🛰️ HEKSEL_GENESIS_SYSTEM_v2.0",
       status: "✨ ACTIVE",
@@ -175,6 +223,27 @@ const uiText: Record<Lang, UIText> = {
   Português: {
     checkoutTitle: "🔐 Checkout 100% Seguro — Heksel Genesis",
     freemioBanner: "✦ FREEMIO INICIADO ✦ Seu universo digital gratuito incluirá um banner mínimo de 'Cognitive Infrastructure by Heksel Genesis' no topo. Faça upgrade para PREEMIO a qualquer momento para removê-lo e desbloquear soberania absoluta de marca.",
+    hero: {
+      badge: "A Coleção NEO 2026",
+      title1: "Do começo",
+      title2: "ao infinito",
+      subtitle: "Três linhas. Um império. Performance, home wear e luxo digital — cada passo é uma declaração de poder.",
+      btnOrder: "✦ PEÇA MEU MOLETOM PERSONALIZADO ✦",
+      btnBrand: "💎 Criar minha marca",
+      btnExplore: "Explorar Tudo →",
+      btnManifesto: "Explorar Nossa Gênese →",
+      statBuilders: "Criadores",
+      statLines: "Linhas",
+      statDrop: "Drop",
+      tabCustomize: "Personalizar Tela",
+      tabExample: "Exemplo ao Vivo",
+      productTitle: "MOLETOM MEO-NAI?",
+      imageBadge: "SUAS IMAGENS SELECIONADAS FICARÃO ASSIM",
+    },
+    nav: {
+      home: "Início", collection: "Coleção", create: "Criar", manifesto: "Manifesto",
+      helpUs: "💜 Apoie-nos", notifyMe: "Notifique-me", vipAccess: "Acesso VIP", langLabel: "🌐 Idioma",
+    },
     safeSpace: {
       systemBar: "🛰️ SISTEMA_HEKSEL_GENESIS_v2.0",
       status: "✨ ATIVO",
@@ -243,6 +312,27 @@ const uiText: Record<Lang, UIText> = {
   Français: {
     checkoutTitle: "🔐 Paiement 100% Sécurisé — Heksel Genesis",
     freemioBanner: "✦ FREEMIO INITIÉ ✦ Votre univers numérique gratuit inclura une bannière minimale 'Cognitive Infrastructure by Heksel Genesis' en haut. Passez au PREEMIO à tout moment pour la supprimer et débloquer une souveraineté de marque absolue.",
+    hero: {
+      badge: "La Collection NEO 2026",
+      title1: "Du début",
+      title2: "à l'infini",
+      subtitle: "Trois lignes. Un empire. Performance, home wear et luxe numérique — chaque pas est une déclaration de puissance.",
+      btnOrder: "✦ COMMANDER MON SWEAT PERSONNALISÉ ✦",
+      btnBrand: "💎 Créer ma marque",
+      btnExplore: "Explorer Tout →",
+      btnManifesto: "Explorer Notre Genèse →",
+      statBuilders: "Créateurs",
+      statLines: "Lignes",
+      statDrop: "Drop",
+      tabCustomize: "Canvas Personnalisé",
+      tabExample: "Exemple en Direct",
+      productTitle: "SWEAT MEO-NAI ?",
+      imageBadge: "VOS IMAGES SÉLECTIONNÉES RESSEMBLERONT À CECI",
+    },
+    nav: {
+      home: "Accueil", collection: "Collection", create: "Créer", manifesto: "Manifeste",
+      helpUs: "💜 Nous Aider", notifyMe: "Me Notifier", vipAccess: "Accès VIP", langLabel: "🌐 Langue",
+    },
     safeSpace: {
       systemBar: "🛰️ SYSTÈME_HEKSEL_GENESIS_v2.0",
       status: "✨ ACTIF",
@@ -311,6 +401,27 @@ const uiText: Record<Lang, UIText> = {
   "中文": {
     checkoutTitle: "🔐 官方安全加密结账 — Heksel Genesis",
     freemioBanner: "✦ FREEMIO 已启动 ✦ 您的免费数字宇宙将在顶部包含一个最小的 'Cognitive Infrastructure by Heksel Genesis' 横幅。随时升级到 PREEMIO 以移除该横幅并解锁绝对品牌主权。",
+    hero: {
+      badge: "NEO 2026 系列",
+      title1: "从起点",
+      title2: "到无限",
+      subtitle: "三条线。一个帝国。性能、家居服与数字奢华——每一步都是力量的宣言。",
+      btnOrder: "✦ 订购我的定制卫衣 ✦",
+      btnBrand: "💎 创建我的品牌",
+      btnExplore: "探索全部 →",
+      btnManifesto: "探索我们的创世 →",
+      statBuilders: "创造者",
+      statLines: "系列",
+      statDrop: "发布",
+      tabCustomize: "定制画布",
+      tabExample: "实时示例",
+      productTitle: "MEO-NAI 卫衣？",
+      imageBadge: "您的选定图片将呈现如下效果",
+    },
+    nav: {
+      home: "首页", collection: "系列", create: "创建", manifesto: "宣言",
+      helpUs: "💜 支持我们", notifyMe: "通知我", vipAccess: "VIP 通道", langLabel: "🌐 语言",
+    },
     safeSpace: {
       systemBar: "🛰️ HEKSEL_GENESIS_系统_v2.0",
       status: "✨ 运行中",

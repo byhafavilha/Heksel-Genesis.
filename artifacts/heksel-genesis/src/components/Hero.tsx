@@ -6,12 +6,8 @@ import { useLanguage } from "../context/LanguageContext";
 // Constantes (Ajustadas com as suas imagens reais!)
 // ---------------------------------------------------------------------------
 
-const TABS = [
-  { key: "customize", label: "Personalize a Tela" },
-  { key: "example", label: "Exemplo ao Vivo" },
-] as const;
-
-type TabKey = (typeof TABS)[number]["key"];
+const TAB_KEYS = ["customize", "example"] as const;
+type TabKey = (typeof TAB_KEYS)[number];
 
 const IMAGES: Record<TabKey, string> = {
   customize: "/meo-custom-canvas.png", // Imagem do gabarito "Put your image here"
@@ -107,7 +103,12 @@ export function Hero({ onHelpUs }: HeroProps) {
   const [activeTab, setActiveTab] = useState<TabKey>("customize");
   const [infoOpen, setInfoOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { collectorPack } = useLanguage();
+  const { collectorPack, t } = useLanguage();
+
+  const tabs = [
+    { key: "customize" as TabKey, label: t.hero.tabCustomize },
+    { key: "example"   as TabKey, label: t.hero.tabExample   },
+  ];
 
   return (
     <section
@@ -144,7 +145,7 @@ export function Hero({ onHelpUs }: HeroProps) {
             {/* Título overlay */}
             <div className="relative z-10 flex items-center justify-center gap-2 py-4 px-6 bg-[#0e0e16]/85 backdrop-blur-sm">
               <span className="font-bold font-['Syne',sans-serif] text-base md:text-lg tracking-[0.12em]" style={{ color: '#ffffff' }}>
-                MEO-NAI SWEATSHIRT?
+                {t.hero.productTitle}
               </span>
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -274,7 +275,7 @@ export function Hero({ onHelpUs }: HeroProps) {
                 <motion.img
                   key={activeTab}
                   src={IMAGES[activeTab]}
-                  alt={TABS.find((t) => t.key === activeTab)?.label ?? ""}
+                  alt={tabs.find((tab) => tab.key === activeTab)?.label ?? ""}
                   className="max-w-full max-h-full object-contain drop-shadow-[0_0_20px_rgba(168,85,247,0.4)] rounded-2xl"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -286,7 +287,7 @@ export function Hero({ onHelpUs }: HeroProps) {
 
             {/* Botões das abas */}
             <div className="flex gap-4 justify-center px-6 py-4 bg-[#0e0e16]/60 backdrop-blur-md">
-              {TABS.map((tab) => (
+              {tabs.map((tab) => (
                 <motion.button
                   key={tab.key}
                   whileHover={{ scale: 1.03 }}
@@ -306,7 +307,7 @@ export function Hero({ onHelpUs }: HeroProps) {
             {/* Badge inferior */}
             <div className="flex justify-center pb-4 px-6">
               <span className="inline-block px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/15 text-purple-400 font-mono text-[0.6rem] md:text-xs tracking-[0.12em] uppercase">
-                YOUR SELECTED IMAGES WILL LOOK LIKE THIS
+                {t.hero.imageBadge}
               </span>
             </div>
           </div>
@@ -328,23 +329,22 @@ export function Hero({ onHelpUs }: HeroProps) {
           >
             <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#00f0ff] animate-pulse" />
             <span className="text-xs md:text-sm font-mono tracking-[0.2em] text-cyan-400 uppercase">
-              The NEO Collection 2026
+              {t.hero.badge}
             </span>
           </motion.div>
 
           {/* Título principal */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black font-['Syne',sans-serif] leading-[0.9] tracking-tight text-white mb-6">
-            From beginning
+            {t.hero.title1}
             <br />
             <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-pulse">
-              to infinity
+              {t.hero.title2}
             </span>
           </h1>
 
           {/* Subtítulo */}
           <p className="text-base md:text-lg text-white/50 font-light max-w-md mb-8 leading-relaxed">
-            Three lines. One empire. Performance, home wear and digital luxury —
-            every step is a statement of power.
+            {t.hero.subtitle}
           </p>
 
           {/* Botões de ação */}
@@ -365,7 +365,7 @@ export function Hero({ onHelpUs }: HeroProps) {
                   ?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
             >
-              ✦ ORDER MY CUSTOMIZED SWEATSHIRT ✦
+              {t.hero.btnOrder}
             </motion.button>
 
             {/* Botão "Create my brand" — smooth scroll to brand section */}
@@ -377,7 +377,7 @@ export function Hero({ onHelpUs }: HeroProps) {
               }
               className="w-full px-6 py-4 rounded-xl font-black font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.15em] uppercase border border-purple-500/50 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-purple-200 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all"
             >
-              💎 Create my brand
+              {t.hero.btnBrand}
             </motion.button>
 
             {/* Botões secundários */}
@@ -392,7 +392,7 @@ export function Hero({ onHelpUs }: HeroProps) {
                     ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
-                Explore All →
+                {t.hero.btnExplore}
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
@@ -404,7 +404,7 @@ export function Hero({ onHelpUs }: HeroProps) {
                     ?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
-                Explore Our Genesis →
+                {t.hero.btnManifesto}
               </motion.button>
             </div>
           </motion.div>
@@ -417,9 +417,9 @@ export function Hero({ onHelpUs }: HeroProps) {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             {[
-              { num: "1K+", label: "Builders" },
-              { num: "3", label: "Lines" },
-              { num: "01", label: "Drop" },
+              { num: "1K+", label: t.hero.statBuilders },
+              { num: "3", label: t.hero.statLines },
+              { num: "01", label: t.hero.statDrop },
             ].map((stat, i) => (
               <div key={stat.label} className="flex items-center gap-6">
                 {i > 0 && <div className="w-px h-8 bg-cyan-400/20" />}
