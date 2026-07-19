@@ -126,7 +126,7 @@ const uiText: Record<Lang, UIText> = {
       badge: "Heksel Services",
       title1: "✦ COGNITIVE INFRASTRUCTURE",
       title2: "ARCHITECT YOUR EMPIRE ✦",
-      btnAdvance: "Create in Advance ⚡",
+      btnAdvance: "Create in Advance 🚀",
       btnBrand: "✦ Create My Brand ✦",
       freemium: {
         badge: "ENTRY LEVEL", name: "Freemio", price: "Free",
@@ -194,7 +194,7 @@ const uiText: Record<Lang, UIText> = {
       badge: "Heksel Services",
       title1: "✦ INFRAESTRUTURA COGNITIVA",
       title2: "ARQUITETE SEU IMPÉRIO ✦",
-      btnAdvance: "Criar em Avanço ⚡",
+      btnAdvance: "Criar em Avanço 🚀",
       btnBrand: "✦ Criar Minha Marca ✦",
       freemium: {
         badge: "NÍVEL INICIAL", name: "Freemio", price: "Grátis",
@@ -262,7 +262,7 @@ const uiText: Record<Lang, UIText> = {
       badge: "Services Heksel",
       title1: "✦ INFRASTRUCTURE COGNITIVE",
       title2: "ARCHITECTUREZ VOTRE EMPIRE ✦",
-      btnAdvance: "Créer en Avance ⚡",
+      btnAdvance: "Créer en Avance 🚀",
       btnBrand: "✦ Créer Ma Marque ✦",
       freemium: {
         badge: "NIVEAU ENTRÉE", name: "Freemio", price: "Gratuit",
@@ -330,7 +330,7 @@ const uiText: Record<Lang, UIText> = {
       badge: "Heksel 服务",
       title1: "✦ 认知基础设施",
       title2: "构建你的帝国 ✦",
-      btnAdvance: "提前创建 ⚡",
+      btnAdvance: "提前创建 🚀",
       btnBrand: "✦ 创建我的品牌 ✦",
       freemium: {
         badge: "入门级别", name: "Freemio", price: "免费",

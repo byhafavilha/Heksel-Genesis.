@@ -1151,3 +1151,60 @@ html.light .viewer-badge-bottom {
   background: rgba(0,150,210,0.12) !important;
   border-color: rgba(0,150,210,0.3) !important;
 }
+
+/* ── Matte gold premium button — shifting shine sweep ──────────────────────── */
+@keyframes gold-shine-sweep {
+  0%   { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { transform: translateX(260%) skewX(-18deg); opacity: 0; }
+}
+@keyframes gold-gradient-shift {
+  0%, 100% { background-position: 0%   50%; }
+  50%       { background-position: 100% 50%; }
+}
+.btn-gold-premium {
+  background: linear-gradient(
+    110deg,
+    #4a3200 0%,
+    #8a6515 15%,
+    #c9a02a 35%,
+    #f0d060 52%,
+    #c9a02a 68%,
+    #8a6515 82%,
+    #4a3200 100%
+  );
+  background-size: 200% 200%;
+  animation: gold-gradient-shift 4s ease-in-out infinite;
+  border: 1px solid rgba(240,208,80,0.55);
+  box-shadow:
+    0 0 16px rgba(201,160,42,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    inset 0 -1px 0 rgba(0,0,0,0.25);
+  color: #1a0e00;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.18);
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold-premium:hover {
+  box-shadow:
+    0 0 28px rgba(240,208,80,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
+  border-color: rgba(240,208,80,0.8);
+}
+.btn-gold-premium .gold-shine {
+  position: absolute;
+  inset: 0;
+  width: 38%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.45) 40%,
+    rgba(255,255,255,0.65) 50%,
+    rgba(255,255,255,0.45) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: gold-shine-sweep 3.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

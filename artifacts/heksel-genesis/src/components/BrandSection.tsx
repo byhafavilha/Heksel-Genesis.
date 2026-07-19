@@ -40,9 +40,9 @@ export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: B
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <button
               onClick={onCreateAdvance}
-              className="relative px-6 py-3 rounded-xl text-xs font-display font-bold uppercase tracking-wider text-white overflow-hidden group bg-black border border-white/10 w-full sm:w-auto min-h-[44px] active:scale-95 transition-all"
+              className="btn-gold-premium px-6 py-3 rounded-xl text-xs font-display font-black uppercase tracking-wider w-full sm:w-auto min-h-[44px] active:scale-[0.97] transition-all duration-200"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan/20 via-purple/20 to-cyan/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="gold-shine" />
               <span className="relative z-10">{brand.btnAdvance}</span>
             </button>
 

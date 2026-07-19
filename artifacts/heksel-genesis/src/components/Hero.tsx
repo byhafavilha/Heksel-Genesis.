@@ -368,28 +368,17 @@ export function Hero({ onHelpUs }: HeroProps) {
               ✦ ORDER MY CUSTOMIZED SWEATSHIRT ✦
             </motion.button>
 
-            {/* Botão "Help us" — neon pulsante */}
-            {onHelpUs && (
-              <motion.button
-                whileHover={{ scale: 1.04, y: -3 }}
-                whileTap={{ scale: 0.96 }}
-                onClick={onHelpUs}
-                className="w-full relative px-6 py-4 rounded-xl font-black font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.15em] uppercase overflow-hidden"
-                style={{
-                  background: 'rgba(138,43,226,0.12)',
-                  border: '1.5px solid rgba(138,43,226,0.8)',
-                  color: '#d580ff',
-                }}
-              >
-                {/* Pulsing glow ring */}
-                <motion.span
-                  className="absolute inset-0 rounded-xl pointer-events-none"
-                  animate={{ boxShadow: ['0 0 10px rgba(138,43,226,0.4), 0 0 0px rgba(138,43,226,0)', '0 0 30px rgba(138,43,226,0.9), 0 0 60px rgba(138,43,226,0.35)', '0 0 10px rgba(138,43,226,0.4), 0 0 0px rgba(138,43,226,0)'] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                />
-                <span className="relative z-10">⚡ Help us</span>
-              </motion.button>
-            )}
+            {/* Botão "Create my brand" — smooth scroll to brand section */}
+            <motion.button
+              whileHover={{ scale: 1.03, y: -3 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() =>
+                document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }
+              className="w-full px-6 py-4 rounded-xl font-black font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.15em] uppercase border border-purple-500/50 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-purple-200 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all"
+            >
+              💎 Create my brand
+            </motion.button>
 
             {/* Botões secundários */}
             <div className="flex flex-col sm:flex-row gap-3 w-full">
