@@ -26,7 +26,7 @@ import { BrandSection } from './components/BrandSection';
 import { Collection } from './components/Collection';
 
 // Modais
-import { NotifyModal, CreateBrandModal, CreateAdvanceModal, FreemioModal, HelpUsModal } from './components/Modals';
+import { NotifyModal, CreateBrandModal, CreateAdvanceModal, FreemioModal, HelpUsModal, OrderFormModal } from './components/Modals';
 import { PixModal } from './components/PixModal';
 import { ImpulseToasts, type SovereignEntry } from './components/ImpulseToasts';
 
@@ -37,6 +37,7 @@ export default function App() {
   const [createAdvanceOpen, setCreateAdvanceOpen] = useState(false);
   const [freemioOpen, setFreemioOpen]             = useState(false);
   const [helpOpen, setHelpOpen]                   = useState(false);
+  const [orderFormOpen, setOrderFormOpen]         = useState(false);
   const [pixOpen, setPixOpen]                     = useState(false);
   const [paymentSuccess, setPaymentSuccess]       = useState(false);
 
@@ -67,7 +68,7 @@ export default function App() {
             SEÇÃO 1 — Hero (Simulador Principal de Moletons)
                        + SafeSpace logo abaixo
         ══════════════════════════════════════════════ */}
-        <Hero onHelpUs={() => setHelpOpen(true)} />
+        <Hero onHelpUs={() => setHelpOpen(true)} onOpenOrderForm={() => setOrderFormOpen(true)} />
         <SafeSpace />
 
         {/* ══════════════════════════════════════════════
@@ -115,6 +116,8 @@ export default function App() {
         onClose={() => setHelpOpen(false)}
         onFueled={(entry) => setToastEntry({ ...entry })}
       />
+
+      <OrderFormModal isOpen={orderFormOpen} onClose={() => setOrderFormOpen(false)} />
 
       <PixModal
         isOpen={pixOpen}
