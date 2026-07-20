@@ -1,0 +1,1 @@
+Heksel blends fashion & tech. Building an independent brand from scratch is a journey, but supporting us with any amount means saying 'I believe in your dream'. Every single donation fuels our first physical collection. Thank you! 🌌💜
