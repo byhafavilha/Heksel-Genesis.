@@ -380,33 +380,6 @@ export function Hero({ onHelpUs }: HeroProps) {
               {t.hero.btnBrand}
             </motion.button>
 
-            {/* Botões secundários */}
-            <div className="flex flex-col sm:flex-row gap-3 w-full">
-              <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex-1 px-5 py-3 rounded-xl border border-cyan-400/40 bg-white/5 text-white font-['Syne',sans-serif] font-bold text-xs tracking-[0.1em] uppercase backdrop-blur-sm hover:bg-cyan-400/10 hover:border-cyan-400 hover:text-cyan-400 hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-all"
-                onClick={() => {
-                  document
-                    .getElementById("collection")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                {t.hero.btnExplore}
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="flex-1 px-5 py-3 rounded-xl border border-cyan-400/40 bg-white/5 text-white font-['Syne',sans-serif] font-bold text-xs tracking-[0.1em] uppercase backdrop-blur-sm hover:bg-cyan-400/10 hover:border-cyan-400 hover:text-cyan-400 hover:shadow-[0_0_20px_rgba(0,240,255,0.2)] transition-all"
-                onClick={() => {
-                  document
-                    .getElementById("manifesto")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                {t.hero.btnManifesto}
-              </motion.button>
-            </div>
           </motion.div>
 
           {/* Stats */}

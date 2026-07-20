@@ -184,7 +184,7 @@ const uiText: Record<Lang, UIText> = {
       },
       premium: {
         badge: "ELITE LEVEL", name: "Preemio", price: "$4,996.32", period: "/ one-time",
-        desc: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision—scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand.",
+        desc: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision — scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand.",
         features: ["Full React/Vite web application", "Bespoke visual identity & logo design", "Advanced animations & interactions", "Priority VIP support line", "Custom hardware welcome package"],
         cta: "Hire Preemio",
       },
