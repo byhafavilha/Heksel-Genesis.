@@ -1,0 +1,26 @@
+Replit, active o seu modo de desenvolvedor sênior (MODO PRO). Vamos recriar do zero a nossa Landing Page ultra profissional e moderna para a marca "Heksel: Independent Fashion & Tech", EXATAMENTE como havíamos estruturado perfeitamente na versão anterior. 
+
+O design deve ser Dark Mode, elementos em glassmorphism e detalhes em neon violeta (#8A2BE2). Garanta que o site fique 100% perfeito tanto no Computador (Desktop) quanto no Celular (Mobile). NÃO inclua nenhuma marca d'água do Replit no código do nosso site.
+
+Por favor, implemente a estrutura exata com as nossas regras de negócios premium:
+
+1. DESIGN DOS BOTÕES DE OURO:
+- Os botões "Create in Advance 🚀", "Hire Preemio" e "VIP ACCESS" devem ter um design idêntico de luxo metálico. Use um fundo de ouro fosco com uma animação suave em loop (shimmer effect) misturando tons de amarelo-ouro com reflexos brancos brilhantes.
+
+2. FLUXO DO BOTÃO "💎 Create my brand":
+- Abaixo do botão principal do topo, deixe apenas o botão "💎 Create my brand". Remova qualquer duplicação do botão "Help us" dali.
+- Quando clicado, a tela deve deslizar suavemente até a seção "✦ COGNITIVE INFRASTRUCTURE ARCHITECT YOUR EMPIRE ✦".
+- Dentro dessa seção, crie o formulário de pedido com Nome, Idéia do Projeto e o Menu Dropdown de Redes Sociais com os LOGOTIPOS REAIS em SVG (Discord, Instagram, TikTok, Gmail, WhatsApp).
+
+3. INTEGRAÇÃO REAL DOS LINKS DE CONTATO:
+- DISCORD: Redirecionar para o meu link real de contato: COLE_AQUI_O_SEU_LINK_DO_DISCORD
+- GMAIL: Abrir o mailto para hafavilhahafy@gmail.com com assunto e corpo pré-definidos em inglês.
+- INSTAGRAM (https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==) e TIKTOK (https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/): Ao clicar, copie o texto do resumo do projeto automaticamente para o clipboard do usuário e mostre um Toast lindo na tela avisando: "Project brief copied to clipboard! Paste it directly in the DM to launch your brand." antes de abrir o link.
+- WHATSAPP: Manter o link nativo com a mensagem pronta.
+
+4. TEXTO DE VALOR E IDIOMAS (🌐):
+- Frase de valor: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision—scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand."
+- O Globo de Idiomas (🌐) na Navbar deve abrir um dropdown em glassmorphism com pesquisa interna para alternar dinamicamente todo o site entre "🇺🇸 English" e "🇧🇷 Português". No modo inglês, esconda campos brasileiros como CPF do checkout de doação do "⚡ Help us".
+
+ENVIO AUTOMÁTICO PARA O GITHUB:
+Assim que você terminar de recriar e compilar todo o código perfeitamente, faça o commit automático de todos os arquivos e envie tudo (Push) diretamente para o meu repositório conectado no GitHub!
