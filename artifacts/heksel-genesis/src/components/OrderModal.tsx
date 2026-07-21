@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Copy, Check } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 /* ─────────────────────────────────────────────────────────────
    TIPOS
@@ -165,6 +166,8 @@ function HelpBtn({ tip }: { tip: string }) {
 ───────────────────────────────────────────────────────────── */
 export function OrderModal({ isOpen, onClose, onSuccess, selectedModel, selectedColor, selectedColorHex }: OrderModalProps) {
 
+  const { lang } = useLanguage();
+
   /* ── estado do fluxo ── */
   const [step, setStep] = useState<'form' | 'pix'>('form');
 
@@ -245,7 +248,7 @@ export function OrderModal({ isOpen, onClose, onSuccess, selectedModel, selected
   const validate = () => {
     const e: Record<string, string> = {};
     if (!nome.trim())                              e.nome         = 'Nome obrigatório';
-    if (!/^\d{11}$/.test(cpf.replace(/\D/g,'')))  e.cpf          = 'CPF inválido (11 dígitos)';
+    if (lang !== 'English' && !/^\d{11}$/.test(cpf.replace(/\D/g,'')))  e.cpf = 'CPF inválido (11 dígitos)';
     if (!/^\d{8}$/.test(cep.replace(/\D/g,'')))   e.cep          = 'CEP inválido';
     if (!rua.trim())                               e.rua          = 'Rua obrigatória';
     if (!numero.trim())                            e.numero       = 'Número obrigatório';
@@ -410,21 +413,23 @@ export function OrderModal({ isOpen, onClose, onSuccess, selectedModel, selected
                 {errors.nome && <div style={S.err}>{errors.nome}</div>}
               </div>
 
-              {/* CPF */}
-              <div>
-                <label style={S.label}>
-                  CPF
-                  <HelpBtn tip={TIPS.cpf} />
-                </label>
-                <input
-                  style={S.input(errors.cpf)}
-                  value={cpf}
-                  onChange={e => setCpf(formatCpf(e.target.value))}
-                  placeholder="000.000.000-00"
-                  inputMode="numeric"
-                />
-                {errors.cpf && <div style={S.err}>{errors.cpf}</div>}
-              </div>
+              {/* CPF — hidden for English-language users */}
+              {lang !== 'English' && (
+                <div>
+                  <label style={S.label}>
+                    CPF
+                    <HelpBtn tip={TIPS.cpf} />
+                  </label>
+                  <input
+                    style={S.input(errors.cpf)}
+                    value={cpf}
+                    onChange={e => setCpf(formatCpf(e.target.value))}
+                    placeholder="000.000.000-00"
+                    inputMode="numeric"
+                  />
+                  {errors.cpf && <div style={S.err}>{errors.cpf}</div>}
+                </div>
+              )}
 
               {/* CEP */}
               <div>

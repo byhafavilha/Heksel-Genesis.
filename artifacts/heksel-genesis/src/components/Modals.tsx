@@ -33,7 +33,7 @@ export function NotifyModal({ isOpen, onClose }: { isOpen: boolean, onClose: () 
     { name: 'WhatsApp', icon: <MessageSquare className="w-5 h-5" />, url: 'https://chat.whatsapp.com/G5q3H5MuJSyCmdAOEcf78T' },
     { name: 'Discord', icon: <FaDiscord className="w-5 h-5" />, url: 'https://discord.gg/Y8CNkKFNM' },
     { name: 'Instagram', icon: <Instagram className="w-5 h-5" />, url: 'https://www.instagram.com/hafavilha' },
-    { name: 'TikTok', icon: <FaTiktok className="w-5 h-5" />, url: 'https://vt.tiktok.com/ZSxbdSUg9/' },
+    { name: 'TikTok', icon: <FaTiktok className="w-5 h-5" />, url: 'https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/' },
   ];
 
   return (
@@ -290,6 +290,45 @@ interface SovereignFueledEntry {
   ts: number;
 }
 
+// ── Donation-feed helpers ────────────────────────────────────────────────
+function groupEchoes(entries: SovereignEntry[]): Array<{ count: number; entry: SovereignEntry }> {
+  const groups: Array<{ count: number; entry: SovereignEntry }> = [];
+  for (const entry of entries) {
+    const last = groups[groups.length - 1];
+    if (last && last.entry.name === entry.name && last.entry.amount === entry.amount && last.entry.message === entry.message) {
+      last.count++;
+    } else {
+      groups.push({ count: 1, entry });
+    }
+  }
+  return groups;
+}
+
+function formatEchoDate(ts: number): string {
+  const now  = Date.now();
+  const diff = now - ts;
+  const date = new Date(ts);
+  const hh   = date.getHours().toString().padStart(2, '0');
+  const mm   = date.getMinutes().toString().padStart(2, '0');
+  const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dayName   = DAYS[date.getDay()];
+  const monthName = MONTHS[date.getMonth()];
+  const d       = date.getDate();
+  const suffix  = d === 1 || d === 21 || d === 31 ? 'st' : d === 2 || d === 22 ? 'nd' : d === 3 || d === 23 ? 'rd' : 'th';
+  const dateStr = `On ${dayName}, ${monthName} ${d}${suffix}`;
+
+  if (diff < 60_000)       return `Right now — At ${hh}:${mm}`;
+  if (diff < 3_600_000)    return `${Math.floor(diff / 60_000)} min ago — At ${hh}:${mm}`;
+  if (diff < 86_400_000)   return `${Math.floor(diff / 3_600_000)}h ago — At ${hh}:${mm}`;
+  const days = Math.floor(diff / 86_400_000);
+  if (days === 1)          return `Yesterday — ${dateStr}`;
+  if (days < 7)            return `${days} days ago — ${dateStr}`;
+  if (days < 14)           return `Last week — ${dateStr}`;
+  const weeks = Math.floor(days / 7);
+  return `${weeks} week${weeks > 1 ? 's' : ''} ago — ${dateStr}`;
+}
+
 export function HelpUsModal({
   isOpen,
   onClose,
@@ -304,6 +343,7 @@ export function HelpUsModal({
   const [name,        setName]        = useState('');
   const [message,     setMessage]     = useState('');
   const [leaderboard, setLeaderboard] = useState<LeaderEntry[]>([]);
+  const [echoes,      setEchoes]      = useState<SovereignEntry[]>([]);
 
   // Load leaderboard from localStorage; seed with competition data if empty.
   useEffect(() => {
@@ -320,6 +360,16 @@ export function HelpUsModal({
       setLeaderboard(LB_SEEDS);
     }
   }, []);
+
+  // Load echo feed (most-recent-first order from localStorage)
+  const loadEchoes = () => {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      setEchoes(raw ? (JSON.parse(raw) as SovereignEntry[]) : []);
+    } catch { /* storage quota */ }
+  };
+
+  useEffect(() => { loadEchoes(); }, []);
 
   const validate = (val: string): boolean => {
     const num = parseFloat(val);
@@ -382,7 +432,10 @@ export function HelpUsModal({
     // ── 4. Open Asaas link in new tab ─────────────────────────
     window.open(ASAAS_LINK, '_blank', 'noopener,noreferrer');
 
-    // ── 4. Reset form ─────────────────────────────────────────
+    // ── 4. Reload echo feed so Wall of Believers updates live ──
+    loadEchoes();
+
+    // ── 5. Reset form ─────────────────────────────────────────
     setAmount('');
     setName('');
     setMessage('');
@@ -783,6 +836,53 @@ export function HelpUsModal({
             </p>
           </div>
 
+          {/* ── Wall of Believers (donation echo feed) ─────── */}
+          {echoes.length > 0 && (
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
+                <span className="text-[0.58rem] font-mono uppercase tracking-[0.2em] whitespace-nowrap" style={{ color: 'rgba(180,94,255,0.55)' }}>
+                  🔥 Wall of Believers
+                </span>
+                <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.18)' }} />
+              </div>
+
+              <div
+                className="space-y-2 overflow-y-auto"
+                style={{ maxHeight: 200, scrollbarWidth: 'thin', scrollbarColor: 'rgba(180,94,255,0.25) transparent' }}
+              >
+                {groupEchoes(echoes).map(({ count, entry }, idx) => (
+                  <div
+                    key={`${entry.id}-${idx}`}
+                    className="rounded-xl px-3 py-2.5"
+                    style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(180,94,255,0.15)' }}
+                  >
+                    <div
+                      className="text-xs font-display font-bold"
+                      style={{ color: '#fff', lineHeight: 1.4 }}
+                    >
+                      {count > 1 ? `${count}x ` : ''}
+                      <span style={{ color: 'rgba(200,150,255,1)' }}>${entry.amount}</span>
+                      {entry.message ? ` — ${entry.message}` : ''}
+                      <span
+                        className="ml-1"
+                        style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.6rem', color: 'rgba(255,255,255,0.4)' }}
+                      >
+                        :{entry.name} 👤
+                      </span>
+                    </div>
+                    <div
+                      className="mt-0.5 font-mono"
+                      style={{ fontSize: '0.52rem', color: 'rgba(180,94,255,0.55)', letterSpacing: '0.05em' }}
+                    >
+                      ° {formatEchoDate(entry.ts)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <p className="text-center text-[0.5rem] font-mono tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.12)' }}>
             Heksel Genesis · Built with 💜 in Brazil
           </p>
@@ -802,7 +902,7 @@ export function CreateAdvanceModal({ isOpen, onClose }: { isOpen: boolean, onClo
     { name: 'Gmail', url: 'mailto:hafavilhahafy@gmail.com?body=' },
     { name: 'Discord', url: 'https://discord.gg/Y8CNkKFNM' },
     { name: 'Instagram', url: 'https://www.instagram.com/hafavilha' },
-    { name: 'TikTok', url: 'https://vt.tiktok.com/ZSxbdSUg9/' }
+    { name: 'TikTok', url: 'https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/' }
   ];
 
   const langs = ['English', 'Portuguese', 'Spanish'];
@@ -866,10 +966,21 @@ export function CreateAdvanceModal({ isOpen, onClose }: { isOpen: boolean, onClo
 const DISCORD_LINK   = 'https://discord.gg/Y8CNkKFNM';
 const INSTAGRAM_LINK = 'https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==';
 const TIKTOK_LINK    = 'https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/';
+const XTWITTER_LINK  = 'https://x.com/Hafavilha';
 const WHATSAPP_BASE  = 'https://wa.me/5553991855262';
 const GMAIL_ADDRESS  = 'hafavilhahafy@gmail.com';
 
+// X / Twitter SVG inline (avoids extra package dependency)
+function XTwitterSVG({ style, className }: { style?: React.CSSProperties; className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '1.35rem', height: '1.35rem', flexShrink: 0, position: 'relative', zIndex: 1, ...style }} className={className}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.262 5.636 5.902-5.636Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+  );
+}
+
 const ORDER_SOCIALS = [
+  { id: 'XTwitter',  Icon: XTwitterSVG, color: '#ffffff', label: 'X'         },
   { id: 'Discord',   Icon: FaDiscord,   color: '#5865F2', label: 'Discord'   },
   { id: 'Instagram', Icon: FaInstagram, color: '#E1306C', label: 'Instagram' },
   { id: 'TikTok',    Icon: FaTiktok,    color: '#ffffff', label: 'TikTok'    },
@@ -916,6 +1027,9 @@ export function OrderFormModal({ isOpen, onClose }: { isOpen: boolean; onClose: 
     const brief = buildBrief();
 
     switch (socialId) {
+      case 'XTwitter':
+        window.open(XTWITTER_LINK, '_blank', 'noopener,noreferrer');
+        break;
       case 'Discord':
         window.open(DISCORD_LINK, '_blank', 'noopener,noreferrer');
         break;
@@ -1084,9 +1198,9 @@ export function OrderFormModal({ isOpen, onClose }: { isOpen: boolean; onClose: 
                       Send via — Choose your channel
                     </label>
 
-                    <div className="grid grid-cols-5 gap-2">
+                    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                       {ORDER_SOCIALS.map(({ id, Icon, color, label }) => {
-                        const rgb = id === 'Discord' ? '88,101,242' : id === 'Instagram' ? '225,48,108' : id === 'TikTok' ? '220,220,220' : id === 'Gmail' ? '234,67,53' : '37,211,102';
+                        const rgb = id === 'XTwitter' ? '255,255,255' : id === 'Discord' ? '88,101,242' : id === 'Instagram' ? '225,48,108' : id === 'TikTok' ? '220,220,220' : id === 'Gmail' ? '234,67,53' : '37,211,102';
                         return (
                           <motion.button
                             key={id}

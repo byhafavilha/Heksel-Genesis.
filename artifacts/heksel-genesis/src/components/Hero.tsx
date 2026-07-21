@@ -365,11 +365,11 @@ export function Hero({ onHelpUs, onOpenOrderForm }: HeroProps) {
               {t.hero.btnOrder}
             </motion.button>
 
-            {/* Botão "Create my brand" — opens order form modal */}
+            {/* Botão "Create my brand" — scrolls to COGNITIVE INFRASTRUCTURE section */}
             <motion.button
               whileHover={{ scale: 1.03, y: -3 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => onOpenOrderForm?.()}
+              onClick={() => document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth' })}
               className="w-full px-6 py-4 rounded-xl font-black font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.15em] uppercase border border-purple-500/50 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-purple-200 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all"
             >
               {t.hero.btnBrand}

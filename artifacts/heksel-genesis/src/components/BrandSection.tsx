@@ -1,12 +1,293 @@
-import { Shield, Check, Code, Cpu } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Shield, Check, Code, Cpu, Send } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaDiscord, FaInstagram, FaTiktok, FaWhatsapp } from 'react-icons/fa';
+import { SiGmail } from 'react-icons/si';
 import { useLanguage } from '../context/LanguageContext';
 
+// ── Contact constants ──────────────────────────────────────────────────────
+const DISCORD_LINK   = 'https://discord.gg/Y8CNkKFNM';
+const INSTAGRAM_LINK = 'https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==';
+const TIKTOK_LINK    = 'https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/';
+const XTWITTER_LINK  = 'https://x.com/Hafavilha';
+const WHATSAPP_BASE  = 'https://wa.me/5553991855262';
+const GMAIL_ADDRESS  = 'hafavilhahafy@gmail.com';
+
+// ── X / Twitter SVG (inline — no extra import) ────────────────────────────
+function XIcon({ style }: { style?: React.CSSProperties }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" style={style}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.262 5.636 5.902-5.636Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+  );
+}
+
+type SocialId = 'XTwitter' | 'Discord' | 'Instagram' | 'TikTok' | 'Gmail' | 'WhatsApp';
+
+interface SocialDef {
+  id: SocialId;
+  color: string;
+  rgb: string;
+  label: string;
+  renderIcon: (style: React.CSSProperties) => React.ReactNode;
+}
+
+const BRAND_SOCIALS: SocialDef[] = [
+  { id: 'XTwitter',  color: '#ffffff', rgb: '255,255,255', label: 'X',         renderIcon: s => <XIcon style={s} /> },
+  { id: 'Discord',   color: '#5865F2', rgb: '88,101,242',  label: 'Discord',   renderIcon: s => <FaDiscord style={s} /> },
+  { id: 'Instagram', color: '#E1306C', rgb: '225,48,108',  label: 'Instagram', renderIcon: s => <FaInstagram style={s} /> },
+  { id: 'TikTok',    color: '#ffffff', rgb: '220,220,220', label: 'TikTok',    renderIcon: s => <FaTiktok style={s} /> },
+  { id: 'Gmail',     color: '#EA4335', rgb: '234,67,53',   label: 'Gmail',     renderIcon: s => <SiGmail style={s} /> },
+  { id: 'WhatsApp',  color: '#25D366', rgb: '37,211,102',  label: 'WhatsApp',  renderIcon: s => <FaWhatsapp style={s} /> },
+];
+
+// ── Props ──────────────────────────────────────────────────────────────────
 interface BrandSectionProps {
   onCreateAdvance: () => void;
   onHirePremium:   () => void;
   onTryFreemio?:   () => void;
 }
 
+// ── Inline Create-Brand Form ───────────────────────────────────────────────
+function CreateBrandInlineForm() {
+  const [name,    setName]    = useState('');
+  const [idea,    setIdea]    = useState('');
+  const [error,   setError]   = useState('');
+  const [toast,   setToast]   = useState<string | null>(null);
+  const toastRef              = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    if (toastRef.current) clearTimeout(toastRef.current);
+    toastRef.current = setTimeout(() => setToast(null), 4500);
+    return () => { if (toastRef.current) clearTimeout(toastRef.current); };
+  }, [toast]);
+
+  const buildBrief = () => {
+    const n = name.trim() || 'Anonymous';
+    const i = idea.trim() || 'No description provided';
+    return `Hi Heksel! My name is ${n}. My project idea: "${i}"`;
+  };
+
+  const validate = () => {
+    if (!name.trim()) { setError('Please enter your name.'); return false; }
+    if (!idea.trim()) { setError('Please describe your project idea.'); return false; }
+    setError('');
+    return true;
+  };
+
+  const handleContact = (socialId: SocialId) => {
+    if (!validate()) return;
+    const brief = buildBrief();
+
+    switch (socialId) {
+      case 'XTwitter':
+        window.open(XTWITTER_LINK, '_blank', 'noopener,noreferrer');
+        break;
+      case 'Discord':
+        window.open(DISCORD_LINK, '_blank', 'noopener,noreferrer');
+        break;
+      case 'Gmail': {
+        const subject = encodeURIComponent('Brand Project Inquiry — Heksel Genesis');
+        const body    = encodeURIComponent(`${brief}\n\nI am interested in the Heksel Genesis brand-building services.\n\nPlease get back to me at your earliest convenience.`);
+        window.open(`mailto:${GMAIL_ADDRESS}?subject=${subject}&body=${body}`);
+        break;
+      }
+      case 'Instagram':
+        navigator.clipboard.writeText(brief).then(() => {
+          setToast('Project brief copied! Paste it in the DM to launch your brand. 🚀');
+          setTimeout(() => window.open(INSTAGRAM_LINK, '_blank', 'noopener,noreferrer'), 900);
+        }).catch(() => window.open(INSTAGRAM_LINK, '_blank', 'noopener,noreferrer'));
+        break;
+      case 'TikTok':
+        navigator.clipboard.writeText(brief).then(() => {
+          setToast('Project brief copied! Paste it in the DM to launch your brand. 🚀');
+          setTimeout(() => window.open(TIKTOK_LINK, '_blank', 'noopener,noreferrer'), 900);
+        }).catch(() => window.open(TIKTOK_LINK, '_blank', 'noopener,noreferrer'));
+        break;
+      case 'WhatsApp': {
+        const msg = encodeURIComponent(`${brief}\n\nI would like to start building my brand with Heksel Genesis. 🚀`);
+        window.open(`${WHATSAPP_BASE}?text=${msg}`, '_blank', 'noopener,noreferrer');
+        break;
+      }
+    }
+  };
+
+  return (
+    <div
+      id="create-brand-form"
+      className="relative rounded-2xl overflow-hidden mb-8"
+      style={{
+        background:     'rgba(8,6,24,0.85)',
+        border:         '1px solid rgba(138,43,226,0.45)',
+        backdropFilter: 'blur(32px)',
+        boxShadow:      '0 0 60px rgba(138,43,226,0.12), inset 0 1px 0 rgba(255,255,255,0.04)',
+      }}
+    >
+      {/* Top glow line */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 1,
+        background: 'linear-gradient(90deg,transparent,rgba(138,43,226,0.9),rgba(0,240,255,0.6),rgba(138,43,226,0.9),transparent)',
+      }} />
+
+      <div className="p-5 md:p-7">
+        {/* Header */}
+        <div className="mb-5">
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-3"
+            style={{ background: 'rgba(138,43,226,0.12)', border: '1px solid rgba(138,43,226,0.4)' }}
+          >
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.58rem', letterSpacing: '0.2em', color: 'rgba(138,43,226,0.9)', textTransform: 'uppercase' }}>
+              ✦ Start Your Brand Journey
+            </span>
+          </div>
+          <h3
+            className="font-black font-['Syne',sans-serif] text-lg md:text-xl uppercase tracking-tight"
+            style={{
+              background: 'linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.75) 50%,#8A2BE2 100%)',
+              WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            }}
+          >
+            Tell Us About Your Vision
+          </h3>
+          <p className="text-[0.63rem] mt-1 font-mono" style={{ color: 'rgba(138,43,226,0.65)', letterSpacing: '0.08em' }}>
+            Fill in the form, then choose how you want to reach us
+          </p>
+        </div>
+
+        {/* Fields */}
+        <div className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-[0.55rem] font-mono uppercase tracking-[0.18em] mb-1.5" style={{ color: 'rgba(138,43,226,0.8)' }}>
+              Your Name *
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={e => { setName(e.target.value); if (error) setError(''); }}
+              placeholder="e.g. Alex Supreme"
+              maxLength={60}
+              className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-all"
+              style={{ background: 'rgba(138,43,226,0.07)', border: '1px solid rgba(138,43,226,0.28)', color: '#fff', fontFamily: "'DM Sans',sans-serif" }}
+              onFocus={e  => { e.currentTarget.style.borderColor = 'rgba(138,43,226,0.7)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(138,43,226,0.1)'; }}
+              onBlur={e   => { e.currentTarget.style.borderColor = 'rgba(138,43,226,0.28)'; e.currentTarget.style.boxShadow = 'none'; }}
+            />
+          </div>
+
+          {/* Project Idea */}
+          <div>
+            <label className="block text-[0.55rem] font-mono uppercase tracking-[0.18em] mb-1.5" style={{ color: 'rgba(138,43,226,0.8)' }}>
+              Project Idea *
+            </label>
+            <textarea
+              value={idea}
+              onChange={e => { setIdea(e.target.value); if (error) setError(''); }}
+              placeholder="Describe your brand idea, style, and goals..."
+              rows={3}
+              maxLength={500}
+              className="w-full rounded-xl px-4 py-3 text-sm outline-none transition-all resize-none"
+              style={{ background: 'rgba(138,43,226,0.07)', border: '1px solid rgba(138,43,226,0.28)', color: '#fff', fontFamily: "'DM Sans',sans-serif" }}
+              onFocus={e  => { e.currentTarget.style.borderColor = 'rgba(138,43,226,0.7)'; e.currentTarget.style.boxShadow = '0 0 0 3px rgba(138,43,226,0.1)'; }}
+              onBlur={e   => { e.currentTarget.style.borderColor = 'rgba(138,43,226,0.28)'; e.currentTarget.style.boxShadow = 'none'; }}
+            />
+            <div className="flex justify-end mt-0.5">
+              <span className="text-[0.5rem] font-mono" style={{ color: idea.length > 450 ? 'rgba(255,80,80,0.8)' : 'rgba(255,255,255,0.18)' }}>
+                {idea.length}/500
+              </span>
+            </div>
+          </div>
+
+          {/* Validation error */}
+          <AnimatePresence>
+            {error && (
+              <motion.p key="err" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className="text-[0.6rem] font-mono" style={{ color: 'rgba(255,70,100,0.95)', letterSpacing: '0.06em' }}>
+                ⚠ {error}
+              </motion.p>
+            )}
+          </AnimatePresence>
+
+          {/* Social channel selector */}
+          <div>
+            <label className="flex items-center gap-1.5 text-[0.55rem] font-mono uppercase tracking-[0.18em] mb-3" style={{ color: 'rgba(138,43,226,0.8)' }}>
+              <Send className="w-3 h-3" />
+              Send via — Choose your channel
+            </label>
+
+            <div className="grid grid-cols-6 gap-2">
+              {BRAND_SOCIALS.map(({ id, color, rgb, label, renderIcon }) => (
+                <motion.button
+                  key={id}
+                  type="button"
+                  whileHover={{ scale: 1.09, y: -3 }}
+                  whileTap={{ scale: 0.92 }}
+                  onClick={() => handleContact(id)}
+                  title={`Send via ${label}`}
+                  className="flex flex-col items-center gap-1.5 py-3 px-1 rounded-2xl relative overflow-hidden group"
+                  style={{
+                    background: `rgba(${rgb},0.08)`,
+                    border:     `1.5px solid rgba(${rgb},0.3)`,
+                    minHeight:   64,
+                    cursor:     'pointer',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = `0 0 18px rgba(${rgb},0.35)`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = 'none'; }}
+                >
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+                    style={{ background: 'linear-gradient(135deg,transparent 30%,rgba(255,255,255,0.05) 50%,transparent 70%)' }} />
+                  {renderIcon({ color, fontSize: '1.2rem', width: '1.2rem', height: '1.2rem', flexShrink: 0, position: 'relative', zIndex: 1 })}
+                  <span style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.42rem', letterSpacing: '0.06em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', position: 'relative', zIndex: 1, textAlign: 'center', lineHeight: 1.2 }}>
+                    {label}
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+
+            <p className="text-center mt-2 text-[0.52rem] font-mono leading-relaxed" style={{ color: 'rgba(255,255,255,0.2)', letterSpacing: '0.05em' }}>
+              Instagram &amp; TikTok — your brief will be auto-copied to clipboard
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom glow */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: 1,
+        background: 'linear-gradient(90deg,transparent,rgba(0,240,255,0.3),rgba(138,43,226,0.5),rgba(0,240,255,0.3),transparent)',
+      }} />
+
+      {/* Clipboard toast */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            key="brand-toast"
+            initial={{ opacity: 0, y: 32, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0,  scale: 1    }}
+            exit={{ opacity: 0, y: 12, scale: 0.94 }}
+            transition={{ type: 'spring', damping: 22, stiffness: 260 }}
+            onClick={() => setToast(null)}
+            style={{
+              position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)',
+              zIndex: 200, maxWidth: 420, width: 'calc(100% - 2rem)',
+              background: 'rgba(6,4,22,0.97)', border: '1.5px solid rgba(138,43,226,0.7)',
+              borderRadius: 16, padding: '14px 20px', backdropFilter: 'blur(20px)',
+              boxShadow: '0 0 40px rgba(138,43,226,0.3), 0 8px 32px rgba(0,0,0,0.5)',
+              display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer',
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', flexShrink: 0 }}>✦</span>
+            <p style={{ fontFamily: "'Space Mono',monospace", fontSize: '0.63rem', letterSpacing: '0.05em', color: 'rgba(255,255,255,0.9)', lineHeight: 1.55 }}>
+              {toast}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ── Main BrandSection ──────────────────────────────────────────────────────
 export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: BrandSectionProps) {
   const { t } = useLanguage();
   const { brand } = t;
@@ -18,7 +299,7 @@ export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: B
       <div className="relative z-10 w-full max-w-md md:max-w-xl lg:max-w-4xl mx-auto px-4">
 
         {/* ── Section Header ── */}
-        <div className="text-center mb-8 md:mb-12">
+        <div className="text-center mb-8 md:mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple/30 bg-purple/10 backdrop-blur-sm mb-4">
             <span className="text-purple text-xs">✦</span>
             <span className="text-[0.6rem] font-mono text-purple uppercase tracking-widest">{brand.badge}</span>
@@ -33,6 +314,7 @@ export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: B
             </span>
           </h2>
 
+          {/* Gold buttons row */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
             <button
               onClick={onCreateAdvance}
@@ -43,13 +325,16 @@ export function BrandSection({ onCreateAdvance, onHirePremium, onTryFreemio }: B
             </button>
 
             <button
-              onClick={() => document.getElementById('plans')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('create-brand-form')?.scrollIntoView({ behavior: 'smooth' })}
               className="cyber-btn cyber-purple px-6 py-3 rounded-xl text-xs w-full sm:w-auto min-h-[44px] active:scale-95 transition-all"
             >
               {brand.btnBrand}
             </button>
           </div>
         </div>
+
+        {/* ── Inline Create-Brand Form ── */}
+        <CreateBrandInlineForm />
 
         {/* ── Pricing Cards ── */}
         <div id="plans" className="flex flex-col lg:flex-row gap-4">

@@ -1,0 +1,57 @@
+Replit, ative o seu modo de desenvolvedor sênior (MODO PRO). Vamos recriar do zero a nossa Landing Page ultra profissional e moderna para a marca "Heksel & Hafavilha: Independent Fashion & Tech", EXATAMENTE como havíamos estruturado perfeitamente na versão anterior.
+
+O design deve ser Dark Mode de luxo, elementos em glassmorphism, detalhes em neon violeta (#8A2BE2) e utilizar a identidade visual da marca Hafavilha (logotipo e textura de fundo metálico/dourado de alto padrão). Garanta que o site fique 100% perfeito tanto no Computador (Desktop) quanto no Celular (Mobile). NÃO inclua nenhuma marca d'água do Replit no código do nosso site.
+
+Por favor, implemente a estrutura exata com as nossas regras de negócios premium:
+
+1. MARCA HAFAVILHA E DESIGN DOS BOTÕES DE OURO:
+
+Destaque a marca Hafavilha no topo/hero com o seu logotipo oficial e fundo de textura metálica de luxo.
+
+Os botões "Create in Advance 🚀", "Hire Preemio" e "VIP ACCESS" devem ter um design idêntico de luxo metálico. Use um fundo de ouro fosco com uma animação suave em loop (shimmer effect) misturando tons de amarelo-ouro com reflexos brancos brilhantes.
+
+2. FLUXO DO BOTÃO "💎 Create my brand":
+
+Abaixo do botão principal do topo, deixe apenas o botão "💎 Create my brand". Remova qualquer duplicação do botão "Help us" dali.
+
+Quando clicado, a tela deve deslizar suavemente até a seção "✦ COGNITIVE INFRASTRUCTURE ARCHITECT YOUR EMPIRE ✦".
+
+Dentro dessa seção, crie o formulário de pedido com Nome, Idéia do Projeto e o Menu Dropdown de Redes Sociais com os LOGOTIPOS REAIS em SVG (X/Twitter, Discord, Instagram, TikTok, Gmail, WhatsApp).
+
+3. INTEGRAÇÃO REAL DOS LINKS DE CONTATO (DIRETO EM NOVA ABA):
+
+X (TWITTER): Redirecionar diretamente em nova aba para https://x.com/Hafavilha
+
+INSTAGRAM: Redirecionar diretamente em nova aba para https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==
+
+TIKTOK: Redirecionar diretamente em nova aba para https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/
+
+DISCORD: Redirecionar para o link real de contato no Discord.
+
+GMAIL: Abrir o mailto para hafavilhahafy@gmail.com com assunto e corpo pré-definidos em inglês.
+
+WHATSAPP: Manter o link nativo com a mensagem pronta.
+
+4. TEXTO DE VALOR E IDIOMAS (🌐):
+
+Frase de valor: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision—scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand."
+
+O Globo de Idiomas (🌐) na Navbar deve abrir um dropdown em glassmorphism com pesquisa interna para alternar dinamicamente todo o site entre "🇺🇸 English" e "🇧🇷 Português". No modo inglês, esconda campos brasileiros como CPF do checkout de doação do "⚡ Help us".
+
+5. REGRAS DA ABA "FUEL THE EMPIRE" (LISTA DE DOAÇÕES):
+
+Agrupamento: Se o mesmo usuário fizer doações seguidas com o mesmo valor e mensagem, agrupe-as mostrando a quantidade no início (ex: 2x €5 - I support LGBT! 🏳️‍🌈 :Merly 👤).
+
+Data/Hora recente: Para doações de hoje/recentes, exiba o tempo relativo e o horário (ex: ° Right now - At 5:12).
+
+Data/Hora antiga: Para doações mais antigas, exiba a data completa (ex: ° 2 weeks ago - On Sunday, December 5th).
+
+Ordenação: Mantenha sempre as doações mais recentes do usuário no topo da lista.
+
+6. TECNOLOGIA, ESTRUTURA E ENVIO PARA O GITHUB:
+
+O projeto deve ser construído obrigatoriamente usando Vite + React.
+
+Todos os arquivos de configuração (package.json, vite.config.js, etc.) e a pasta src devem ficar localizados diretamente na raiz (root) do repositório, sem subpastas como artifacts/.
+
+Assim que terminar de compilar o código perfeitamente, faça o commit automático de todos os arquivos e envie tudo (Push) diretamente para o repositório conectado no GitHub!
