@@ -29,11 +29,12 @@ function ModalWrapper({ isOpen, onClose, title, children }: { isOpen: boolean, o
 // 1. Notify Me Modal
 export function NotifyModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   const links = [
-    { name: 'Gmail', icon: <Mail className="w-5 h-5" />, url: 'mailto:hafavilhahafy@gmail.com' },
-    { name: 'WhatsApp', icon: <MessageSquare className="w-5 h-5" />, url: 'https://chat.whatsapp.com/G5q3H5MuJSyCmdAOEcf78T' },
+    { name: 'Telegram', icon: <Send className="w-5 h-5" />, url: 'https://t.me/hafavilha' },
+    { name: 'WhatsApp', icon: <MessageSquare className="w-5 h-5" />, url: `https://wa.me/5553991855262?text=${encodeURIComponent('Hello A Hafavilha! I found you through your website and would love to learn more about your services. 🚀')}` },
     { name: 'Discord', icon: <FaDiscord className="w-5 h-5" />, url: 'https://discord.gg/Y8CNkKFNM' },
-    { name: 'Instagram', icon: <Instagram className="w-5 h-5" />, url: 'https://www.instagram.com/hafavilha' },
-    { name: 'TikTok', icon: <FaTiktok className="w-5 h-5" />, url: 'https://vt.tiktok.com/ZSxbdSUg9/' },
+    { name: 'Instagram', icon: <Instagram className="w-5 h-5" />, url: 'https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==' },
+    { name: 'TikTok', icon: <FaTiktok className="w-5 h-5" />, url: 'https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/' },
+    { name: 'Gmail', icon: <Mail className="w-5 h-5" />, url: `mailto:hafavilhahafy@gmail.com?subject=${encodeURIComponent('Contact — A Hafavilha')}&body=${encodeURIComponent('Hello A Hafavilha team,\n\nI would like to get in touch regarding your services.\n\nBest regards,')}` },
   ];
 
   return (
@@ -265,6 +266,46 @@ const fmtTotal = (n: number) =>
   `${n % 1 === 0 ? n.toString() : n.toFixed(2)}`;
 
 
+// ── Echo-feed grouping ─────────────────────────────────────────────────────
+interface GroupedEcho {
+  id: string; name: string; amount: string; message: string; ts: number; count: number;
+}
+
+function groupEchoes(entries: SovereignEntry[]): GroupedEcho[] {
+  const groups: GroupedEcho[] = [];
+  let i = 0;
+  while (i < entries.length) {
+    const curr = entries[i];
+    let count = 1, j = i + 1;
+    while (j < entries.length &&
+      entries[j].name === curr.name &&
+      entries[j].amount === curr.amount &&
+      entries[j].message === curr.message) { count++; j++; }
+    groups.push({ ...curr, count });
+    i = j;
+  }
+  return groups;
+}
+
+function formatEchoTime(ts: number): string {
+  const diff = Date.now() - ts;
+  const d = new Date(ts);
+  const hh = d.getHours().toString().padStart(2,'0');
+  const mm = d.getMinutes().toString().padStart(2,'0');
+  const timeStr = `At ${hh}:${mm}`;
+  if (diff < 60_000)      return `Right now · ${timeStr}`;
+  if (diff < 3_600_000)   return `${Math.floor(diff/60_000)}m ago · ${timeStr}`;
+  if (diff < 86_400_000)  return `${Math.floor(diff/3_600_000)}h ago · ${timeStr}`;
+  const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const dt  = d.getDate();
+  const sfx = dt===1?'st':dt===2?'nd':dt===3?'rd':'th';
+  const dateStr = `On ${DAYS[d.getDay()]}, ${MONTHS[d.getMonth()]} ${dt}${sfx}`;
+  const dys = Math.floor(diff/86_400_000);
+  const wks = Math.floor(dys/7);
+  return wks >= 1 ? `${wks} week${wks>1?'s':''} ago · ${dateStr}` : `${dys}d ago · ${dateStr}`;
+}
+
 /** Strip HTML tags, collapse whitespace, trim. */
 function sanitize(raw: string): string {
   return raw
@@ -304,6 +345,16 @@ export function HelpUsModal({
   const [name,        setName]        = useState('');
   const [message,     setMessage]     = useState('');
   const [leaderboard, setLeaderboard] = useState<LeaderEntry[]>([]);
+  const [echoes,      setEchoes]      = useState<SovereignEntry[]>([]);
+
+  const loadEchoes = () => {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      const parsed: SovereignEntry[] = raw ? JSON.parse(raw) : [];
+      // Sort newest first
+      setEchoes([...parsed].sort((a, b) => b.ts - a.ts));
+    } catch { setEchoes([]); }
+  };
 
   // Load leaderboard from localStorage; seed with competition data if empty.
   useEffect(() => {
@@ -320,6 +371,9 @@ export function HelpUsModal({
       setLeaderboard(LB_SEEDS);
     }
   }, []);
+
+  // Load echo feed on open
+  useEffect(() => { loadEchoes(); }, []);
 
   const validate = (val: string): boolean => {
     const num = parseFloat(val);
@@ -382,10 +436,11 @@ export function HelpUsModal({
     // ── 4. Open Asaas link in new tab ─────────────────────────
     window.open(ASAAS_LINK, '_blank', 'noopener,noreferrer');
 
-    // ── 4. Reset form ─────────────────────────────────────────
+    // ── 4. Reset form & reload echo feed ─────────────────────
     setAmount('');
     setName('');
     setMessage('');
+    loadEchoes();
   };
 
   if (!isOpen) return null;
@@ -783,6 +838,54 @@ export function HelpUsModal({
             </p>
           </div>
 
+          {/* ── Recent Believers — Echo Feed ─────────────────── */}
+          {echoes.length > 0 && (() => {
+            const grouped = groupEchoes(echoes);
+            return (
+              <div>
+                <div className="flex items-center gap-3 mt-2">
+                  <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.14)' }} />
+                  <span className="text-[0.55rem] font-mono uppercase tracking-[0.18em] whitespace-nowrap" style={{ color: 'rgba(180,94,255,0.45)' }}>
+                    ✦ Recent Believers
+                  </span>
+                  <div className="flex-1 h-px" style={{ background: 'rgba(180,94,255,0.14)' }} />
+                </div>
+
+                <div className="mt-3 space-y-2">
+                  {grouped.slice(0, 12).map(entry => (
+                    <div
+                      key={entry.id}
+                      className="rounded-xl px-4 py-3"
+                      style={{
+                        background: 'rgba(180,94,255,0.05)',
+                        border:     '1px solid rgba(180,94,255,0.14)',
+                      }}
+                    >
+                      {/* Timestamp line */}
+                      <p className="text-[0.5rem] font-mono mb-1" style={{ color: 'rgba(180,94,255,0.5)', letterSpacing: '0.08em' }}>
+                        ° {formatEchoTime(entry.ts)}
+                      </p>
+                      {/* Grouped entry line */}
+                      <p className="text-[0.7rem] font-mono leading-snug" style={{ color: 'rgba(255,255,255,0.78)' }}>
+                        {entry.count > 1 && (
+                          <span style={{ color: 'rgba(180,94,255,0.9)', fontWeight: 700, marginRight: 4 }}>
+                            {entry.count}x
+                          </span>
+                        )}
+                        <span style={{ color: 'rgba(201,168,76,0.9)', fontWeight: 700 }}>${entry.amount}</span>
+                        {entry.message && entry.message !== 'Fueling the future of fashion' && (
+                          <span style={{ color: 'rgba(255,255,255,0.55)' }}> — {entry.message}</span>
+                        )}
+                        <span style={{ color: 'rgba(180,94,255,0.7)' }}> :{entry.name}</span>
+                        <span style={{ marginLeft: 4 }}>👤</span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+
           <p className="text-center text-[0.5rem] font-mono tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.12)' }}>
             Heksel Genesis · Built with 💜 in Brazil
           </p>
@@ -799,18 +902,19 @@ export function CreateAdvanceModal({ isOpen, onClose }: { isOpen: boolean, onClo
 
   const methods = [
     { name: 'WhatsApp', url: 'https://wa.me/5553991855262?text=' },
-    { name: 'Gmail', url: 'mailto:hafavilhahafy@gmail.com?body=' },
+    { name: 'Telegram', url: 'https://t.me/hafavilha' },
+    { name: 'Gmail', url: `mailto:hafavilhahafy@gmail.com?subject=${encodeURIComponent('Create My Brand — A Hafavilha')}&body=` },
     { name: 'Discord', url: 'https://discord.gg/Y8CNkKFNM' },
-    { name: 'Instagram', url: 'https://www.instagram.com/hafavilha' },
-    { name: 'TikTok', url: 'https://vt.tiktok.com/ZSxbdSUg9/' }
+    { name: 'Instagram', url: 'https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==' },
+    { name: 'TikTok', url: 'https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/' }
   ];
 
   const langs = ['English', 'Portuguese', 'Spanish'];
 
   const messages = {
-    'English': 'Hello Heksel, I want to create my brand in advance.',
-    'Portuguese': 'Olá Heksel, quero criar minha marca antecipadamente.',
-    'Spanish': 'Hola Heksel, quiero crear mi marca por adelantado.'
+    'English': 'Hello A Hafavilha, I want to create my brand in advance.',
+    'Portuguese': 'Olá A Hafavilha, quero criar minha marca antecipadamente.',
+    'Spanish': 'Hola A Hafavilha, quiero crear mi marca por adelantado.'
   };
 
   const handleStart = () => {

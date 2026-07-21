@@ -1,0 +1,40 @@
+Replit, ative o seu MODO DESENVOLVEDOR SÊNIOR (PRO). Você JÁ POSSUI TODOS OS ARQUIVOS E CÓDIGOS DO NOSSO PROJETO compartilhados diretamente neste workspace (incluindo a pasta src/, componentes como o PixModal.tsx, configurações de estilo e dependências).
+
+NÃO recrie o projeto do zero e NÃO altere a estrutura que já funciona. Apenas refatore e atualize os arquivos existentes com base nas seguintes regras e melhorias:
+
+1. ATUALIZAÇÃO DE BRANDING (A HAFAVILHA - DUBAI LUXURY GRADE):
+- Atualize a identidade da marca em todo o projeto para "A Hafavilha" (usando o logotipo oficial do laço infinito e o estilo metálico de alto luxo).
+- Mantenha o design em Dark Mode, dark glassmorphism, detalhes em neon violeta (#8A2BE2) e bordas finas em ouro reluzente.
+- Os botões "Create in Advance 🚀", "Hire Preemio" e "VIP ACCESS" devem manter o fundo de ouro fosco com a animação shimmer em loop.
+
+2. FORMULÁRIO CONDICIONAL (VISIBILITY CONTROL):
+- A seção "Tell Us About Your Vision" (e o formulário de pedido) deve iniciar OCULTA por padrão ao carregar a página.
+- Quando o usuário clicar no botão "💎 Create my brand", a página faz scroll até a seção de escolha de planos/serviços.
+- O formulário "Tell Us About Your Vision" só deve ser exibido na tela APÓS o usuário selecionar um dos planos, fazendo um scroll suave até o formulário visível.
+
+3. CONSERTO DE BUG: CHUVA DE EMOJIS NO MOBILE:
+- No botão "📡 SINTONIZAR DIRETRIZ", a animação de chuva de emojis funciona no Desktop, mas falha no Celular.
+- Ajuste o z-index da camada de animação e remova restrições de overflow no mobile (no body/main container) para garantir que a chuva de emojis apareça perfeitamente flutuando pela tela em qualquer dispositivo móvel.
+
+4. LINKS DE CONTATO DIRETO (EM NOVA ABA):
+- TELEGRAM: https://t.me/hafavilha
+- X (TWITTER): https://x.com/Hafavilha
+- INSTAGRAM: https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==
+- TIKTOK: https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/
+- DISCORD: Redirecionar para o link real de contato no Discord.
+- GMAIL: mailto para hafavilhahafy@gmail.com com assunto e corpo pré-definidos em inglês.
+- WHATSAPP: Link nativo com a mensagem pronta.
+
+5. IDIOMAS E AJUSTE NO PixModal.tsx (🌐):
+- Mantenha o seletor de idiomas (🌐) alternando dinamicamente entre Inglês e Português.
+- No modo Inglês, oculte os campos específicos do Brasil (como CPF) no PixModal.tsx / checkout de doação.
+- Frase de valor: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision—scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand."
+
+6. REGRAS DA LISTA DE DOAÇÕES ("FUEL THE EMPIRE"):
+- Agrupamento: Se o mesmo usuário fizer doações seguidas com o mesmo valor e mensagem, agrupe-as (ex: 2x €5 - I support LGBT! 🏳️‍🌈 :Merly 👤).
+- Data/Hora recente: Para doações recentes, exiba o tempo relativo e horário (ex: ° Right now - At 5:12).
+- Data/Hora antiga: Para doações antigas, exiba a data completa (ex: ° 2 weeks ago - On Sunday, December 5th).
+- Ordenação: Doações mais recentes sempre no topo da lista.
+
+7. PUSH PARA O GITHUB:
+- Após aplicar todas as edições nos arquivos existentes sem quebrar nenhuma funcionalidade, faça o commit automático e o Push para o repositório conectado no GitHub!

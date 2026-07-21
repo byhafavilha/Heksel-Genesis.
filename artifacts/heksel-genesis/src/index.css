@@ -147,6 +147,29 @@ iframe[src*="replit"],
   }
 }
 
+/* ── Mobile emoji-rain fix ──────────────────────────────────────────────────
+   On iOS Safari, position:fixed elements are "trapped" inside any ancestor
+   that has overflow:hidden applied.  We also promote emoji elements to their
+   own GPU compositing layer (translateZ(0)) in SafeSpace.tsx; this rule
+   prevents any page-level clip from swallowing them.
+   The -webkit-overflow-scrolling:auto preference ensures the main scroll
+   container stays simple so fixed-positioned children escape correctly.
+   ─────────────────────────────────────────────────────────────────────── */
+html {
+  /* Prevent overflow from creating a new scroll stacking context on iOS */
+  -webkit-overflow-scrolling: auto;
+}
+/* Give emoji-rain elements an explicit stacking context above everything */
+.emoji-rain-particle {
+  position: fixed !important;
+  z-index: 9999 !important;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+
 /* Custom Cursor styling */
 @media (pointer: fine) {
   body:hover .custom-cursor {

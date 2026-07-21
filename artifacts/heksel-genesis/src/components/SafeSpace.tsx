@@ -6,8 +6,8 @@ interface FloatingEmoji {
   id: number;
   emoji: string;
   x: number;
-  y: number;
   duration: number;
+  delay: number;
 }
 
 export const SafeSpace: React.FC = () => {
@@ -17,7 +17,7 @@ export const SafeSpace: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [glowIntensity, setGlowIntensity] = useState(1);
 
-  // Efeito de glitch aleatório sutil
+  // Subtle glitch drift
   useEffect(() => {
     const interval = setInterval(() => {
       setGlitchOffset(Math.random() * 2 - 1);
@@ -25,344 +25,260 @@ export const SafeSpace: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Chuva de Emojis Interativa
+  // ── Emoji rain — uses position:fixed so it escapes any overflow:hidden parent ──
   const triggerEmojiRain = () => {
     setIsButtonPressed(true);
     setGlowIntensity(1.5);
-    
-    const emojis = ['💜', '🏳️‍🌈', '🏳️‍⚧️', '🦄', '💖', '✨', '🌌', '⚡', '💫', '🫂'];
-    const newEmojis: FloatingEmoji[] = [];
 
-    for (let i = 0; i < 20; i++) {
-      newEmojis.push({
-        id: i,
-        emoji: emojis[Math.floor(Math.random() * emojis.length)],
-        x: Math.random() * 100,
-        y: -10,
-        duration: Math.random() * 1 + 2,
-      });
-    }
+    const emojis = ['💜', '🏳️‍🌈', '🏳️‍⚧️', '🦄', '💖', '✨', '🌌', '⚡', '💫', '🫂'];
+    const newEmojis: FloatingEmoji[] = Array.from({ length: 30 }, (_, i) => ({
+      id: i,
+      emoji: emojis[Math.floor(Math.random() * emojis.length)],
+      x: Math.random() * 95,
+      duration: Math.random() * 1.5 + 2,
+      delay: Math.random() * 0.8,
+    }));
 
     setFloatingEmojis(newEmojis);
 
-    setTimeout(() => {
-      setIsButtonPressed(false);
-      setGlowIntensity(1);
-    }, 2500);
-
-    setTimeout(() => {
-      setFloatingEmojis([]);
-    }, 3500);
+    setTimeout(() => { setIsButtonPressed(false); setGlowIntensity(1); }, 2500);
+    setTimeout(() => setFloatingEmojis([]), 4500);
   };
 
-  const handleSectionHover = (section: string) => {
-    setActiveSection(section);
-  };
+  const handleSectionHover = (section: string) => setActiveSection(section);
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 bg-black relative overflow-hidden">
-      {/* Background Espacial - Preto Profundo com Textura */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-black to-slate-950">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.03)_0%,rgba(0,255,255,0)_100%)]"></div>
-      </div>
-
-      {/* Neon Glows - INTENSO E DRAMÁTICO COM REATIVIDADE */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Glow Ciano Superior Esquerdo */}
-        <div 
-          className="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500 rounded-full blur-3xl animate-pulse"
-          style={{ opacity: 0.4 * glowIntensity }}
-        ></div>
-        
-        {/* Glow Roxo Inferior Direito */}
-        <div 
-          className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600 rounded-full blur-3xl animate-pulse" 
-          style={{ animationDelay: '1s', opacity: 0.4 * glowIntensity }}
-        ></div>
-        
-        {/* Glow Rosa Neon Centro */}
-        <div 
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: '0.5s', opacity: 0.5 * glowIntensity }}
-        ></div>
-
-        {/* Grid Background Sutil */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.08) 25%, rgba(0, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.08) 75%, rgba(0, 255, 255, 0.08) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.08) 25%, rgba(0, 255, 255, 0.08) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.08) 75%, rgba(0, 255, 255, 0.08) 76%, transparent 77%, transparent)',
-            backgroundSize: '50px 50px',
-            opacity: 0.1 * glowIntensity,
-          }}
-        ></div>
-      </div>
-
-      {/* Floating Emojis Rain */}
-      {floatingEmojis.map((item) => (
+    <>
+      {/* ── Fixed emoji overlay — escapes all overflow clipping, works on mobile ── */}
+      {floatingEmojis.map(item => (
         <div
           key={item.id}
-          className="absolute text-3xl pointer-events-none"
+          className="pointer-events-none select-none"
           style={{
-            left: `${item.x}%`,
-            top: `${item.y}%`,
-            animation: `emojiRain ${item.duration}s linear forwards`,
-            opacity: 1,
-            zIndex: 50,
+            position:              'fixed',
+            left:                  `${item.x}%`,
+            top:                   '-60px',
+            fontSize:              '2rem',
+            /* z-index must beat any modal/overlay (200) and stay below nothing */
+            zIndex:                9999,
+            /* GPU compositing layer — fixes iOS Safari fixed-position flicker */
+            WebkitTransform:       'translateZ(0)',
+            transform:             'translateZ(0)',
+            WebkitBackfaceVisibility: 'hidden',
+            backfaceVisibility:    'hidden',
+            willChange:            'transform, opacity',
+            animation:             `emojiRainFixed ${item.duration}s ${item.delay}s linear forwards`,
           }}
+          aria-hidden="true"
         >
           {item.emoji}
         </div>
       ))}
 
-      {/* Card Principal - Cyber Luxury */}
-      <div className="relative z-10 w-full max-w-4xl">
-        {/* Glow ao redor do card */}
-        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 via-purple-500/30 to-pink-500/30 opacity-75 blur-xl pointer-events-none"></div>
-
-        <div 
-          className="relative backdrop-blur-xl bg-black/60 border border-cyan-500/40 p-8 md:p-12 lg:p-16 shadow-2xl transition-all duration-500 group hover:border-pink-500/60 overflow-hidden"
-          style={{ borderRadius: '2px' }}
-        >
-          {/* Corner Accents - Design Futurista */}
-          <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-cyan-500/80 pointer-events-none"></div>
-          <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-pink-500/80 pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-purple-500/80 pointer-events-none"></div>
-          <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-cyan-500/80 pointer-events-none"></div>
-
-          {/* Content Container */}
-          <div className="relative z-20 space-y-10">
-            
-            {/* System Status Bar */}
-            <div className="flex items-center justify-between text-xs tracking-widest text-cyan-400/90 font-mono">
-              <span className="flex items-center gap-2 hover:text-cyan-300 transition-colors duration-300">
-                <Code className="w-3 h-3" />
-                🛰️ SISTEMA_HEKSEL_GENESIS_v2.0
-              </span>
-              <span className="flex items-center gap-2 hover:text-cyan-300 transition-colors duration-300">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                ✨ ATIVO
-              </span>
-            </div>
-
-            {/* Separator Line */}
-            <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
-
-            {/* Top Icons Section */}
-            <div className="flex items-center justify-center gap-6">
-              <div 
-                className="p-3 border border-cyan-500/40 hover:border-cyan-500 hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 cursor-pointer group/icon"
-                style={{ borderRadius: '2px' }}
-                onMouseEnter={() => handleSectionHover('love')}
-                onMouseLeave={() => setActiveSection(null)}
-              >
-                <div className="flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-cyan-400 group-hover/icon:text-cyan-200 transition-colors" />
-                  <span className="text-lg group-hover/icon:scale-125 transition-transform inline-block">🏳️‍🌈</span>
-                </div>
-              </div>
-              <div className="relative">
-                <Zap className="w-5 h-5 text-pink-500 animate-pulse" />
-                <span className="absolute -top-1 -right-2 text-lg animate-bounce inline-block">⚡</span>
-              </div>
-              <div 
-                className="p-3 border border-pink-500/40 hover:border-pink-500 hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 cursor-pointer group/icon"
-                style={{ borderRadius: '2px' }}
-                onMouseEnter={() => handleSectionHover('community')}
-                onMouseLeave={() => setActiveSection(null)}
-              >
-                <div className="flex items-center gap-2">
-                  <Network className="w-5 h-5 text-pink-400 group-hover/icon:text-pink-200 transition-colors" />
-                  <span className="text-lg group-hover/icon:scale-125 transition-transform inline-block">🫂</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Title - Manifesto Holográfico */}
-            <div className="space-y-4">
-              <div className="flex justify-center gap-2 text-2xl md:text-3xl mb-2">
-                <span className="animate-bounce inline-block">🌌</span>
-                <span className="animate-bounce inline-block" style={{ animationDelay: '0.2s' }}>💫</span>
-                <span className="animate-bounce inline-block" style={{ animationDelay: '0.4s' }}>🛰️</span>
-              </div>
-              <h1
-                className="text-5xl md:text-6xl lg:text-7xl font-black tracking-widest text-white text-center leading-tight hover:scale-105 transition-transform duration-300"
-                style={{ 
-                  textShadow: `0 0 20px rgba(0, 255, 255, ${0.6 * glowIntensity}), 0 0 40px rgba(236, 72, 153, ${0.4 * glowIntensity})` 
-                }}
-              >
-                SAFE
-                <br />
-                SPACE
-              </h1>
-              
-              <div className="flex items-center justify-center gap-3">
-                <div className="h-px flex-1 max-w-xs bg-gradient-to-r from-transparent to-cyan-500/60"></div>
-                <span className="text-cyan-400 text-xs tracking-widest font-mono">━━━</span>
-                <div className="h-px flex-1 max-w-xs bg-gradient-to-l from-transparent to-pink-500/60"></div>
-              </div>
-
-              <p className="text-center text-sm md:text-base text-cyan-300/90 font-mono tracking-widest hover:text-cyan-200 transition-colors duration-300 cursor-pointer">
-                [ 🔓 DIRETIVA DE SISTEMA — ACESSO LIBERADO 🔓 ]
-              </p>
-            </div>
-
-            {/* Separator */}
-            <div className="h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent"></div>
-
-            {/* Main Manifesto - INTERATIVO */}
-            <div className="space-y-6 font-light">
-              {/* Seção 1 - Acolhimento */}
-              <div 
-                className={`text-center space-y-4 p-4 transition-all duration-300 cursor-pointer ${
-                  activeSection === 'future' 
-                    ? 'bg-cyan-500/20 border border-cyan-500/40' 
-                    : 'hover:bg-cyan-500/10 border border-transparent'
-                }`}
-                onMouseEnter={() => handleSectionHover('future')}
-                onMouseLeave={() => setActiveSection(null)}
-                style={{ borderRadius: '2px' }}
-              >
-                <p className="text-base md:text-lg text-white/95 leading-relaxed">
-                  Here, the future belongs to everyone. 🌌✨
-                </p>
-                <p className={`text-sm md:text-base font-mono tracking-wider transition-all duration-300 ${
-                  activeSection === 'future' 
-                    ? 'text-cyan-300 glow-text' 
-                    : 'text-cyan-300/80'
-                }`}>
-                  &gt; Heksel Genesis was conceived as an absolute safe space, welcoming and completely free of judgment. Whether you identify as lesbian, gay, trans, non-binary, furry, or any magnificent expression of self — you belong here. 🫂
-                </p>
-              </div>
-
-              <div className="h-px bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"></div>
-
-              {/* Seção 2 - Identidade & Orgulho */}
-              <div 
-                className={`text-center space-y-3 p-4 transition-all duration-300 cursor-pointer ${
-                  activeSection === 'unique' 
-                    ? 'bg-purple-500/20 border border-purple-500/40' 
-                    : 'hover:bg-purple-500/10 border border-transparent'
-                }`}
-                onMouseEnter={() => handleSectionHover('unique')}
-                onMouseLeave={() => setActiveSection(null)}
-                style={{ borderRadius: '2px' }}
-              >
-                <p className="text-base md:text-lg text-white/95 leading-relaxed">
-                  We believe everyone is fundamentally a normal, beautiful human being, simply defined by their unique, extraordinary tastes. This absolute acceptance of all identities is why anyone who enters our universe falls deeply in love with Heksel.
-                </p>
-                <p className={`text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 font-bold tracking-widest pt-6 transition-transform duration-300 ${
-                  activeSection === 'unique' ? 'animate-pulse scale-110' : ''
-                }`}>
-                  WEAR YOUR IDENTITY WITH PRIDE. 🌈🦄💜
-                </p>
-              </div>
-            </div>
-
-            {/* Separator */}
-            <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
-
-            {/* Bottom System Status */}
-            <div className="flex items-center justify-center gap-3 text-xs font-mono text-purple-400/90 tracking-widest hover:text-purple-300 transition-colors duration-300">
-              <div className="flex items-center gap-1">
-                <Eye className="w-3 h-3" />
-                🔒 SEGURANÇA MÁXIMA
-              </div>
-              <span>|</span>
-              <div className="flex items-center gap-1">
-                <Zap className="w-3 h-3" />
-                ❤️ INCLUSÃO 100%
-              </div>
-            </div>
-
-            {/* Action Button - CHUVA DE EMOJIS */}
-            <div className="flex justify-center pt-8">
-              <button
-                onClick={triggerEmojiRain}
-                disabled={isButtonPressed}
-                className={`relative px-8 py-4 font-mono tracking-widest text-sm font-bold border-2 transition-all duration-300 overflow-hidden ${
-                  isButtonPressed
-                    ? 'border-purple-500 bg-purple-500/30 text-purple-300 cursor-not-allowed'
-                    : 'border-cyan-500/60 bg-black/40 text-cyan-300 hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-2xl hover:shadow-cyan-500/50'
-                }`}
-                style={{ borderRadius: '2px' }}
-              >
-                <span className="relative z-10 flex items-center justify-center gap-3">
-                  {isButtonPressed ? (
-                    <>
-                      <Zap className="w-4 h-4 animate-spin" />
-                      SINTONIZANDO... 🌌
-                    </>
-                  ) : (
-                    <>
-                      📡 SINTONIZAR DIRETRIZ
-                      <Send className="w-4 h-4" />
-                    </>
-                  )}
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/30 to-cyan-500/0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-              </button>
-            </div>
-
-            {/* Neon Pulse Dots */}
-            <div className="flex items-center justify-center gap-3 pt-6">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className={`w-2 h-2 rounded-full ${isButtonPressed ? 'bg-purple-500' : 'bg-cyan-500'}`}
-                  style={{
-                    animation: `neonPulse 2s ease-in-out infinite`,
-                    animationDelay: `${i * 0.25}s`,
-                    boxShadow: '0 0 10px currentColor',
-                  }}
-                ></div>
-              ))}
-              <span className={`text-xs font-mono tracking-widest ml-4 ${isButtonPressed ? 'text-purple-400/80 animate-pulse' : 'text-pink-400/60'}`}>
-                {isButtonPressed ? '💫 SINCRONIZANDO' : '✨ ONLINE'}
-              </span>
-            </div>
-          </div>
-
-          {/* Glitch Effect Overlay */}
-          <div 
-            className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-10 transition-opacity duration-300"
-            style={{
-              backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent)',
-              backgroundSize: '100% 4px',
-              animation: 'glitch 0.3s infinite',
-              transform: `translateX(${glitchOffset}px)`,
-            }}
-          ></div>
+      <div className="min-h-screen w-full flex items-center justify-center p-4 bg-black relative overflow-hidden">
+        {/* Background Espacial */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-black to-slate-950">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.03)_0%,rgba(0,255,255,0)_100%)]" />
         </div>
+
+        {/* Neon Glows */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500 rounded-full blur-3xl animate-pulse" style={{ opacity: 0.4 * glowIntensity }} />
+          <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s', opacity: 0.4 * glowIntensity }} />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-500 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s', opacity: 0.5 * glowIntensity }} />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: 'linear-gradient(0deg,transparent 24%,rgba(0,255,255,0.08) 25%,rgba(0,255,255,0.08) 26%,transparent 27%,transparent 74%,rgba(0,255,255,0.08) 75%,rgba(0,255,255,0.08) 76%,transparent 77%,transparent),linear-gradient(90deg,transparent 24%,rgba(0,255,255,0.08) 25%,rgba(0,255,255,0.08) 26%,transparent 27%,transparent 74%,rgba(0,255,255,0.08) 75%,rgba(0,255,255,0.08) 76%,transparent 77%,transparent)',
+              backgroundSize: '50px 50px',
+              opacity: 0.1 * glowIntensity,
+            }}
+          />
+        </div>
+
+        {/* Card */}
+        <div className="relative z-10 w-full max-w-4xl">
+          <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 via-purple-500/30 to-pink-500/30 opacity-75 blur-xl pointer-events-none" />
+
+          <div
+            className="relative backdrop-blur-xl bg-black/60 border border-cyan-500/40 p-8 md:p-12 lg:p-16 shadow-2xl transition-all duration-500 group hover:border-pink-500/60 overflow-hidden"
+            style={{ borderRadius: '2px' }}
+          >
+            <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-cyan-500/80 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-pink-500/80 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-purple-500/80 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-cyan-500/80 pointer-events-none" />
+
+            <div className="relative z-20 space-y-10">
+              {/* Status bar */}
+              <div className="flex items-center justify-between text-xs tracking-widest text-cyan-400/90 font-mono">
+                <span className="flex items-center gap-2 hover:text-cyan-300 transition-colors duration-300">
+                  <Code className="w-3 h-3" />🛰️ SISTEMA_HEKSEL_GENESIS_v2.0
+                </span>
+                <span className="flex items-center gap-2 hover:text-cyan-300 transition-colors duration-300">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />✨ ATIVO
+                </span>
+              </div>
+
+              <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+
+              {/* Top icons */}
+              <div className="flex items-center justify-center gap-6">
+                <div className="p-3 border border-cyan-500/40 hover:border-cyan-500 hover:shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 cursor-pointer group/icon" style={{ borderRadius: '2px' }}
+                  onMouseEnter={() => handleSectionHover('love')} onMouseLeave={() => setActiveSection(null)}>
+                  <div className="flex items-center gap-2">
+                    <Heart className="w-5 h-5 text-cyan-400 group-hover/icon:text-cyan-200 transition-colors" />
+                    <span className="text-lg group-hover/icon:scale-125 transition-transform inline-block">🏳️‍🌈</span>
+                  </div>
+                </div>
+                <div className="relative">
+                  <Zap className="w-5 h-5 text-pink-500 animate-pulse" />
+                  <span className="absolute -top-1 -right-2 text-lg animate-bounce inline-block">⚡</span>
+                </div>
+                <div className="p-3 border border-pink-500/40 hover:border-pink-500 hover:shadow-2xl hover:shadow-pink-500/50 transition-all duration-300 cursor-pointer group/icon" style={{ borderRadius: '2px' }}
+                  onMouseEnter={() => handleSectionHover('community')} onMouseLeave={() => setActiveSection(null)}>
+                  <div className="flex items-center gap-2">
+                    <Network className="w-5 h-5 text-pink-400 group-hover/icon:text-pink-200 transition-colors" />
+                    <span className="text-lg group-hover/icon:scale-125 transition-transform inline-block">🫂</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Title */}
+              <div className="space-y-4">
+                <div className="flex justify-center gap-2 text-2xl md:text-3xl mb-2">
+                  <span className="animate-bounce inline-block">🌌</span>
+                  <span className="animate-bounce inline-block" style={{ animationDelay: '0.2s' }}>💫</span>
+                  <span className="animate-bounce inline-block" style={{ animationDelay: '0.4s' }}>🛰️</span>
+                </div>
+                <h1
+                  className="text-5xl md:text-6xl lg:text-7xl font-black tracking-widest text-white text-center leading-tight hover:scale-105 transition-transform duration-300"
+                  style={{ textShadow: `0 0 20px rgba(0,255,255,${0.6*glowIntensity}), 0 0 40px rgba(236,72,153,${0.4*glowIntensity})` }}
+                >
+                  SAFE<br />SPACE
+                </h1>
+                <div className="flex items-center justify-center gap-3">
+                  <div className="h-px flex-1 max-w-xs bg-gradient-to-r from-transparent to-cyan-500/60" />
+                  <span className="text-cyan-400 text-xs tracking-widest font-mono">━━━</span>
+                  <div className="h-px flex-1 max-w-xs bg-gradient-to-l from-transparent to-pink-500/60" />
+                </div>
+                <p className="text-center text-sm md:text-base text-cyan-300/90 font-mono tracking-widest hover:text-cyan-200 transition-colors duration-300 cursor-pointer">
+                  [ 🔓 DIRETIVA DE SISTEMA — ACESSO LIBERADO 🔓 ]
+                </p>
+              </div>
+
+              <div className="h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
+
+              {/* Manifesto */}
+              <div className="space-y-6 font-light">
+                <div
+                  className={`text-center space-y-4 p-4 transition-all duration-300 cursor-pointer ${activeSection==='future' ? 'bg-cyan-500/20 border border-cyan-500/40' : 'hover:bg-cyan-500/10 border border-transparent'}`}
+                  onMouseEnter={() => handleSectionHover('future')} onMouseLeave={() => setActiveSection(null)}
+                  style={{ borderRadius: '2px' }}
+                >
+                  <p className="text-base md:text-lg text-white/95 leading-relaxed">Here, the future belongs to everyone. 🌌✨</p>
+                  <p className={`text-sm md:text-base font-mono tracking-wider transition-all duration-300 ${activeSection==='future' ? 'text-cyan-300 glow-text' : 'text-cyan-300/80'}`}>
+                    &gt; Heksel Genesis was conceived as an absolute safe space, welcoming and completely free of judgment. Whether you identify as lesbian, gay, trans, non-binary, furry, or any magnificent expression of self — you belong here. 🫂
+                  </p>
+                </div>
+
+                <div className="h-px bg-gradient-to-r from-transparent via-pink-500/30 to-transparent" />
+
+                <div
+                  className={`text-center space-y-3 p-4 transition-all duration-300 cursor-pointer ${activeSection==='unique' ? 'bg-purple-500/20 border border-purple-500/40' : 'hover:bg-purple-500/10 border border-transparent'}`}
+                  onMouseEnter={() => handleSectionHover('unique')} onMouseLeave={() => setActiveSection(null)}
+                  style={{ borderRadius: '2px' }}
+                >
+                  <p className="text-base md:text-lg text-white/95 leading-relaxed">
+                    We believe everyone is fundamentally a normal, beautiful human being, simply defined by their unique, extraordinary tastes. This absolute acceptance of all identities is why anyone who enters our universe falls deeply in love with Heksel.
+                  </p>
+                  <p className={`text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 font-bold tracking-widest pt-6 transition-transform duration-300 ${activeSection==='unique' ? 'animate-pulse scale-110' : ''}`}>
+                    WEAR YOUR IDENTITY WITH PRIDE. 🌈🦄💜
+                  </p>
+                </div>
+              </div>
+
+              <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent" />
+
+              {/* Bottom status */}
+              <div className="flex items-center justify-center gap-3 text-xs font-mono text-purple-400/90 tracking-widest hover:text-purple-300 transition-colors duration-300">
+                <div className="flex items-center gap-1"><Eye className="w-3 h-3" />🔒 SEGURANÇA MÁXIMA</div>
+                <span>|</span>
+                <div className="flex items-center gap-1"><Zap className="w-3 h-3" />❤️ INCLUSÃO 100%</div>
+              </div>
+
+              {/* Emoji rain trigger button */}
+              <div className="flex justify-center pt-8">
+                <button
+                  onClick={triggerEmojiRain}
+                  disabled={isButtonPressed}
+                  className={`relative px-8 py-4 font-mono tracking-widest text-sm font-bold border-2 transition-all duration-300 overflow-hidden ${
+                    isButtonPressed
+                      ? 'border-purple-500 bg-purple-500/30 text-purple-300 cursor-not-allowed'
+                      : 'border-cyan-500/60 bg-black/40 text-cyan-300 hover:border-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-200 hover:shadow-2xl hover:shadow-cyan-500/50'
+                  }`}
+                  style={{ borderRadius: '2px' }}
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    {isButtonPressed
+                      ? <><Zap className="w-4 h-4 animate-spin" />SINTONIZANDO... 🌌</>
+                      : <>📡 SINTONIZAR DIRETRIZ<Send className="w-4 h-4" /></>
+                    }
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/30 to-cyan-500/0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                </button>
+              </div>
+
+              {/* Pulse dots */}
+              <div className="flex items-center justify-center gap-3 pt-6">
+                {[0,1,2].map(i => (
+                  <div key={i} className={`w-2 h-2 rounded-full ${isButtonPressed ? 'bg-purple-500' : 'bg-cyan-500'}`}
+                    style={{ animation: 'neonPulse 2s ease-in-out infinite', animationDelay: `${i*0.25}s`, boxShadow: '0 0 10px currentColor' }} />
+                ))}
+                <span className={`text-xs font-mono tracking-widest ml-4 ${isButtonPressed ? 'text-purple-400/80 animate-pulse' : 'text-pink-400/60'}`}>
+                  {isButtonPressed ? '💫 SINCRONIZANDO' : '✨ ONLINE'}
+                </span>
+              </div>
+            </div>
+
+            {/* Glitch overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+              style={{
+                backgroundImage: 'linear-gradient(0deg,transparent 24%,rgba(0,255,255,0.05) 25%,rgba(0,255,255,0.05) 26%,transparent 27%,transparent 74%,rgba(0,255,255,0.05) 75%,rgba(0,255,255,0.05) 76%,transparent 77%,transparent)',
+                backgroundSize: '100% 4px',
+                animation: 'glitch 0.3s infinite',
+                transform: `translateX(${glitchOffset}px)`,
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Local keyframes */}
+        <style>{`
+          @keyframes neonPulse {
+            0%,100% { opacity:.4; box-shadow:0 0 10px currentColor,0 0 20px currentColor; }
+            50%      { opacity:1;  box-shadow:0 0 20px currentColor,0 0 40px currentColor; }
+          }
+          @keyframes glitch {
+            0%,100% { clip-path:inset(0 0 0 0); }
+            20%     { clip-path:inset(0 0 65% 0); }
+            40%     { clip-path:inset(25% 0 58% 0); }
+            60%     { clip-path:inset(77% 0 15% 0); }
+            80%     { clip-path:inset(40% 0 58% 0); }
+          }
+          @keyframes emojiRainFixed {
+            0%   { transform:translateY(0) rotate(0deg);      opacity:1; }
+            85%  { opacity:1; }
+            100% { transform:translateY(110vh) rotate(360deg); opacity:0; }
+          }
+          .glow-text { animation:glowText 1.5s ease-in-out infinite; }
+          @keyframes glowText {
+            0%,100% { text-shadow:0 0 5px rgba(0,255,255,.5),0 0 10px rgba(0,255,255,.3); }
+            50%     { text-shadow:0 0 15px rgba(0,255,255,.8),0 0 30px rgba(0,255,255,.6),0 0 45px rgba(236,72,153,.4); }
+          }
+        `}</style>
       </div>
-
-      {/* Animated Styles */}
-      <style>{`
-        @keyframes neonPulse {
-          0%, 100% { opacity: 0.4; box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
-          50%       { opacity: 1;   box-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
-        }
-
-        @keyframes glitch {
-          0%, 100% { clip-path: inset(0 0 0 0); }
-          20%       { clip-path: inset(0 0 65% 0); }
-          40%       { clip-path: inset(25% 0 58% 0); }
-          60%       { clip-path: inset(77% 0 15% 0); }
-          80%       { clip-path: inset(40% 0 58% 0); }
-        }
-
-        @keyframes emojiRain {
-          0%   { transform: translateY(0) rotateZ(0deg);   opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translateY(100vh) rotateZ(360deg); opacity: 0; }
-        }
-
-        @keyframes glow-text {
-          0%, 100% { text-shadow: 0 0 5px rgba(0,255,255,0.5), 0 0 10px rgba(0,255,255,0.3); }
-          50%       { text-shadow: 0 0 15px rgba(0,255,255,0.8), 0 0 30px rgba(0,255,255,0.6), 0 0 45px rgba(236,72,153,0.4); }
-        }
-
-        .glow-text { animation: glow-text 1.5s ease-in-out infinite; }
-      `}</style>
-    </div>
+    </>
   );
 };

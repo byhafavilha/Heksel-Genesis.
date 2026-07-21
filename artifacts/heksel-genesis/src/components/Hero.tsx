@@ -96,11 +96,10 @@ const AnimatedBackground = ({ satelliteCount = 40 }: { satelliteCount?: number }
 // ---------------------------------------------------------------------------
 
 interface HeroProps {
-  onHelpUs?:         () => void;
-  onOpenOrderForm?:  () => void;
+  onHelpUs?: () => void;
 }
 
-export function Hero({ onHelpUs, onOpenOrderForm }: HeroProps) {
+export function Hero({ onHelpUs }: HeroProps) {
   const [activeTab, setActiveTab] = useState<TabKey>("customize");
   const [infoOpen, setInfoOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -360,16 +359,16 @@ export function Hero({ onHelpUs, onOpenOrderForm }: HeroProps) {
               whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.97 }}
               className="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-purple-800 text-white font-bold font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.12em] uppercase shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] transition-shadow"
-              onClick={() => onOpenOrderForm?.()}
+              onClick={() => document.getElementById('interactive-example')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             >
               {t.hero.btnOrder}
             </motion.button>
 
-            {/* Botão "Create my brand" — opens order form modal */}
+            {/* Botão "Create my brand" — smooth scroll to brand / plans section */}
             <motion.button
               whileHover={{ scale: 1.03, y: -3 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => onOpenOrderForm?.()}
+              onClick={() => document.getElementById('brand')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
               className="w-full px-6 py-4 rounded-xl font-black font-['Syne',sans-serif] text-xs md:text-sm tracking-[0.15em] uppercase border border-purple-500/50 bg-purple-500/10 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-purple-200 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)] transition-all"
             >
               {t.hero.btnBrand}

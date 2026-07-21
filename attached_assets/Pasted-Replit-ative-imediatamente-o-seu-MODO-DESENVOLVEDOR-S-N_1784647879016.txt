@@ -1,0 +1,63 @@
+Replit, ative imediatamente o seu MODO DESENVOLVEDOR SÊNIOR (PRO). O chat anterior foi encerrado, então precisamos que você recrie do zero a nossa Landing Page ultra profissional para a marca "Hafavilha", garantindo que a interface fique 100% PERFEITA E SEM NENHUM BUG TANTO NO MOBILE QUANTO NO COMPUTADOR. Siga estas instruções à risca:
+
+1. REGRAS GERAIS E ESTRUTURA:
+
+NÃO inclua nenhuma marca d'água do Replit no código do nosso site.
+
+O projeto deve ser construído obrigatoriamente usando Vite + React.
+
+Todos os arquivos de configuração e a pasta src devem ficar localizados diretamente na raiz (root) do repositório.
+
+Assim que compilar perfeitamente, faça o commit e Push automático para o repositório conectado no GitHub.
+
+2. ESTÉTICA DE ALTO LUXO (DUBAI LUXURY GRADE):
+
+O site inteiro é a representação da marca Hafavilha. O logotipo (laço infinito) e a textura de fundo metálica de luxo devem ser o foco.
+
+Eleve o visual para um padrão de opulência e luxo global. Use elementos em dark glassmorphism, detalhes e bordas finas em ouro reluzente e iluminação neon violeta (#8A2BE2).
+
+Os botões "Create in Advance 🚀", "Hire Preemio" e "VIP ACCESS" devem ter um fundo de ouro fosco com uma animação suave em loop (shimmer effect) misturando tons de amarelo-ouro com reflexos brancos.
+
+3. LÓGICA DO FORMULÁRIO (CONDITIONAL RENDERING):
+
+O botão "💎 Create my brand" desliza suavemente até a seção de planos/serviços.
+
+A seção "Tell Us About Your Vision" (e o formulário de pedido com as redes sociais) deve ficar OCULTA por padrão.
+
+Ela só deve aparecer na tela APÓS o usuário selecionar um dos planos de serviço. Ao selecionar, faça um scroll suave até o formulário visível.
+
+4. INTEGRAÇÃO DOS LINKS DE CONTATO (DIRETO EM NOVA ABA):
+
+X (TWITTER): https://x.com/Hafavilha
+
+INSTAGRAM: https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==
+
+TIKTOK: https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/
+
+DISCORD: Redirecionar para o link real de contato no Discord.
+
+GMAIL: Abrir o mailto:hafavilhahafy@gmail.com com assunto e corpo pré-definidos em inglês.
+
+WHATSAPP: Manter o link nativo com a mensagem pronta.
+
+5. FIX BUG: CHUVA DE EMOJIS NO MOBILE:
+
+O botão "📡 SINTONIZAR DIRETRIZ" deve disparar a chuva de emojis perfeitamente tanto no Computador quanto no Celular.
+
+Ajuste o z-index do container da animação e remova restrições de overflow no mobile (como no body/main) para garantir que os emojis apareçam voando pela tela sem cortar.
+
+6. IDIOMAS E TEXTO DE VALOR (🌐):
+
+Frase de valor: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision—scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand."
+
+O Globo de Idiomas (🌐) na Navbar deve alternar todo o site entre "🇺🇸 English" e "🇧🇷 Português". No modo inglês, esconda campos brasileiros como CPF do checkout de doação da aba "Fuel the Empire".
+
+7. REGRAS DA ABA "FUEL THE EMPIRE" (LISTA DE DOAÇÕES):
+
+Agrupamento: Se o mesmo usuário fizer doações seguidas com o mesmo valor e mensagem, agrupe-as mostrando a quantidade no início (ex: 2x €5 - I support LGBT! 🏳️‍🌈 :Merly 👤).
+
+Data/Hora recente: Para doações de hoje/recentes, exiba o tempo relativo e o horário (ex: ° Right now - At 5:12).
+
+Data/Hora antiga: Para doações mais antigas, exiba a data completa (ex: ° 2 weeks ago - On Sunday, December 5th).
+
+Ordenação: Mantenha sempre as doações mais recentes do usuário no topo da lista.

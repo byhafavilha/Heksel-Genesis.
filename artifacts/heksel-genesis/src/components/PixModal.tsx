@@ -116,7 +116,8 @@ const labelStyle: React.CSSProperties = {
 };
 
 export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const isBrazil = lang === 'Português';
   const [step, setStep] = useState<ModalStep>('form');
   const [form, setForm] = useState<FormData>({ nome: '', doc: '', email: '', phone: '' });
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -169,15 +170,18 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
   const validateForm = (): boolean => {
     const newErrors: FieldErrors = {};
     if (!form.nome.trim() || form.nome.trim().split(' ').length < 2)
-      newErrors.nome = 'Informe nome e sobrenome';
-    const docDigits = form.doc.replace(/\D/g, '');
-    if (docDigits.length !== 11 && docDigits.length !== 14)
-      newErrors.doc = 'CPF (11 dígitos) ou CNPJ (14 dígitos)';
+      newErrors.nome = isBrazil ? 'Informe nome e sobrenome' : 'Please enter your full name';
+    // CPF/CNPJ is only required for Brazilian users (Pix is Brazil-only)
+    if (isBrazil) {
+      const docDigits = form.doc.replace(/\D/g, '');
+      if (docDigits.length !== 11 && docDigits.length !== 14)
+        newErrors.doc = 'CPF (11 dígitos) ou CNPJ (14 dígitos)';
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      newErrors.email = 'E-mail inválido';
+      newErrors.email = isBrazil ? 'E-mail inválido' : 'Invalid email address';
     const phoneDigits = form.phone.replace(/\D/g, '');
     if (phoneDigits.length < 10 || phoneDigits.length > 11)
-      newErrors.phone = 'Telefone inválido (DDD + número)';
+      newErrors.phone = isBrazil ? 'Telefone inválido (DDD + número)' : 'Invalid phone number';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -324,7 +328,8 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
                 )}
               </div>
 
-              {/* CPF/CNPJ */}
+              {/* CPF/CNPJ — only shown for Brazilian users (Pix is a Brazil-only payment method) */}
+              {isBrazil && (
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
                   <label style={{ ...labelStyle, marginBottom: 0 }}>
@@ -351,7 +356,7 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
                     fontFamily: "'DM Sans',sans-serif", fontSize: '0.72rem',
                     color: 'rgba(0,240,255,0.85)', lineHeight: 1.55,
                   }}>
-                    Required by Central Bank regulations to process instant Pix transactions securely.
+                    Exigido pelo Banco Central para processar transações Pix instantâneas com segurança.
                   </div>
                 )}
                 <input
@@ -381,6 +386,7 @@ export function PixModal({ isOpen, onClose, onSimulateSuccess }: PixModalProps) 
                   </span>
                 )}
               </div>
+              )}
 
               {/* Email */}
               <div>
