@@ -1,0 +1,50 @@
+Replit, ative o seu MODO DESENVOLVEDOR SÊNIOR (PRO). Como você JÁ POSSUI TODOS OS ARQUIVOS E CÓDIGOS DO NOSSO PROJETO neste workspace (incluindo src/, componentes como PixModal.tsx e as imagens salvas), aplique as alterações e refatorações abaixo diretamente nos arquivos existentes sem recriar o projeto do zero:
+
+1. IDENTIFICAÇÃO DO SITE NO TOPO (HEKSEL) E BRANDING HAFAVILHA:
+- No topo (Navbar), certifique-se de exibir claramente o texto "Heksel" ao lado do logotipo da Heksel para deixar claro que este é o nome da plataforma.
+- No Hero/Destaque principal, remova o texto bruto "∞ A HAFAVILHA" e substitua-o pelas imagens oficiais da marca presentes no projeto:
+  * Ícone do Logotipo: 5047b2b3-4101-4759-ada8-08b923614333.png
+  * Tipografia do Nome: 133 Sem Título_20260721192303.png
+- Ajuste a proporção e o alinhamento para que o conjunto fique imponente, moderno e com estética Dubai Luxury Grade.
+
+2. EASTER EGG INTERATIVO - TROCA DE CORES DAS BANDEIRAS NO LOGOTIPO:
+- Torne a imagem da logo da Hafavilha (5047b2b3-4101-4759-ada8-08b923614333.png) um elemento interativo (clicável, com cursor: pointer e efeito hover).
+- Ao clicar no logotipo da Hafavilha, aplique um ciclo dinâmico de cores/gradientes (via CSS filter, CSS mask overlay ou SVG gradient) que altera a cor da logo passando pelas paletas de bandeiras de orgulho e representatividade:
+  1º Clique: Bandeira LGBT+ (🏳️‍🌈 Rainbow Gradient)
+  2º Clique: Bandeira Transgênero (🏳️‍⚧️ Trans Pride - Azul Claro, Rosa, Branco)
+  3º Clique: Bandeira da Armênia (🇦🇲 Vermelho, Azul, Laranja)
+  4º Clique e posteriores: Bandeira Non-Binary, Bisexual, Lesbian, Pansexual e outras principais.
+- Ao clicar após passar por todas as bandeiras, o ciclo deve retornar suavemente para a cor padrão original do logotipo.
+- Adicione uma transição de cor suave em CSS (transition: filter 0.5s ease-in-out) a cada clique.
+
+3. FORMULÁRIO CONDICIONAL (VISIBILITY CONTROL):
+- A seção "Tell Us About Your Vision" (e o formulário de pedido) deve iniciar OCULTA por padrão ao carregar a página.
+- Quando o usuário clicar no botão "💎 Create my brand", a página faz scroll suave até a seção de escolha de planos/serviços.
+- O formulário "Tell Us About Your Vision" só deve ser exibido na tela APÓS o usuário selecionar um dos planos, fazendo um scroll suave até o formulário visível.
+
+4. CONSERTO DE BUG: CHUVA DE EMOJIS NO MOBILE:
+- No botão "📡 SINTONIZAR DIRETRIZ", a animação de chuva de emojis funciona no Desktop, mas falha no Celular.
+- Ajuste o z-index da camada de animação e remova restrições de overflow no mobile (no body/main container) para garantir que a chuva de emojis apareça perfeitamente flutuando pela tela inteira em dispositivos móveis.
+
+5. LINKS DE CONTATO DIRETO (EM NOVA ABA):
+- TELEGRAM: https://t.me/hafavilha
+- X (TWITTER): https://x.com/Hafavilha
+- INSTAGRAM: https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==
+- TIKTOK: https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/
+- DISCORD: Redirecionar para o link real de contato no Discord.
+- GMAIL: mailto para hafavilhahafy@gmail.com com assunto e corpo pré-definidos em inglês.
+- WHATSAPP: Link nativo com a mensagem pronta.
+
+6. IDIOMAS E AJUSTE NO PixModal.tsx (🌐):
+- Mantenha o seletor de idiomas (🌐) alternando dinamicamente entre Inglês e Português.
+- No modo Inglês, oculte os campos específicos do Brasil (como CPF) no PixModal.tsx / checkout de doação.
+- Frase de valor: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision—scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand."
+
+7. REGRAS DA LISTA DE DOAÇÕES ("FUEL THE EMPIRE"):
+- Agrupamento: Se o mesmo usuário fizer doações seguidas com o mesmo valor e mensagem, agrupe-as (ex: 2x €5 - I support LGBT! 🏳️‍🌈 :Merly 👤).
+- Data/Hora recente: Para doações recentes, exiba o tempo relativo e horário (ex: ° Right now - At 5:12).
+- Data/Hora antiga: Para doações antigas, exiba a data completa (ex: ° 2 weeks ago - On Sunday, December 5th).
+- Ordenação: Doações mais recentes sempre no topo da lista.
+
+8. PUSH PARA O GITHUB:
+- Após atualizar e salvar os arquivos, faça o commit automático e envie (Push) para o repositório conectado no GitHub!

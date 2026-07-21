@@ -3,6 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import { useLanguage, Lang } from '../context/LanguageContext';
 
+// ── Pride Flag Easter Egg ─────────────────────────────────────────────────
+// Clicking the logo cycles through these overlay gradients (mix-blend-mode: color).
+// Index 0 = default (no overlay). Click after the last flag resets.
+const PRIDE_FLAGS = [
+  { name: 'default',       gradient: null                                                                                                                                                                 },
+  { name: 'LGBT+ 🏳️‍🌈',      gradient: 'linear-gradient(180deg,#FF0018 16.6%,#FFA52C 16.6% 33.2%,#FFFF41 33.2% 49.8%,#008018 49.8% 66.4%,#0000F9 66.4% 83%,#86007D 83%)'                             },
+  { name: 'Trans 🏳️‍⚧️',      gradient: 'linear-gradient(180deg,#55CDFC 20%,#F7A8B8 20% 40%,#FFFFFF 40% 60%,#F7A8B8 60% 80%,#55CDFC 80%)'                                                               },
+  { name: 'Armenia 🇦🇲',    gradient: 'linear-gradient(180deg,#D90012 33%,#0033A0 33% 66%,#F2A800 66%)'                                                                                                 },
+  { name: 'Non-Binary ⚧',   gradient: 'linear-gradient(180deg,#FCF434 25%,#FFFFFF 25% 50%,#9C59D1 50% 75%,#2D2D2D 75%)'                                                                                 },
+  { name: 'Bisexual 💗',    gradient: 'linear-gradient(180deg,#D60270 40%,#9B4F96 40% 60%,#0038A8 60%)'                                                                                                  },
+  { name: 'Lesbian 🧡',     gradient: 'linear-gradient(180deg,#D52D00 20%,#FF9A56 20% 40%,#FFFFFF 40% 60%,#D362A4 60% 80%,#A50062 80%)'                                                                 },
+  { name: 'Pansexual 💛',   gradient: 'linear-gradient(180deg,#FF218C 33%,#FFD800 33% 66%,#21B1FF 66%)'                                                                                                  },
+];
+
 interface NavbarProps {
   onNotifyMe: () => void;
   onHelpUs: () => void;
@@ -18,7 +32,15 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenu] = useState(false);
   const [langOpen, setLangOpen]         = useState(false);
   const [langSearch, setLangSearch]     = useState('');
+  const [prideIndex, setPrideIndex]     = useState(0);
   const { lang, setLang, t }            = useLanguage();
+
+  const currentFlag = PRIDE_FLAGS[prideIndex];
+
+  const handleLogoPrideClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setPrideIndex(prev => (prev + 1) % PRIDE_FLAGS.length);
+  };
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
@@ -58,20 +80,71 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
     >
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
 
-        {/* Logo */}
-        <a href="#home" className="flex items-center gap-2 group" style={{ textDecoration: 'none' }}>
-          <img
-            src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-logo.png`}
-            alt="Heksel Genesis"
+        {/* Logo + "HEKSEL" wordmark */}
+        <div className="flex items-center gap-2 group">
+          {/* Logo image — click cycles pride flag easter egg */}
+          <button
+            onClick={handleLogoPrideClick}
+            title={prideIndex === 0 ? '✨ Easter egg…' : currentFlag.name}
             style={{
-              height: 42,
-              width: 'auto',
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.5)) drop-shadow(0 0 16px rgba(180,94,255,0.4))',
-              transition: 'filter 0.3s ease',
+              padding: 0, background: 'none', border: 'none',
+              cursor: 'pointer', position: 'relative', display: 'inline-flex',
+              borderRadius: 8, overflow: 'hidden',
             }}
-          />
-        </a>
+            aria-label="A Hafavilha logo — click for surprise"
+          >
+            <img
+              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-logo.png`}
+              alt="Heksel Genesis"
+              style={{
+                height: 42, width: 'auto', objectFit: 'contain',
+                filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.5)) drop-shadow(0 0 16px rgba(180,94,255,0.4))',
+                transition: 'filter 0.5s ease-in-out',
+                display: 'block',
+              }}
+            />
+            {/* Pride flag color overlay */}
+            {currentFlag.gradient && (
+              <div
+                style={{
+                  position: 'absolute', inset: 0,
+                  background: currentFlag.gradient,
+                  mixBlendMode: 'color',
+                  opacity: 0.85,
+                  pointerEvents: 'none',
+                  transition: 'opacity 0.5s ease-in-out, background 0.5s ease-in-out',
+                }}
+              />
+            )}
+          </button>
+
+          {/* "HEKSEL" wordmark — navigates to #home */}
+          <a
+            href="#home"
+            style={{ textDecoration: 'none' }}
+            aria-label="Go to home"
+          >
+            <span
+              style={{
+                fontFamily: "'Syne', sans-serif",
+                fontWeight: 900,
+                fontSize: '0.85rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                background: 'linear-gradient(135deg, #c9a84c 0%, #f5d97f 50%, #c9a84c 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+                userSelect: 'none',
+                transition: 'opacity 0.2s',
+              }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.75')}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
+            >
+              HEKSEL
+            </span>
+          </a>
+        </div>
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8">
