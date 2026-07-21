@@ -94,13 +94,16 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
             aria-label="A Hafavilha logo — click for surprise"
           >
             <img
-              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-logo.png`}
-              alt="Heksel Genesis"
+              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/hafavilha-icon.png`}
+              alt="A Hafavilha infinity logo"
               style={{
-                height: 42, width: 'auto', objectFit: 'contain',
-                filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.5)) drop-shadow(0 0 16px rgba(180,94,255,0.4))',
+                height: 42, width: 42, objectFit: 'contain',
+                /* screen blend removes the gray background on dark navbars */
+                mixBlendMode: 'screen',
+                filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.7)) drop-shadow(0 0 18px rgba(0,240,255,0.4))',
                 transition: 'filter 0.5s ease-in-out',
                 display: 'block',
+                borderRadius: 6,
               }}
             />
             {/* Pride flag color overlay */}

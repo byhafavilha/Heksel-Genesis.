@@ -320,6 +320,40 @@ export function Hero({ onHelpUs }: HeroProps) {
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.9, ease: "easeOut" }}
         >
+          {/* ── Brand Identity mark ── */}
+          <motion.div
+            className="flex items-center justify-center lg:justify-start gap-3 mb-8"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            {/* Infinity icon — gray bg removed via screen blend on dark surface */}
+            <img
+              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/hafavilha-icon.png`}
+              alt="A Hafavilha infinity logo"
+              style={{
+                height: 72,
+                width: 72,
+                objectFit: 'contain',
+                mixBlendMode: 'screen',
+                filter: 'drop-shadow(0 0 14px rgba(0,240,255,0.75)) drop-shadow(0 0 28px rgba(0,240,255,0.35))',
+                flexShrink: 0,
+              }}
+            />
+            {/* Hafavilha cursive wordmark */}
+            <img
+              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/hafavilha-wordmark.png`}
+              alt="Hafavilha"
+              style={{
+                height: 64,
+                width: 'auto',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 10px rgba(0,200,255,0.5)) brightness(1.08) saturate(1.1)',
+                maxWidth: 280,
+              }}
+            />
+          </motion.div>
+
           {/* Badge */}
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 mb-6"
