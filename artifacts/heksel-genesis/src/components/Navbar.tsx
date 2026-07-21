@@ -94,7 +94,7 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
             aria-label="A Hafavilha logo — click for surprise"
           >
             <img
-              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/hafavilha-icon.png`}
+              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-brand-icon.png`}
               alt="A Hafavilha infinity logo"
               style={{
                 height: 42, width: 42, objectFit: 'contain',

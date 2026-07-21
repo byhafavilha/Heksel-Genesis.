@@ -596,9 +596,14 @@ html {
 .prod-price.shortly { font-family: 'Syne',sans-serif !important; font-size: .7rem !important; font-weight: 800 !important; letter-spacing: .2em !important; color: var(--cyan) !important; background: rgba(0,240,255,.07); border: 1.5px solid rgba(0,240,255,.35); padding: 6px 14px; border-radius: 6px; display: inline-block; text-transform: uppercase; animation: shortlyPulse 2s ease-in-out infinite; box-shadow: 0 0 12px rgba(0,240,255,.15); }
 
 /* ── Responsive ── */
-/* ── Global mobile guard: no horizontal overflow ── */
-html, body {
+/* ── Global mobile guard: no horizontal overflow ──
+   overflow-x: hidden on <html> creates a scroll container on iOS Safari which
+   traps position:fixed children (e.g. emoji rain). Apply only to <body>.      */
+body {
   overflow-x: hidden;
+  width: 100%;
+}
+html {
   width: 100%;
 }
 *, *::before, *::after { box-sizing: border-box; }

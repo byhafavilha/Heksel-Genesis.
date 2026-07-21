@@ -1,0 +1,83 @@
+Replit, ative o seu MODO DESENVOLVEDOR SÊNIOR (PRO). Você JÁ POSSUI TODOS OS ARQUIVOS E CÓDIGOS DO NOSSO PROJETO. NÃO recrie o layout do zero e NÃO mude a base que já funciona. Precisamos corrigir um erro de posicionamento visual urgente e implementar as lógicas abaixo exatamente como descrito:
+
+1. CORREÇÃO CRÍTICA NO HERO (SUBSTITUIÇÃO INLINE DE TEXTO POR IMAGEM):
+
+Ocorreu um erro onde as imagens da marca foram jogadas para baixo do texto "From beginning to infinity". Isso está errado.
+
+Você deve SUBSTITUIR EXATAMENTE os textos originais pelas imagens da marca, mantendo a estrutura alinhada horizontalmente como o título principal:
+
+Substitua o caractere de texto "∞ " pela imagem: 5047b2b3-4101-4759-ada8-08b923614333.png
+
+Substitua o texto "HAFAVILHA" pela imagem: 133 Sem Título_20260721192303.png
+
+As imagens precisam assumir o lugar dos textos originais, formando juntas o destaque visual imponente no centro. O texto "From beginning to infinity" deve continuar no seu lugar original, acompanhando o título novo criado pelas imagens.
+
+2. EASTER EGG INTERATIVO - TROCA DE CORES DAS BANDEIRAS:
+
+A imagem da logo (5047b2b3-4101-4759-ada8-08b923614333.png) DEVE ser um elemento interativo (cursor: pointer).
+
+Ao clicar na logo, ative um ciclo de estilos (via CSS filter, CSS mask overlay ou manipulação direta) que muda a cor do ícone passando pelas bandeiras de orgulho e apoio:
+
+1º Clique: Bandeira LGBT+ (🏳️‍🌈 Gradiente Arco-íris)
+
+2º Clique: Bandeira Transgênero (🏳️‍⚧️ Azul, Rosa, Branco)
+
+3º Clique: Bandeira da Armênia (🇦🇲 Vermelho, Azul, Laranja)
+
+Cliques seguintes: Outras bandeiras (Não-binário, etc.) até reiniciar o ciclo retornando à cor original da Hafavilha.
+
+Use transições suaves (transition: 0.5s ease-in-out).
+
+3. IDENTIFICAÇÃO DO SITE NO TOPO (HEKSEL):
+
+Na Navbar (topo), certifique-se de exibir claramente o texto "Heksel" ao lado do logotipo superior para deixar claro que este é o nome da plataforma.
+
+4. FORMULÁRIO CONDICIONAL (VISIBILITY CONTROL):
+
+A seção "Tell Us About Your Vision" (e o formulário de pedido) deve iniciar OCULTA por padrão ao carregar a página.
+
+Quando o usuário clicar no botão "💎 Create my brand", a página faz scroll suave até a seção de escolha de planos/serviços.
+
+O formulário "Tell Us About Your Vision" só deve ser exibido na tela APÓS o usuário selecionar um dos planos, revelando-se suavemente.
+
+5. CONSERTO DE BUG: CHUVA DE EMOJIS NO MOBILE:
+
+No botão "📡 SINTONIZAR DIRETRIZ", ajuste o z-index da camada de animação e remova restrições de overflow no mobile (no body/main container). A chuva de emojis DEVE aparecer perfeitamente flutuando pela tela inteira no celular, não apenas no Desktop.
+
+6. LINKS DE CONTATO DIRETO (EM NOVA ABA):
+
+TELEGRAM: https://t.me/hafavilha
+
+X (TWITTER): https://x.com/Hafavilha
+
+INSTAGRAM: https://www.instagram.com/hafavilha?igsh=MWplbGN6c3V6ejh0dw==
+
+TIKTOK: https://vm.tiktok.com/ZS9rjcYRgnGKf-kPeU2/
+
+DISCORD: Redirecionar para o link real de contato no Discord.
+
+GMAIL: mailto para hafavilhahafy@gmail.com com assunto e corpo pré-definidos em inglês.
+
+WHATSAPP: Link nativo com a mensagem pronta.
+
+7. IDIOMAS E AJUSTE NO PixModal.tsx (🌐):
+
+Mantenha o seletor de idiomas (🌐) alternando dinamicamente entre Inglês e Português.
+
+No modo Inglês, oculte os campos específicos do Brasil (como CPF) no PixModal.tsx / checkout de doação.
+
+Frase de valor: "Fully customized digital identity and cyberpunk web platform. Pricing adapts seamlessly to your vision—scaling based on the absolute depth, complexity, and tier of elite digital professionalism you command for your brand."
+
+8. REGRAS DA LISTA DE DOAÇÕES ("FUEL THE EMPIRE"):
+
+Agrupamento: Se o mesmo usuário fizer doações seguidas com o mesmo valor e mensagem, agrupe-as (ex: 2x €5 - I support LGBT! 🏳️‍🌈 :Merly 👤).
+
+Data/Hora recente: Para doações recentes, exiba o tempo relativo e horário (ex: ° Right now - At 5:12).
+
+Data/Hora antiga: Para doações antigas, exiba a data completa (ex: ° 2 weeks ago - On Sunday, December 5th).
+
+Ordenação: Doações mais recentes sempre no topo da lista.
+
+9. PUSH PARA O GITHUB:
+
+Após atualizar perfeitamente os arquivos existentes para que essas correções funcionem, faça o commit automático e envie (Push) para o repositório conectado no GitHub!
