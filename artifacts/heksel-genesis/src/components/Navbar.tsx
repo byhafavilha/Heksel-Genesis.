@@ -121,52 +121,53 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
             )}
           </button>
 
-          {/* "HEKSEL" wordmark — navigates to #home */}
-          <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
-            {/* Aura glow behind the wordmark */}
+          {/* [H logo] + [HEKSEL wordmark] — navigates to #home */}
+          <a
+            href="#home"
+            style={{
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 7,
+            }}
+            aria-label="Go to home"
+          >
+            {/* Cyberpunk "H" logo mark */}
             <img
-              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-wordmark-aura.png`}
-              alt=""
-              aria-hidden="true"
+              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-h-logo.png`}
+              alt="Heksel H"
               style={{
-                position: 'absolute',
-                inset: '-10px -16px',
-                width: 'calc(100% + 32px)',
-                height: 'calc(100% + 20px)',
+                height: 36,
+                width: 'auto',
                 objectFit: 'contain',
-                opacity: 0.22,
-                pointerEvents: 'none',
-                filter: 'blur(5px) saturate(1.6)',
                 mixBlendMode: 'screen',
+                filter:
+                  'drop-shadow(0 0 5px rgba(0, 229, 255, 0.7)) drop-shadow(0 0 3px rgba(255, 51, 204, 0.5))',
               }}
             />
-            <a
-              href="#home"
-              style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
-              aria-label="Go to home"
+            {/* HEKSEL text — dark metallic core + neon pink-left / cyan-right glow */}
+            <span
+              style={{
+                fontFamily: "'Syne', sans-serif",
+                fontWeight: 900,
+                fontSize: '0.85rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: '#111318',
+                textShadow: [
+                  '-1px 0 4px #FF33CC',
+                  '1px 0 4px #00E5FF',
+                  '-4px 0 14px rgba(255, 51, 204, 0.75)',
+                  '4px 0 14px rgba(0, 229, 255, 0.75)',
+                  '0 0 28px rgba(255, 51, 204, 0.25)',
+                  '0 0 28px rgba(0, 229, 255, 0.25)',
+                ].join(', '),
+                userSelect: 'none',
+              }}
             >
-              <span
-                style={{
-                  fontFamily: "'Syne', sans-serif",
-                  fontWeight: 900,
-                  fontSize: '0.85rem',
-                  letterSpacing: '0.2em',
-                  textTransform: 'uppercase',
-                  background:
-                    'linear-gradient(90deg, #8A2BE2, #FF1493, #0038FF, #00FFFF, #8A2BE2, #FF1493, #0038FF, #00FFFF)',
-                  backgroundSize: '200% auto',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  color: 'transparent',
-                  userSelect: 'none',
-                  animation: 'heksel-wave 4s linear infinite',
-                  display: 'inline-block',
-                }}
-              >
-                HEKSEL
-              </span>
-            </a>
-          </div>
+              HEKSEL
+            </span>
+          </a>
         </div>
 
         {/* Desktop Links */}
