@@ -122,31 +122,51 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
           </button>
 
           {/* "HEKSEL" wordmark — navigates to #home */}
-          <a
-            href="#home"
-            style={{ textDecoration: 'none' }}
-            aria-label="Go to home"
-          >
-            <span
+          <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+            {/* Aura glow behind the wordmark */}
+            <img
+              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-wordmark-aura.png`}
+              alt=""
+              aria-hidden="true"
               style={{
-                fontFamily: "'Syne', sans-serif",
-                fontWeight: 900,
-                fontSize: '0.85rem',
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                background: 'linear-gradient(135deg, #c9a84c 0%, #f5d97f 50%, #c9a84c 100%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent',
-                userSelect: 'none',
-                transition: 'opacity 0.2s',
+                position: 'absolute',
+                inset: '-10px -16px',
+                width: 'calc(100% + 32px)',
+                height: 'calc(100% + 20px)',
+                objectFit: 'contain',
+                opacity: 0.22,
+                pointerEvents: 'none',
+                filter: 'blur(5px) saturate(1.6)',
+                mixBlendMode: 'screen',
               }}
-              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.75')}
-              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
+            />
+            <a
+              href="#home"
+              style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}
+              aria-label="Go to home"
             >
-              HEKSEL
-            </span>
-          </a>
+              <span
+                style={{
+                  fontFamily: "'Syne', sans-serif",
+                  fontWeight: 900,
+                  fontSize: '0.85rem',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  background:
+                    'linear-gradient(90deg, #8A2BE2, #FF1493, #0038FF, #00FFFF, #8A2BE2, #FF1493, #0038FF, #00FFFF)',
+                  backgroundSize: '200% auto',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                  userSelect: 'none',
+                  animation: 'heksel-wave 4s linear infinite',
+                  display: 'inline-block',
+                }}
+              >
+                HEKSEL
+              </span>
+            </a>
+          </div>
         </div>
 
         {/* Desktop Links */}

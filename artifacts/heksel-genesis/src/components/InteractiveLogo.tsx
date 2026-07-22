@@ -1,16 +1,13 @@
 import React, { useState, useMemo } from 'react';
 
-// A logo vive em /public — acesso via BASE_URL em vez de import direto.
+// Image lives in /public — accessed via BASE_URL instead of a direct import.
 const logoDefault = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-brand-icon.png`;
 
 type LogoState = {
   name: string;
-  /** Gradiente CSS válido (nunca "transparent"/null — ver nota abaixo) */
   background: string;
 };
 
-// Gradientes de cada bandeira, extraídos em constantes para reaproveitar
-// o mesmo valor no estado "original" (ver comentário no array STATES).
 const LGBT_GRADIENT =
   'linear-gradient(180deg, #E40303 0%, #FF8C00 20%, #FFED00 40%, #008026 60%, #004DFF 80%, #750787 100%)';
 const TRANS_GRADIENT =
@@ -20,13 +17,6 @@ const ARMENIA_GRADIENT =
 const NONBINARY_GRADIENT =
   'linear-gradient(180deg, #FCF434 0%, #FCF434 25%, #FFFFFF 25%, #FFFFFF 50%, #9C59D1 50%, #9C59D1 75%, #2C2C2C 75%, #2C2C2C 100%)';
 
-// Ordem exata do ciclo de cliques.
-// O estado "original" reaproveita o gradiente do LGBT+ como valor "dummy":
-// como a opacidade dele fica em 0 nesse estado, essa cor nunca é vista.
-// Isso evita que o background-image precise alternar entre "nenhuma imagem"
-// e "um gradiente" — troca que o navegador às vezes não repinta direito
-// quando combinada com mask-image, e era a causa da bandeira LGBT+ (o
-// primeiro estado depois do original) não aparecer.
 const STATES: LogoState[] = [
   { name: 'original', background: LGBT_GRADIENT },
   { name: 'lgbt',     background: LGBT_GRADIENT },
@@ -36,9 +26,7 @@ const STATES: LogoState[] = [
 ];
 
 interface InteractiveLogoProps {
-  /** Caminho/URL do PNG da logo (precisa ter fundo transparente) */
   logoSrc?: string;
-  /** Tamanho do lado do componente, em px */
   size?: number;
 }
 
@@ -59,10 +47,6 @@ export default function InteractiveLogo({
     }
   };
 
-  // O mask-image usa o CANAL ALFA do PNG, não a cor dele.
-  // Onde o PNG é opaco (o traço ciano da logo) -> o background abaixo aparece.
-  // Onde o PNG é transparente (fundo + os dois "buracos" do infinito) -> nada aparece.
-  // Por isso a cor nunca vaza para um quadrado/retângulo: ela segue o contorno exato do desenho.
   const maskStyle: React.CSSProperties = useMemo(
     () => ({
       WebkitMaskImage: `url(${logoSrc})`,
@@ -83,7 +67,7 @@ export default function InteractiveLogo({
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      aria-label="Logo interativa. Clique para trocar de cor."
+      aria-label="Interactive logo — click to cycle colours"
       style={{
         position: 'relative',
         width: size,
@@ -92,21 +76,11 @@ export default function InteractiveLogo({
         userSelect: 'none',
       }}
     >
-      <style>{`
-        @media (prefers-reduced-motion: reduce) {
-          .interactive-logo__original,
-          .interactive-logo__mask {
-            transition: none !important;
-          }
-        }
-      `}</style>
-
-      {/* Camada 1: PNG original — visível apenas no estado 0 */}
+      {/* Layer 1: original PNG — visible only at index 0 */}
       <img
         src={logoSrc}
         alt="Logo"
         draggable={false}
-        className="interactive-logo__original"
         style={{
           position: 'absolute',
           inset: 0,
@@ -118,11 +92,10 @@ export default function InteractiveLogo({
           pointerEvents: 'none',
         }}
       />
-
-      {/* Camada 2: cor mascarada pelo formato exato do PNG — estados 1 a 4.
-          backgroundImage NUNCA vira "none": só a opacidade muda pra mostrar/esconder. */}
+      {/* Layer 2: gradient masked by PNG alpha — indices 1-4.
+          backgroundImage is NEVER "none": only opacity toggles visibility,
+          avoiding the browser repaint flicker on the first pride flag click. */}
       <div
-        className="interactive-logo__mask"
         style={{
           position: 'absolute',
           inset: 0,

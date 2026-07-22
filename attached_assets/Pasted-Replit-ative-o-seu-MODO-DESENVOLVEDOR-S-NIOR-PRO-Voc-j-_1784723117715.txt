@@ -1,0 +1,134 @@
+Replit, ative o seu MODO DESENVOLVEDOR SÊNIOR (PRO). Você já possui os arquivos do projeto. Precisamos aplicar estas atualizações finais de alta fidelidade visual:
+
+1. ATUALIZAR COMPONENTE InteractiveLogo.tsx (CORREÇÃO DE CORES):
+Substitua TODO o conteúdo do arquivo InteractiveLogo.tsx pelo código abaixo (esta versão corrige o bug da transição da bandeira LGBT):
+
+TypeScript
+import React, { useState, useMemo } from 'react';
+
+import logoDefault from './5047b2b3-4101-4759-ada8-08b923614333.png';
+
+type LogoState = {
+  name: string;
+  background: string;
+};
+
+const LGBT_GRADIENT = 'linear-gradient(180deg, #E40303 0%, #FF8C00 20%, #FFED00 40%, #008026 60%, #004DFF 80%, #750787 100%)';
+const TRANS_GRADIENT = 'linear-gradient(180deg, #5BCEFA 0%, #5BCEFA 20%, #F5A9B8 20%, #F5A9B8 40%, #FFFFFF 40%, #FFFFFF 60%, #F5A9B8 60%, #F5A9B8 80%, #5BCEFA 80%, #5BCEFA 100%)';
+const ARMENIA_GRADIENT = 'linear-gradient(180deg, #D90012 0%, #D90012 33.33%, #0033A0 33.33%, #0033A0 66.66%, #F2A800 66.66%, #F2A800 100%)';
+const NONBINARY_GRADIENT = 'linear-gradient(180deg, #FCF434 0%, #FCF434 25%, #FFFFFF 25%, #FFFFFF 50%, #9C59D1 50%, #9C59D1 75%, #2C2C2C 75%, #2C2C2C 100%)';
+
+const STATES: LogoState[] = [
+  { name: 'original', background: LGBT_GRADIENT },
+  { name: 'lgbt', background: LGBT_GRADIENT },
+  { name: 'trans', background: TRANS_GRADIENT },
+  { name: 'armenia', background: ARMENIA_GRADIENT },
+  { name: 'nonbinary', background: NONBINARY_GRADIENT },
+];
+
+interface InteractiveLogoProps {
+  logoSrc?: string;
+  size?: number;
+}
+
+export default function InteractiveLogo({
+  logoSrc = logoDefault,
+  size = 220,
+}: InteractiveLogoProps) {
+  const [index, setIndex] = useState(0);
+  const isOriginal = index === 0;
+  const current = STATES[index];
+
+  const cycle = () => setIndex((prev) => (prev + 1) % STATES.length);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      cycle();
+    }
+  };
+
+  const maskStyle: React.CSSProperties = useMemo(
+    () => ({
+      WebkitMaskImage: `url(${logoSrc})`,
+      maskImage: `url(${logoSrc})`,
+      WebkitMaskRepeat: 'no-repeat',
+      maskRepeat: 'no-repeat',
+      WebkitMaskPosition: 'center',
+      maskPosition: 'center',
+      WebkitMaskSize: 'contain',
+      maskSize: 'contain',
+    }),
+    [logoSrc]
+  );
+
+  return (
+    <div
+      onClick={cycle}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      style={{
+        position: 'relative',
+        width: size,
+        height: size,
+        cursor: 'pointer',
+        userSelect: 'none',
+      }}
+    >
+      <img
+        src={logoSrc}
+        alt="Logo"
+        draggable={false}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
+          opacity: isOriginal ? 1 : 0,
+          transition: 'opacity 0.5s ease',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: current.background,
+          opacity: isOriginal ? 0 : 1,
+          transition: 'background-image 0.5s ease, opacity 0.5s ease',
+          pointerEvents: 'none',
+          ...maskStyle,
+        }}
+      />
+    </div>
+  );
+}
+2. ESTILIZAÇÃO DO NOME "HEKSEL" (NAVBAR):
+
+No topo do site (Navbar), localize o nome HEKSEL.
+
+Aplique o efeito de Gradiente Animado (Wave) dentro do texto. As cores devem ser: Roxo (#8A2BE2), Rosa Choque, Azul Profundo e Azul Ciano.
+
+A animação deve ser suave, como uma onda que se move horizontalmente dentro das letras (use background-clip: text, -webkit-background-clip: text, color: transparent e uma animação de background-position).
+
+IMPORTANTE: Use apenas essas 4 cores. NÃO use branco (não queremos o brilho do botão de ouro, queremos apenas a onda de cores neon).
+
+3. LOGOTIPO DA HEKSEL COMO FUNDO:
+
+Posicione a imagem 1000027280.png exatamente ATRÁS do nome "HEKSEL" estilizado.
+
+Ela deve servir como um logotipo de fundo ou uma "aura" para o nome. Garanta que o nome continue legível e que o conjunto fique centralizado e profissional.
+
+4. REVISÃO DO RODAPÉ:
+
+Certifique-se de que no rodapé (Footer), acima do texto "From beginning to infinity", o componente interativo e o nome Hafavilha estático continuem funcionando perfeitamente.
+
+5. LIMPEZA FINAL:
+
+Verifique se não restaram imagens soltas ou duplicadas de tentativas anteriores. Salve tudo, compile no Vite e faça o Push para o GitHub!
+
+O site vai ficar parecendo uma marca de luxo internacional! 🥂✨ Manda pro Replit e me diz se
