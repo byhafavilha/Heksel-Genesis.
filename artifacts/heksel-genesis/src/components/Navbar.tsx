@@ -78,10 +78,10 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
         isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-white/5' : 'bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
+      <div className="container mx-auto px-4 h-full flex items-center">
 
         {/* Logo + "HEKSEL" wordmark */}
-        <div className="flex items-center gap-2 group">
+        <div className="flex items-center gap-2 group flex-none">
           {/* Logo image — click cycles pride flag easter egg */}
           <button
             onClick={handleLogoPrideClick}
@@ -171,7 +171,7 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
+        <div className="hidden md:flex items-center gap-8 flex-1 justify-center ml-8">
           {links.map(link => (
             <a
               key={link.name}
