@@ -3,20 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 
 // ---------------------------------------------------------------------------
-// Pride Flag Easter Egg — same set as Navbar
-// ---------------------------------------------------------------------------
-const HERO_PRIDE_FLAGS = [
-  { name: 'default',       gradient: null },
-  { name: 'LGBT+ 🏳️‍🌈',      gradient: 'linear-gradient(180deg,#FF0018 16.6%,#FFA52C 16.6% 33.2%,#FFFF41 33.2% 49.8%,#008018 49.8% 66.4%,#0000F9 66.4% 83%,#86007D 83%)' },
-  { name: 'Trans 🏳️‍⚧️',      gradient: 'linear-gradient(180deg,#55CDFC 20%,#F7A8B8 20% 40%,#FFFFFF 40% 60%,#F7A8B8 60% 80%,#55CDFC 80%)' },
-  { name: 'Armenia 🇦🇲',    gradient: 'linear-gradient(180deg,#D90012 33%,#0033A0 33% 66%,#F2A800 66%)' },
-  { name: 'Non-Binary ⚧',   gradient: 'linear-gradient(180deg,#FCF434 25%,#FFFFFF 25% 50%,#9C59D1 50% 75%,#2D2D2D 75%)' },
-  { name: 'Bisexual 💗',    gradient: 'linear-gradient(180deg,#D60270 40%,#9B4F96 40% 60%,#0038A8 60%)' },
-  { name: 'Lesbian 🧡',     gradient: 'linear-gradient(180deg,#D52D00 20%,#FF9A56 20% 40%,#FFFFFF 40% 60%,#D362A4 60% 80%,#A50062 80%)' },
-  { name: 'Pansexual 💛',   gradient: 'linear-gradient(180deg,#FF218C 33%,#FFD800 33% 66%,#21B1FF 66%)' },
-];
-
-// ---------------------------------------------------------------------------
 // Constantes (Ajustadas com as suas imagens reais!)
 // ---------------------------------------------------------------------------
 
@@ -116,13 +102,8 @@ interface HeroProps {
 export function Hero({ onHelpUs }: HeroProps) {
   const [activeTab, setActiveTab] = useState<TabKey>("customize");
   const [infoOpen, setInfoOpen] = useState(false);
-  const [heroPrideIndex, setHeroPrideIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const { collectorPack, t } = useLanguage();
-
-  const handleBrandIconClick = () =>
-    setHeroPrideIndex(prev => (prev + 1) % HERO_PRIDE_FLAGS.length);
-  const heroPrideFlag = HERO_PRIDE_FLAGS[heroPrideIndex];
 
   const tabs = [
     { key: "customize" as TabKey, label: t.hero.tabCustomize },
@@ -339,67 +320,6 @@ export function Hero({ onHelpUs }: HeroProps) {
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.9, ease: "easeOut" }}
         >
-          {/* ── Brand Identity mark ── */}
-          <motion.div
-            className="flex items-center justify-center lg:justify-start gap-3 mb-8"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-          >
-            {/* Brand icon — click cycles pride flag easter egg */}
-            <button
-              onClick={handleBrandIconClick}
-              title={heroPrideIndex === 0 ? '✨ Easter egg…' : heroPrideFlag.name}
-              style={{
-                padding: 0, background: 'none', border: 'none',
-                cursor: 'pointer', position: 'relative', display: 'inline-flex',
-                borderRadius: 8, overflow: 'hidden', flexShrink: 0,
-              }}
-              aria-label="Heksel logo — click for surprise"
-            >
-              <img
-                src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-brand-icon.png`}
-                alt="Heksel infinity logo"
-                style={{
-                  height: 72,
-                  width: 72,
-                  objectFit: 'contain',
-                  mixBlendMode: 'screen',
-                  filter: 'drop-shadow(0 0 14px rgba(0,240,255,0.75)) drop-shadow(0 0 28px rgba(0,240,255,0.35))',
-                  display: 'block',
-                  borderRadius: 6,
-                  transition: 'filter 0.5s ease-in-out',
-                }}
-              />
-              {heroPrideFlag.gradient && (
-                <div
-                  style={{
-                    position: 'absolute', inset: 0,
-                    background: heroPrideFlag.gradient,
-                    mixBlendMode: 'color',
-                    opacity: 0.85,
-                    pointerEvents: 'none',
-                    transition: 'opacity 0.5s ease-in-out, background 0.5s ease-in-out',
-                    borderRadius: 6,
-                  }}
-                />
-              )}
-            </button>
-
-            {/* HAFAVILHA title image */}
-            <img
-              src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/hafavilha-title.png`}
-              alt="Hafavilha"
-              style={{
-                height: 64,
-                width: 'auto',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 0 10px rgba(0,200,255,0.5)) brightness(1.08) saturate(1.1)',
-                maxWidth: 280,
-              }}
-            />
-          </motion.div>
-
           {/* Badge */}
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 mb-6"

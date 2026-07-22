@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 
-// A logo vive em /public — acesso via BASE_URL em vez de import direto.
-const logoDefault = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/heksel-brand-icon.png`;
+// Ajuste o caminho abaixo para onde a logo estiver no seu projeto.
+// Este arquivo assume que o PNG está na mesma pasta do componente.
+import logoDefault from './5047b2b3-4101-4759-ada8-08b923614333.png';
 
 type LogoState = {
   name: string;
@@ -29,14 +30,14 @@ const NONBINARY_GRADIENT =
 // primeiro estado depois do original) não aparecer.
 const STATES: LogoState[] = [
   { name: 'original', background: LGBT_GRADIENT },
-  { name: 'lgbt',     background: LGBT_GRADIENT },
-  { name: 'trans',    background: TRANS_GRADIENT },
-  { name: 'armenia',  background: ARMENIA_GRADIENT },
+  { name: 'lgbt', background: LGBT_GRADIENT },
+  { name: 'trans', background: TRANS_GRADIENT },
+  { name: 'armenia', background: ARMENIA_GRADIENT },
   { name: 'nonbinary', background: NONBINARY_GRADIENT },
 ];
 
 interface InteractiveLogoProps {
-  /** Caminho/URL do PNG da logo (precisa ter fundo transparente) */
+  /** Import/caminho do PNG da logo (precisa ter fundo transparente) */
   logoSrc?: string;
   /** Tamanho do lado do componente, em px */
   size?: number;
