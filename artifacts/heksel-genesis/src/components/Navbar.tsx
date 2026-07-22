@@ -171,7 +171,7 @@ export function Navbar({ onNotifyMe, onHelpUs }: NavbarProps) {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
           {links.map(link => (
             <a
               key={link.name}
