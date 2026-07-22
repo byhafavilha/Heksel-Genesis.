@@ -1,6 +1,7 @@
 import { Mail } from 'lucide-react';
 import { FaTiktok, FaInstagram, FaWhatsapp, FaDiscord, FaTelegram } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
+import InteractiveLogo from './InteractiveLogo';
 
 const SOCIAL_LINKS = [
   {
@@ -51,21 +52,21 @@ export function Footer() {
           
           {/* Logo Col */}
           <div className="lg:col-span-2">
-            <a href="#home" className="flex items-center gap-3 mb-6">
-              {/* Infinity knot brand mark */}
-              <span
-                className="font-display font-black text-2xl tracking-widest"
+            <a href="#home" className="flex items-center gap-3 mb-6" style={{ textDecoration: 'none' }}>
+              {/* Interactive brand logo — click cycles pride flag colours */}
+              <InteractiveLogo size={70} />
+              {/* HAFAVILHA title image */}
+              <img
+                src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/hafavilha-title.png`}
+                alt="Hafavilha"
                 style={{
-                  background: 'linear-gradient(135deg,#c9a84c,#f5d97f,#c9a84c)',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  color: 'transparent',
-                  textShadow: 'none',
-                  letterSpacing: '0.12em',
+                  height: 52,
+                  width: 'auto',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 0 8px rgba(0,200,255,0.4)) brightness(1.05) saturate(1.1)',
+                  maxWidth: 200,
                 }}
-              >
-                ∞ A HAFAVILHA
-              </span>
+              />
             </a>
             <p className="text-white/50 font-sans text-sm max-w-sm mb-8 leading-relaxed">
               Dubai luxury-grade cyberpunk fashion &amp; digital branding studio.
